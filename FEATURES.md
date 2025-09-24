@@ -74,70 +74,34 @@
 | Consult - error history and statistics  | Page who display the content of comm.log and the content of gwsetup.log | - |
 | Save - GEDCOM source file               | Page where you can Extract a GEDCOM file from a bases created - Add all options  | -Select your database<br> -name you want to give to your GEDCOM file<br> -charset: ASCII/UTF-8/ANSEL/ANSI (I-SO 8859-1)<br> -mem: Save the memory space during the operation (but it will be slower)<br> -nn: Do not extract notes<br> -nopicture: Dont extract individual pictures (portraits)<br> -picture-path: Extract individual pictures path (portraits)<br> -Extract only the ancestors: first name/num/surname<br> -Extract only the descendants: first name/num/surname<br> -Extract ancestors with siblings: first name/num/surname<br> -Extract surname: surname<br> -c: When a person is born less than years ago, it is not exported unless it is Public<br>All the spouses and descendants are also censored<br> -nsp: Do not extract spouses' parents (for options -s and -d) |
 
-| Save - GeneWeb source file              | Page where you can Extract a GeneWeb file from a bases created - add all options  |
-        -name you want to give to your GeneWeb source file,
-        -Save isolated persons,
-        -Save all files in notes_d, including those without Wiki links,
-        -Save memory space during operation (but it will be slower),
-        -Extract only the ancestors: first name/num/surname,
-        -Extract only the descendants: first name/num/surname |
-| Import - GEDCOM source file             | Page where you can create a bases from a GEDCOM file with option -  add all option  |
-        -select GEDCOM file,
-        -name of the folder holding databases,
-        -name of your GeneWeb databases you want,
-        -Delete database if already existing,
-        -Put untreated GEDCOM tags in notes,
-        -Convert first names to lowercase letters, with initials in uppercase,
-        -Convert surnames to lowercase letters, with initials in uppercase. Try to keep lowercase particles
-        -When creating a person, if the GEDCOM first name part holds several names separated by spaces, you can ask that the first of this names becomes the person "first name" and the complete GEDCOM first name part a "first name alias" (-no_efn default),
-        -"first names enclosed": the -fne option must be followed by a two characters string "be". When creating a person, if the GEDCOM first name part holds a part between 'b' (any character) and 'e' (any character), it is considered to be the usual first name: e.g. -fne "\\" or -fne "()",
-        -By default, when creating a person, if the GEDCOM first name part looks like a public name, i.e. holds:
-        A number or a roman number, supposed to be a number of a nobility title (e.g. George V)
-        One of the words: "der", "den", "die", "el", "le", "la", "the", supposed to be the beginning of a qualifier (e.g. William the Conqueror)
-        then the GEDCOM first name part becomes the person "public name" and its first word his "first name" (-epn default),
-        -Not public even if titles (see -epn option),
-        -Set negative dates when inconsistency (e.g. birth after death),
-        -No negative dates: do not interpret a year preceded by a minus sign as a negative year,
-        -No consistency check,
-        -Don't extract individual picture,
-        -Force relation status to "NoMention" (default is "Married"),
-        -Reorg mode
-        -Default source,
-        -Some GEDCOM files sometimes write dates with numbered months (from 1 to 12). The GEDCOM standard 5.5 requires that the months be represented by identifiers (e.g. "MAY 1912" and not "05/1912"). The notation "02/05/1912" is ambiguous (means "May 2, 1912" or "February 5, 1912" according to the countries),
-        -The accentuated characters encoding is normally specified in the GEDCOM header |
-| Import - GeneWeb source file            | Page where you can create a bases from a GeneWeb file with option -  add all option | 
-        -selected source file/file name(relative to the path), 
-        -name of the folder holding databases,
-        -name of your GenWeb databases you want,
-        -Display some statistics at the end (they will be visible in the traces),
-        -Do not check the consistency of the data,
-        -End by the initialization of consanguinities,
-        -Delete database if already existing,
-        -Kill .gwo files after base creation,
-        -Reorg mode |
+| Save - GeneWeb source file              | Page where you can Extract a GeneWeb file from a bases created - add all options  |-name you want to give to your GeneWeb source file<br>-Save isolated persons<br>-Save all files in notes_d, including those without Wiki links<br>-Save memory space during operation (but it will be slower)<br>-Extract only the ancestors: first name/num/surname<br>-Extract only the descendants: first name/num/surname |
+
+| Import - GEDCOM source file             | Page where you can create a bases from a GEDCOM file with option -  add all option  |-select GEDCOM file<br>-name of the folder holding databases<br>-name of your GeneWeb databases you want<br>-Delete database if already existing<br>-Put untreated GEDCOM tags in notes<br>-Convert first names to lowercase letters, with initials in uppercase<br>-Convert surnames to lowercase letters, with initials in uppercase. Try to keep lowercase particles<br>-When creating a person, if the GEDCOM first name part holds several names separated by spaces, you can ask that the first of this names becomes the person "first name" and the complete GEDCOM first name part a "first name alias" (-no_efn default)<br>-"first names enclosed": the -fne option must be followed by a two characters string "be". When creating a person, if the GEDCOM first name part holds a part between 'b' (any character) and 'e' (any character), it is considered to be the usual first name: e.g. -fne "\\" or -fne "()"<br>-By default, when creating a person, if the GEDCOM first name part looks like a public name, i.e. holds:A number or a roman number, supposed to be a number of a nobility title (e.g. George V) One of the words: "der", "den", "die", "el", "le", "la", "the", supposed to be the beginning of a qualifier (e.g. William the Conqueror) then the GEDCOM first name part becomes the person "public name" and its first word his "first name" (-epn default)<br>-Not public even if titles (see -epn option)<br>-Set negative dates when inconsistency (e.g. birth after death)<br>-No negative dates: do not interpret a year preceded by a minus sign as a negative year<br>-No consistency check<br>-Don't extract individual picture<br>-Force relation status to "NoMention" (default is "Married")<br>-Reorg mode<br>-Default source<br>-Some GEDCOM files sometimes write dates with numbered months (from 1 to 12). The GEDCOM standard 5.5 requires that the months be represented by identifiers (e.g. "MAY 1912" and not "05/1912"). The notation "02/05/1912" is ambiguous (means "May 2, 1912" or "February 5, 1912" according to the countries)<br>-The accentuated characters encoding is normally specified in the GEDCOM header |
+
+| Import - GeneWeb source file            | Page where you can create a bases from a GeneWeb file with option -  add all option -selected source file/file name(relative to the path)<br>-name of the folder holding databases<br>-name of your GenWeb databases you want<br>-Display some statistics at the end (they will be visible in the traces)<br>-Do not check the consistency of the data<br>-End by the initialization of consanguinities<br>-Delete database if already existing<br>-Kill .gwo files after base creation<br>-Reorg mode |
 | Import - an empty file                  | Page where you can create a bases from nothings | -name, -Reorg mode |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
-| qdddd         | adddd  |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
+| qdddd         | adddd  | - |
 
 
