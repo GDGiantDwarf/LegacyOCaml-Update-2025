@@ -53,6 +53,17 @@
 
 ## Interfaces
 
+### Genweb
+
+| Feature               | Description                          |
+|-----------------------|--------------------------------------|
+| button to Family Tree | button link to Family Tree (gwd)     |
+| button to Management and creation | button link to Management and creation (gwsetup)     |
+| button to User guide | button link to user guide: http://geneweb.tuxfamily.org/wiki/GeneWeb   |
+| button to README.txt | button link to README.txt: readme file in distrib     |
+| button to License | button link to License: https://github.com/geneweb/geneweb/blob/master/LICENSE     |
+| Update Language | available langauge: Deutsch, English, Español, Français, Italiano, Latvian, Nederlands, Norsk, Suomi, Svenska     |
+
 
 ### Handle Bases
 
