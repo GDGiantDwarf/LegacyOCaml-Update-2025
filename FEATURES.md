@@ -64,6 +64,15 @@
 | button to License | button link to License: https://github.com/geneweb/geneweb/blob/master/LICENSE     |
 | Update Language | available langauge: Deutsch, English, Español, Français, Italiano, Latvian, Nederlands, Norsk, Suomi, Svenska     |
 
+### GWD
+
+| Feature               | Description                          |
+|-----------------------|--------------------------------------|
+| text area name | enter the name of the database you want to use     |
+| List of available genealogies | display the List of available genealogies     |
+| select language | button of each language available to switch the current language    |
+
+
 
 ### Handle Bases
 
