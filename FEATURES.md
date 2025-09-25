@@ -56,14 +56,14 @@
 
 ### Handle Bases
 
-| Feature              | Description                          |
-|----------------------|--------------------------------------|
-| Saisir une chronique         | adddd  |
-| Requete évoluée         | adddd  |
-| Calendrier         | adddd  |
-| Configuration         | adddd  |
-| Ajouter note         | adddd  |
-| Ajouter famille         | adddd  |
+| Feature              | Description                          | Options                           |
+|----------------------|--------------------------------------|-----------------------------------|
+| add notes         | write a note | -text area  |
+| Advanced request         | page where you can start an advanced request  | -Search type: AND/OR<br>-Individual Sex: M-F<br>-First name<br>-Surname<br>-Occupations<br>-Birth: Place, after(monht, day, year), before(month, day, year)<br>-Death: Died, alive, maybe alive.Place, after(month, day, year), before(month, day, year)<br>-Marriage(yes, no): Place, after(month, day, year), before(month, day, year)<br>-Baptism: Place, after(month, day, year), before(month, day, year)<br>-Burial: Place, after(month, day, year), before(month, day, year)<br>-Maximum individuals |
+| Calendars         | Page where you can change the month, day and year for Gregorian, Julian, French republican and Hebrew calendars | -Month, day, year |
+| Configuration         | page where you can watch all the base's configuration | -GeneWeb version<br>-User<br>-Username<br>-userkey<br>-lang<br>-lang fallback<br>-default_lang<br>-browser_lang<br>Launch arguments of Gwd server: <br>-Mode<br>-prefix<br>-etc_prefix<br>-images_prefix<br>Configuration parameters:<br>-Mode<br>-access_by_key<br>-disable_forum<br>-hide_private_names<br>-use_restrict<br>-show_consang<br>-display_sosa<br>-place_surname_link_to_ind<br>-max_anc_level<br>-max_anc_tree<br>-max_desc_level<br>-max_desc_tree<br>-max_cousins<br>-max_cousins_level<br>-latest_event<br>-template<br>-long_date<br>-counter<br>-full_siblings<br>-hide_advanced_request<br>-p_mod  |
+| add note         | page where you can create a new note  | -name of the new note |
+| add family         | page where you can add a family(parents, events, children, sources, comment) | Parents:<br>-First name (M)<br>-Surname<br>-Birth(month, day, year, place)<br>-Death(month, day, year, place)<br>-Occupation<br>-First name (F)<br>-Surname<br>-Birth(month, day, year, place)<br>-Death(month, day, year, place)<br>-Occupation<br>-Same sex couple<br>Events:<br>-select an event in a list<br>-Place<br>-Date(month, day, year, place)<br>-Notes<br>-Sources<br>-add n witness<br>-add n new events<br>Children:<br>-add n new children<br>-create new child or link on<br>-first name<br>-Surname<br>-sex(M of F)<br>-Birth(month, day, year, place)<br>-Death(month, day, year, place)<br>-Occupation<br>Sources:<br>-Individuals<br>-Family<br>Comment(text area) |
 
 
 ### Management and creation
