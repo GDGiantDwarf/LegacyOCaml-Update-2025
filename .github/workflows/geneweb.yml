@@ -2,6 +2,7 @@ name: Tests geneweb
 
     #pull_request:
         #types: [closed]
+        
 on:
     workflow_dispatch:
 
