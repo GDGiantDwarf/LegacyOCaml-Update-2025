@@ -37,12 +37,12 @@ jobs:
             - name: Lint with Ruff
               run: |
                 pip install ruff
-                ruff check ${{ matrix.tests-folder }} --target-version py310 --format github
+                ruff check ${{ matrix.tests-folder }} --target-version py310
               continue-on-error: true
       
             - name: Test with pytest
               run: |
-                pip install pytest coverage
+                pip install pytest coverag
                 coverage run -m pytest -v -s
 
             - name: Generate Coverage Report
