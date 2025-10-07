@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ site_title }}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 24px; }
+      header { margin-bottom: 18px; }
+      .card { border: 1px solid #e5e7eb; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+      .muted { color: #6b7280; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>{{ site_title }}</h1>
+      <p class="muted">Mini démonstration : liste des bases disponibles</p>
+    </header>
+
+    <main>
+      {% if bases %}
+        <section>
+          {% for b in bases %}
+            <div class="card">
+              <strong>{{ b.name }}</strong><br/>
+              <span class="muted">{{ b.persons }} personnes — import: {{ b.last_import }}</span>
+            </div>
+          {% endfor %}
+        </section>
+      {% else %}
+        <p>Aucune base trouvée.</p>
+      {% endif %}
+    </main>
+
+    <footer class="muted" style="margin-top:24px;">
+      Demo — généalogie — &copy; toi
+    </footer>
+  </body>
+</html>
