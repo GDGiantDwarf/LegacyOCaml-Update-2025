@@ -27,3 +27,10 @@ async def index(request: Request):
         ],
     }
     return templates.TemplateResponse("index.html", context)
+
+@app.get("/base-test", response_class=HTMLResponse)
+async def index(request: Request):
+    context = {
+        "request": request,
+    }
+    return templates.TemplateResponse("handle-bases.html", context)

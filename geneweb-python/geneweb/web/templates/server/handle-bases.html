@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base généalogique base-test - GeneWeb</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            width: 180px;
+            height: 180px;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-help {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .help-icon {
+            color: #2196F3;
+            font-size: 1.2rem;
+            cursor: help;
+        }
+
+        .search-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .sort-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sort-icon {
+            color: #2196F3;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+
+        .checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .small-inputs-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group .list-icon {
+            color: #2196F3;
+            font-size: 1.2rem;
+        }
+
+        .search-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 30px;
+            background: white;
+            color: #2196F3;
+            border: 2px solid #2196F3;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-button:hover {
+            background: #2196F3;
+            color: white;
+        }
+
+        .section {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .section-title .icon {
+            font-size: 1.5rem;
+        }
+
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #4CAF50;
+            border-radius: 4px;
+            color: #4CAF50;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-button:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .action-button.blue {
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+
+        .action-button.blue:hover {
+            background: #2196F3;
+            color: white;
+        }
+
+        .action-button.orange {
+            border-color: #FF9800;
+            color: #FF9800;
+        }
+
+        .action-button.orange:hover {
+            background: #FF9800;
+            color: white;
+        }
+
+        .footer {
+            text-align: right;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-icons {
+            display: inline-flex;
+            gap: 10px;
+            margin-left: 10px;
+        }
+
+        .footer-icon {
+            font-size: 1.2rem;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="190" rx="35" ry="8" fill="#999" opacity="0.3"/>
+            <rect x="95" y="140" width="10" height="50" fill="#8B4513"/>
+            <circle cx="100" cy="90" r="70" fill="none"/>
+            <g id="leaves">
+                <circle cx="100" cy="40" r="8" fill="#7CB342"/>
+                <circle cx="85" cy="50" r="7" fill="#8BC34A"/>
+                <circle cx="115" cy="50" r="7" fill="#9CCC65"/>
+                <circle cx="70" cy="60" r="8" fill="#7CB342"/>
+                <circle cx="130" cy="60" r="8" fill="#8BC34A"/>
+                <circle cx="100" cy="65" r="9" fill="#9CCC65"/>
+                <circle cx="55" cy="75" r="7" fill="#7CB342"/>
+                <circle cx="145" cy="75" r="7" fill="#8BC34A"/>
+                <circle cx="85" cy="75" r="8" fill="#9CCC65"/>
+                <circle cx="115" cy="75" r="8" fill="#7CB342"/>
+                <circle cx="40" cy="90" r="8" fill="#8BC34A"/>
+                <circle cx="160" cy="90" r="8" fill="#9CCC65"/>
+                <circle cx="70" cy="90" r="9" fill="#7CB342"/>
+                <circle cx="130" cy="90" r="9" fill="#8BC34A"/>
+                <circle cx="100" cy="95" r="10" fill="#9CCC65"/>
+                <circle cx="50" cy="105" r="7" fill="#7CB342"/>
+                <circle cx="150" cy="105" r="7" fill="#8BC34A"/>
+                <circle cx="85" cy="105" r="8" fill="#9CCC65"/>
+                <circle cx="115" cy="105" r="8" fill="#7CB342"/>
+                <circle cx="65" cy="120" r="8" fill="#8BC34A"/>
+                <circle cx="135" cy="120" r="8" fill="#9CCC65"/>
+                <circle cx="100" cy="120" r="9" fill="#7CB342"/>
+                <circle cx="80" cy="130" r="7" fill="#8BC34A"/>
+                <circle cx="120" cy="130" r="7" fill="#9CCC65"/>
+            </g>
+        </svg>
+        <div class="header-content">
+            <h1>Base généalogique base-test</h1>
+            <p>0 personne</p>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-help">
+            <span class="help-icon">ⓘ</span>
+            <span>Rechercher personne, patronyme, nom public, alias, clé</span>
+        </div>
+
+        <div class="search-row">
+            <div class="sort-icons">
+                <span class="sort-icon">⬆</span>
+                <span class="sort-icon">⬇</span>
+            </div>
+            <input type="text" class="search-input" placeholder="Prénom(s)">
+            <div class="checkboxes">
+                <label class="checkbox-label">
+                    <input type="checkbox">
+                    <span>Un prénom</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox">
+                    <span>Même ordre</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox">
+                    <span>Partiel</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="search-row">
+            <div class="sort-icons">
+                <span class="sort-icon">⬆</span>
+                <span class="sort-icon">⬇</span>
+            </div>
+            <input type="text" class="search-input" placeholder="Patronyme">
+            <div style="width: 180px;"></div>
+        </div>
+
+        <div class="small-inputs-row">
+            <div class="input-group">
+                <span class="list-icon">☰</span>
+                <input type="text" class="search-input" placeholder="Titre">
+            </div>
+            <div class="input-group">
+                <span class="list-icon">☰</span>
+                <input type="text" class="search-input" placeholder="Domaine">
+            </div>
+            <button class="search-button">
+                <span>🔍</span>
+                <span>Rechercher</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">
+            <span class="icon">🛠</span>
+            <span>Outils</span>
+        </div>
+        <div class="button-grid">
+            <button class="action-button">📝 Saisir une chronique</button>
+            <button class="action-button blue">📊 Statistiques</button>
+            <button class="action-button blue">🎂 Anniversaires</button>
+            <button class="action-button blue">🌍 Lieux/patronyme</button>
+            <button class="action-button blue">🔍 Requête évoluée</button>
+            <button class="action-button blue">📅 Calendriers</button>
+            <button class="action-button orange">⚙️ Configuration</button>
+            <button class="action-button orange">📌 Ajouter note</button>
+            <button class="action-button">👥 Ajouter famille</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">
+            <span class="icon">📚</span>
+            <span>Dictionnaires</span>
+        </div>
+        <div class="button-grid">
+            <button class="action-button">🚶 Prénoms</button>
+            <button class="action-button">👨‍👩‍👧‍👦 Patronymes</button>
+            <button class="action-button">✏️ Noms publics</button>
+            <button class="action-button">💬 Sobriquets</button>
+            <button class="action-button">👓 Alias</button>
+            <button class="action-button">👔 Professions</button>
+            <button class="action-button">🏛 Lieux</button>
+            <button class="action-button">📄 Sources</button>
+            <button class="action-button">👑 Titres</button>
+            <button class="action-button">🏰 Domaines</button>
+            <button class="action-button">🔤</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>🔷 GeneWeb v. 7.1-beta</span><br>
+        <a href="#">FR</a> ▴<br>
+        © <a href="https://www.inria.fr" target="_blank">INRIA</a> 1998–2007
+        <span class="footer-icons">
+            <span class="footer-icon">Ⓦ</span>
+            <span class="footer-icon">🐙</span>
+        </span>
+    </div>
+
+    <script>
+        // Gestion de la recherche
+        document.querySelector('.search-button').addEventListener('click', function() {
+            console.log('Recherche lancée');
+        });
+
+        // Gestion des icônes de tri
+        document.querySelectorAll('.sort-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                console.log('Tri activé');
+            });
+        });
+
+        // Gestion des boutons d'action
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Action:', this.textContent.trim());
+            });
+        });
+    </script>
+</body>
+</html>
