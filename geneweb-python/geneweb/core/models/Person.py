@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text
-from sqlalchemy.orm import relationship, declarative_base
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
+from geneweb.core.models.alchemyBase import Base
 
 class Person(Base):
     __tablename__ = 'persons'

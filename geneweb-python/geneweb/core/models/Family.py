@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text
-from sqlalchemy.orm import relationship, declarative_base
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
+from geneweb.core.models.alchemyBase import Base
 
 class Family(Base):
     __tablename__ = 'families'
@@ -15,4 +14,4 @@ class Family(Base):
     notes = Column(Text, nullable=True)
 
     spouse1 = relationship("Person", foreign_keys=[spouse1_id])
-    spouse2 = relationship("Person", Foreign_keys=[spouse2_id])
+    spouse2 = relationship("Person", foreign_keys=[spouse2_id])
