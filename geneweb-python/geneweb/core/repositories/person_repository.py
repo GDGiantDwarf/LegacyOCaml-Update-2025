@@ -23,6 +23,9 @@ class PersonRepository:
         self.session.commit()
         return person
     
+    def get_a_person_by_id(self, person_id: int):
+        return self.session.query(Person).filter(Person.id == person_id).first()
+
     def get_a_person_by_first_name(self, person_first_name: str):
         return self.session.query(Person).filter(Person.first_name == person_first_name).first()
     
