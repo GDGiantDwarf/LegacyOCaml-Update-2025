@@ -33,3 +33,14 @@ class PersonRepository:
             self.session.commit()
             return True
         return False
+    
+    def update_person(self, person_first_name: str, new_person: Person):
+        person = self.get_a_person_by_first_name(person_first_name)
+        if not person:
+            return None
+    
+        for attr, value in vars(new_person).items():
+            if attr != "id" and value is not None:
+                setattr(person, attr, value)
+        self.session.commit()
+        return person
