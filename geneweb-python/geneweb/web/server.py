@@ -5,6 +5,7 @@ from starlette.templating import Jinja2Templates
 import pathlib
 from datetime import datetime
 from ..core.database import Database
+from ..core.repositories.person_repository import PersonRepository
 
 app = FastAPI(title="Mini GeneWeb (demo)")
 
@@ -37,7 +38,9 @@ async def add_person(
         notes: str = Form(None),
     ):
     db = Database(base_name)
-    db.add_person(
+    repo = PersonRepository(db.session)
+
+    repo.add_person(
         first_name=first_name,
         last_name=last_name,
         gender=gender,
@@ -55,10 +58,10 @@ async def add_person(
 # --- Page listant toutes les personnes d’une base ---
 @app.get("/persons/{base_name}", response_class=HTMLResponse)
 async def list_persons(request: Request, base_name: str):
-    db = Database(base_name)
-    persons = db.get_all_persons()
-    db.close()
+    #db = Database(base_name)
+    #persons = db.get_all_persons()
+    #db.close()
     return templates.TemplateResponse(
         "persons.html",
-        {"request": request, "base_name": base_name, "persons": persons}
+        {"request": request, "base_name": base_name}
     )

@@ -20,9 +20,16 @@ class Database:
             # Utilise une base SQLite en mémoire (disparaît après le test)
             self.engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False})
         else:
+            if not base_name:
+                raise ValueError("A base_name must be provided when not using in_memory mode.")
+
             self.base_name = base_name
             self.db_path = self.BASES_FOLDER / f"{base_name}.db"
             self.BASES_FOLDER.mkdir(exist_ok=True)
+
+            if self.db_path.exists():
+                raise FileExistsError(f"Database '{self.db_path}' already exists.")
+
             self.engine = create_engine(f"sqlite:///{self.db_path}", connect_args={"check_same_thread": False})
 
         Base.metadata.create_all(bind=self.engine)
@@ -31,3 +38,12 @@ class Database:
 
     def close(self):
         self.session.close()
+    
+    @classmethod
+    def get_existing_bases(cls) -> list[str]:
+        cls.BASES_FOLDER.mkdir(exist_ok=True)
+        return [
+            f.stem
+            for f in cls.BASES_FOLDER.glob("*.db")
+            if f.is_file()
+        ]
