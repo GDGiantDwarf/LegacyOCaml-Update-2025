@@ -2,12 +2,12 @@ name: Tests geneweb
 
 on:
   pull_request:
-    types: [closed]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
     build:
-        if: (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true) || (github.event_name == 'workflow_dispatch')
+        #if: (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true) || (github.event_name == 'workflow_dispatch')
         runs-on: ubuntu-latest
 
         defaults:

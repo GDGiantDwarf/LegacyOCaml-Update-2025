@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une personne</title>
+</head>
+<body>
+    <h1>Ajouter une personne</h1>
+    <form action="/addperson" method="post">
+        <label>Nom de la base :</label>
+        <input type="text" name="base_name" value="famille_dupont" required><br><br>
+
+        <label>Prénom :</label>
+        <input type="text" name="first_name" required><br><br>
+
+        <label>Nom :</label>
+        <input type="text" name="last_name" required><br><br>
+
+        <label>Genre :</label>
+        <input type="text" name="gender"><br><br>
+
+        <label>Date de naissance :</label>
+        <input type="date" name="birth_date"><br><br>
+
+        <label>Lieu de naissance :</label>
+        <input type="text" name="birth_place"><br><br>
+
+        <label>Profession :</label>
+        <input type="text" name="occupation"><br><br>
+
+        <label>Notes :</label><br>
+        <textarea name="notes" rows="3" cols="40"></textarea><br><br>
+
+        <button type="submit">Ajouter</button>
+    </form>
+</body>
+</html>
