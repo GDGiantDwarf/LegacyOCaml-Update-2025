@@ -1,0 +1,44 @@
+name: 🔒 Branch Policy
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, preprod]
+  workflow_dispatch:
+
+jobs:
+  validate_branch_policy:
+    name: 🧭 Validate Branch Policy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🧩 Extract Branch Info
+        id: info
+        run: |
+          echo "head_ref=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          echo "base_ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+
+      - name: 🚫 Enforce Branch & Merge Rules
+        run: |
+          HEAD=${{ steps.info.outputs.head_ref }}
+          BASE=${{ steps.info.outputs.base_ref }}
+
+          echo "🔍 Checking PR: $HEAD → $BASE"
+
+          # Vérifie le nom de la branche
+          if [[ "$HEAD" != feature/* && "$HEAD" != hotfix/* && "$HEAD" != preprod && "$HEAD" != main ]]; then
+            echo "❌ ERROR: Invalid branch name."
+            echo "Branches must start with feature/, hotfix/, or be preprod/main."
+            exit 1
+          fi
+
+          # Règles de merge autorisées
+          if [[ "$HEAD" == feature/* && "$BASE" == "preprod" ]]; then exit 0; fi
+          if [[ "$HEAD" == "preprod" && "$BASE" == "main" ]]; then exit 0; fi
+          if [[ "$HEAD" == hotfix/* && ( "$BASE" == "main" || "$BASE" == "preprod" ) ]]; then exit 0; fi
+
+          echo "❌ ERROR: Merge from '$HEAD' to '$BASE' is NOT allowed."
+          exit 1
