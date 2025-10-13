@@ -1,4 +1,3 @@
-import pytest
 from conftest import db
 from datetime import date
 from geneweb.core.repositories.person_repository import PersonRepository
