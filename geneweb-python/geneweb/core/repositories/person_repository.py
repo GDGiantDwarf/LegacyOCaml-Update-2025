@@ -32,14 +32,6 @@ class PersonRepository:
     def get_a_person_by_first_name(self, person_first_name: str):
         return self.session.query(Person).filter(Person.first_name == person_first_name).first()
     
-    def delete_person_by_first_name(self, first_name: str):
-        person = self.get_a_person_by_first_name(first_name)
-        if person:
-            self.session.delete(person)
-            self.session.commit()
-            return True
-        return False
-    
     def update_person(self, person_first_name: str, new_person: Person):
         person = self.get_a_person_by_first_name(person_first_name)
         if not person:
@@ -50,3 +42,11 @@ class PersonRepository:
                 setattr(person, attr, value)
         self.session.commit()
         return person
+    
+    def delete_person_by_first_name(self, first_name: str):
+        person = self.get_a_person_by_first_name(first_name)
+        if person:
+            self.session.delete(person)
+            self.session.commit()
+            return True
+        return False
