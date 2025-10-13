@@ -1,39 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title>{{ site_title }}</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base</title>
     <style>
-      body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 24px; }
-      header { margin-bottom: 18px; }
-      .card { border: 1px solid #e5e7eb; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
-      .muted { color: #6b7280; font-size: 0.9rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            width: 500px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .ok-btn {
+            padding: 8px 30px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .ok-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .links {
+            text-align: center;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .language-section {
+            text-align: center;
+        }
+
+        .language-grid {
+            display: inline-block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .lang-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #333;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .lang-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 80px;
+            padding-top: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .footer a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-logos {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .footer-logo {
+            height: 30px;
+        }
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>{{ site_title }}</h1>
-      <p class="muted">Mini démonstration : liste des bases disponibles</p>
-    </header>
+</head>
+<body>
+    <div class="container">
+        <h1>Choisir une généalogie</h1>
 
-    <main>
-      {% if bases %}
-        <section>
-          {% for b in bases %}
-            <div class="card">
-              <strong>{{ b.name }}</strong><br/>
-              <span class="muted">{{ b.persons }} personnes — import: {{ b.last_import }}</span>
+        <div class="section">
+            <p class="section-title">Tapez à l'identique le nom de la généalogie que vous voulez utiliser :</p>
+            <div class="input-group">
+                <input type="text" id="genealogyInput" placeholder="base-test, base-test2">
+                <button class="ok-btn" onclick="selectGenealogy()">Ok</button>
             </div>
-          {% endfor %}
-        </section>
-      {% else %}
-        <p>Aucune base trouvée.</p>
-      {% endif %}
-    </main>
+            <div class="links">
+                Listes des généalogies disponibles : 
+                <a href="#" onclick="fillInput('base-test')">base-test</a>, 
+                <a href="#" onclick="fillInput('base-test2')">base-test2</a>
+            </div>
+        </div>
 
-    <footer class="muted" style="margin-top:24px;">
-      Demo — généalogie — &copy; toi
-    </footer>
-  </body>
+        <div class="section language-section">
+            <p class="section-title">Sélectionner la langue :</p>
+            <div class="language-grid">
+                <div class="lang-row">
+                    <button class="lang-btn" onclick="selectLanguage('Afrikaans')">Afrikaans</button>
+                    <button class="lang-btn" onclick="selectLanguage('العربية')">العربية</button>
+                    <button class="lang-btn" onclick="selectLanguage('български')">български</button>
+                    <button class="lang-btn" onclick="selectLanguage('brezhoneg')">brezhoneg</button>
+                    <button class="lang-btn" onclick="selectLanguage('català')">català</button>
+                    <button class="lang-btn" onclick="selectLanguage('corsu')">corsu</button>
+                    <button class="lang-btn" onclick="selectLanguage('čeština')">čeština</button>
+                    <button class="lang-btn" onclick="selectLanguage('dansk')">dansk</button>
+                    <button class="lang-btn" onclick="selectLanguage('Deutsch')">Deutsch</button>
+                    <button class="lang-btn" onclick="selectLanguage('English')">English</button>
+                </div>
+                <div class="lang-row">
+                    <button class="lang-btn" onclick="selectLanguage('esperanto')">esperanto</button>
+                    <button class="lang-btn" onclick="selectLanguage('Español')">Español</button>
+                    <button class="lang-btn" onclick="selectLanguage('eesti')">eesti</button>
+                    <button class="lang-btn" onclick="selectLanguage('suomi')">suomi</button>
+                    <button class="lang-btn" onclick="selectLanguage('français')">français</button>
+                    <button class="lang-btn" onclick="selectLanguage('עברית')">עברית</button>
+                    <button class="lang-btn" onclick="selectLanguage('íslenska')">íslenska</button>
+                    <button class="lang-btn" onclick="selectLanguage('italiano')">italiano</button>
+                    <button class="lang-btn" onclick="selectLanguage('Latviešu')">Latviešu</button>
+                    <button class="lang-btn" onclick="selectLanguage('Lietuvių')">Lietuvių</button>
+                </div>
+                <div class="lang-row">
+                    <button class="lang-btn" onclick="selectLanguage('Nederlands')">Nederlands</button>
+                    <button class="lang-btn" onclick="selectLanguage('norsk')">norsk</button>
+                    <button class="lang-btn" onclick="selectLanguage('occitan')">occitan</button>
+                    <button class="lang-btn" onclick="selectLanguage('polski')">polski</button>
+                    <button class="lang-btn" onclick="selectLanguage('Português')">Português</button>
+                    <button class="lang-btn" onclick="selectLanguage('Português-do-Brasil')">Português-do-Brasil</button>
+                    <button class="lang-btn" onclick="selectLanguage('romaneste')">romaneste</button>
+                    <button class="lang-btn" onclick="selectLanguage('русский')">русский</button>
+                </div>
+                <div class="lang-row">
+                    <button class="lang-btn" onclick="selectLanguage('slovenčina')">slovenčina</button>
+                    <button class="lang-btn" onclick="selectLanguage('slovenščina')">slovenščina</button>
+                    <button class="lang-btn" onclick="selectLanguage('svenska')">svenska</button>
+                    <button class="lang-btn" onclick="selectLanguage('turkish')">turkish</button>
+                    <button class="lang-btn" onclick="selectLanguage('中文')">中文</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <span>GeneWeb v. 7.1-beta © <a href="https://www.inria.fr" target="_blank">INRIA</a> 1998–2017</span>
+            <div class="footer-logos">
+                <img src="/static/images/logo_bas.png" alt="INRIA" class="footer-logo">
+                <img src="/static/images/logo_bas.png" alt="INRIA" class="footer-logo">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedLang = 'français';
+
+        function selectLanguage(lang) {
+            selectedLang = lang;
+            console.log('Langue sélectionnée:', lang);
+        }
+
+        function fillInput(genealogy) {
+            event.preventDefault();
+            document.getElementById('genealogyInput').value = genealogy;
+        }
+
+        function selectGenealogy() {
+            const input = document.getElementById('genealogyInput').value.trim();
+            if (input) {
+                console.log('Généalogie:', input, 'Langue:', selectedLang);
+                // window.location.href = `/genealogy/${input}?lang=${selectedLang}`;
+            } else {
+                alert('Veuillez entrer un nom de généalogie');
+            }
+        }
+
+        document.getElementById('genealogyInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                selectGenealogy();
+            }
+        });
+    </script>
+</body>
 </html>
