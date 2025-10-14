@@ -12,35 +12,34 @@ jobs:
     runs-on: ubuntu-latest
 
     defaults:
-        run:
-          working-directory: ./geneweb-python
+      run:
+        working-directory: ./geneweb-python
 
     steps:
       - name: 🧩 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🐋 Set up Docker Compose
+      - name: 🐋 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: 🔧 Build and start services
         run: |
-          
           docker compose up -d --build
           echo "Containers launched. Waiting for startup..."
-          sleep 10
+          sleep 15
           docker compose ps
 
       - name: ✅ Check running containers
         run: |
-          docker compose ps
+          docker ps
           docker ps | grep gwd
           docker ps | grep gwsetup
 
       - name: 🌐 Test endpoints
         run: |
           echo "Testing endpoints..."
-          curl -f http://localhost:8000 || (echo "❌ gwd service failed to respond" && exit 1)
-          curl -f http://localhost:8001 || (echo "❌ gwsetup service failed to respond" && exit 1)
+          curl -f http://localhost:2316 || (echo "❌ gwd service failed to respond" && exit 1)
+          curl -f http://localhost:2317 || (echo "❌ gwsetup service failed to respond" && exit 1)
           echo "✅ Both endpoints responded successfully."
 
       - name: 🧹 Clean up
