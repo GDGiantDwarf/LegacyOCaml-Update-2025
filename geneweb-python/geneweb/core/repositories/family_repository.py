@@ -25,6 +25,26 @@ class FamilyRepository:
     def get_all_families(self):
         return self.session.query(Family).all()
     
+    def update_family_by_id(self, family_id, spouse1_id: int = None, spouse2_id: int = None, marriage_date=None,
+                            marriage_place=None, divorce_date=None, notes=None):
+        family = self.get_family_by_id(family_id)
+        if not family:
+            raise ValueError("family_id is invalid")
+        new_family = Family(
+            spouse1_id=spouse1_id,
+            spouse2_id=spouse2_id,
+            marriage_date=marriage_date,
+            marriage_place=marriage_place,
+            divorce_date=divorce_date,
+            notes=notes
+        )
+            
+        for attr, value in vars(new_family).items():
+            if attr != "id" and value is not None:
+                setattr(family, attr, value)
+        self.session.commit()
+        return family
+
     def delete_family(self, family_id):
         family = self.get_family_by_id(family_id)
         if family:
