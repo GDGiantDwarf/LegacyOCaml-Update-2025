@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   gwd:
@@ -7,19 +7,19 @@ services:
       dockerfile: Dockerfile
     container_name: gwd
     ports:
-      - "8000:8000"
+      - "2317:2317"
     volumes:
       - ./geneweb:/app/geneweb
     environment:
       - ENV=gwd
-  
+
   gwsetup:
     build:
       context: .
       dockerfile: Dockerfile.admin
     container_name: gwsetup
     ports:
-      - "8001:8001"
+      - "2316:2316"
     volumes:
       - ./geneweb:/app/geneweb
     environment:
