@@ -13,4 +13,4 @@ class Relation(Base):
 
     person1 = relationship("Person", foreign_keys=[person1_id])
     person2 = relationship("Person", foreign_keys=[person2_id])
-    event = relationship("Event")
+    event = relationship("Event", foreign_keys=[event_id])
