@@ -5,11 +5,10 @@ on:
     branches:
       - main
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
 
 jobs:
   build-and-test:
-    #if: github.base_ref == 'main' && github.head_ref == 'preprod'
+    if: github.base_ref == 'main' && github.head_ref == 'preprod'
     runs-on: ubuntu-latest
 
     defaults:
