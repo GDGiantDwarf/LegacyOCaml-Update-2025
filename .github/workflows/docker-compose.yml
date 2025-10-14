@@ -12,6 +12,10 @@ jobs:
     #if: github.base_ref == 'main' && github.head_ref == 'preprod'
     runs-on: ubuntu-latest
 
+    defaults:
+        run:
+          working-directory: ./geneweb-python
+
     steps:
       - name: 🧩 Checkout repository
         uses: actions/checkout@v4
@@ -21,6 +25,7 @@ jobs:
 
       - name: 🔧 Build and start services
         run: |
+          
           docker compose up -d --build
           echo "Containers launched. Waiting for startup..."
           sleep 10
