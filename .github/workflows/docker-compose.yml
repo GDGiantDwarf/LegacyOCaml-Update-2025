@@ -1,0 +1,44 @@
+name: Test Docker Compose - Geneweb (preprod → main)
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    #if: github.base_ref == 'main' && github.head_ref == 'preprod'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧩 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐋 Set up Docker Compose
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔧 Build and start services
+        run: |
+          docker compose up -d --build
+          echo "Containers launched. Waiting for startup..."
+          sleep 10
+          docker compose ps
+
+      - name: ✅ Check running containers
+        run: |
+          docker compose ps
+          docker ps | grep gwd
+          docker ps | grep gwsetup
+
+      - name: 🌐 Test endpoints
+        run: |
+          echo "Testing endpoints..."
+          curl -f http://localhost:8000 || (echo "❌ gwd service failed to respond" && exit 1)
+          curl -f http://localhost:8001 || (echo "❌ gwsetup service failed to respond" && exit 1)
+          echo "✅ Both endpoints responded successfully."
+
+      - name: 🧹 Clean up
+        if: always()
+        run: docker compose down
