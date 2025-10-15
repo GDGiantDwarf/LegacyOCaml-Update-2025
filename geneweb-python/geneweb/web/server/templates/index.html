@@ -154,14 +154,20 @@
 </head>
 <body>
     <div class="container">
+        <div id="error-alert" style="color:red; text-align:center; margin-bottom:15px;">
+            {% if error_message %}
+                {{ error_message }}
+            {% endif %}
+        </div>
+
         <h1>Choisir une généalogie</h1>
 
         <div class="section">
             <p class="section-title">Tapez à l'identique le nom de la généalogie que vous voulez utiliser :</p>
-            <div class="input-group">
-                <input type="text" id="genealogyInput" placeholder="base-test, base-test2">
-                <button class="ok-btn" onclick="selectGenealogy()">Ok</button>
-            </div>
+            <form class="input-group" action="/select-base" method="post">
+                <input type="text" name="base_name" placeholder="Nom de la base" required>
+                <button class="ok-btn" type="submit">Ok</button>
+            </form>
             <div class="links">
                 Listes des généalogies disponibles : 
                 <a href="#" onclick="fillInput('base-test')">base-test</a>, 
