@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-and-test:
-    name: Build docker compose and test url backend work
     if: github.base_ref == 'main' && github.head_ref == 'preprod'
     runs-on: ubuntu-latest
 
