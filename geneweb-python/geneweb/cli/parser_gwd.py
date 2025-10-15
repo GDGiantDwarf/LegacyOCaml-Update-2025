@@ -78,7 +78,7 @@ class GenewebCLI:
 
         # --- If debug or workers > 1, pass import string to uvicorn ---
         if args.debug or (args.n_workers and args.n_workers > 1):
-            import_string = "geneweb.web.server:create_app"
+            import_string = "geneweb.web.server.server:create_app"
             uvicorn.run(
                 import_string,
                 host=args.address,
@@ -89,7 +89,7 @@ class GenewebCLI:
                 factory=True,
             )
         else:
-            from geneweb.web.server import create_app
+            from geneweb.web.server.server import create_app
             app = create_app(base_dir=args.base_dir, lang=args.lang)
             uvicorn.run(
                 app,

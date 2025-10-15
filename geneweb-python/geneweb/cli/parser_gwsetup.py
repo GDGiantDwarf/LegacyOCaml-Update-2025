@@ -39,7 +39,7 @@ class GenewebSetupCLI:
 
         # --- Run FastAPI server ---
         try:
-            from geneweb.web.admin_server import create_app
+            from geneweb.web.admin.server import create_app
         except ImportError:
             raise ImportError("Cannot import create_app from geneweb.web.server")
 
