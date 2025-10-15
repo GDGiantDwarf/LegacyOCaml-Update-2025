@@ -47,3 +47,7 @@ class Database:
             for f in cls.BASES_FOLDER.glob("*.db")
             if f.is_file()
         ]
+
+    @classmethod
+    def is_base_exist(cls, base_name) -> bool:
+        return base_name in cls.get_existing_bases()
