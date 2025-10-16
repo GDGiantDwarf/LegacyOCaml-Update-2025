@@ -16,5 +16,7 @@ class Person(Base):
     occupation = Column(String, nullable=True)
     notes = Column(Text, nullable=True)
 
+    calendar_dates = relationship("CalendarDate", back_populates="person")
+
 
 
