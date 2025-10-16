@@ -1,2 +1,9 @@
 pytest
+pytest-asyncio
+pytest-mock
+python-multipart
 sqlalchemy
+fastapi
+jinja2
+httpx
+uvicorn
