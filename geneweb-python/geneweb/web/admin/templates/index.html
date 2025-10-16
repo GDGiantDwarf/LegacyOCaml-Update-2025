@@ -42,11 +42,40 @@
 </form>
 
 <script>
+    // === UTILITAIRES ===
+    function showToast(message, type = "info") {
+        const toast = document.createElement("div");
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        Object.assign(toast.style, {
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            padding: "12px 18px",
+            backgroundColor: type === "error" ? "#e74c3c" : "#2ecc71",
+            color: "#fff",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+            fontSize: "14px",
+            zIndex: 9999,
+            opacity: 0,
+            transition: "opacity 0.3s ease"
+        });
+        document.body.appendChild(toast);
+        setTimeout(() => toast.style.opacity = 1, 50);
+        setTimeout(() => {
+            toast.style.opacity = 0;
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
     async function deleteBase(name) {
         if (!confirm(`Supprimer la base "${name}" ?`)) return;
         const res = await fetch(`/api/bases/${name}`, { method: "DELETE" });
-        if (res.status === 204) location.reload();
-        else alert("Erreur lors de la suppression.");
+        if (res.status === 204) {
+            showToast(`Base "${name}" supprimée.`, "success");
+            setTimeout(() => location.reload(), 800);
+        } else showToast("Erreur lors de la suppression.", "error");
     }
 
     async function renameBase(name) {
@@ -57,21 +86,22 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ new_name: newName }),
         });
-        if (res.status === 200) location.reload();
-        else {
+        if (res.status === 200) {
+            showToast(`Base renommée en "${newName}"`, "success");
+            setTimeout(() => location.reload(), 800);
+        } else {
             const err = await res.json().catch(() => ({}));
-            alert("Erreur lors du renommage : " + (err.detail || res.status));
+            showToast("Erreur lors du renommage : " + (err.detail || res.status), "error");
         }
     }
 
     async function cleanupBase(name) {
         if (!confirm(`Nettoyer la base "${name}" (VACUUM/OPTIMIZE) ?`)) return;
         const res = await fetch(`/api/bases/${name}/cleanup`, { method: "POST" });
-        if (res.status === 200) {
-            alert(`Base "${name}" nettoyée.`);
-        } else {
+        if (res.status === 200) showToast(`Base "${name}" nettoyée.`, "success");
+        else {
             const err = await res.json().catch(() => ({}));
-            alert("Erreur lors du nettoyage : " + (err.detail || res.status));
+            showToast("Erreur lors du nettoyage : " + (err.detail || res.status), "error");
         }
     }
 
@@ -85,10 +115,11 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name }),
         });
-        if (res.status === 201) location.reload();
-        else alert("Erreur lors de la création de la base.");
+        if (res.status === 201) {
+            showToast(`Base "${name}" créée.`, "success");
+            setTimeout(() => location.reload(), 800);
+        } else showToast("Erreur lors de la création.", "error");
     });
 </script>
-
 </body>
 </html>
