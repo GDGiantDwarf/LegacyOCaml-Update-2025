@@ -1,2 +1,4 @@
 pytest
 sqlalchemy
+fastapi
+pytest-mock
