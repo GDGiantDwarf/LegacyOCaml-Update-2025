@@ -9,6 +9,7 @@ router = APIRouter()
 @router.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse(
+        request,
         "index.html",
         {"request": request, "title": "Panneau d'administration"}
     )

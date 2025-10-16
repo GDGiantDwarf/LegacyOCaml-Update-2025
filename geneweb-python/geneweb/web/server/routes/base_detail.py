@@ -13,4 +13,4 @@ async def base_detail(request: Request, base_name: str):
         "base_name": base_name,
         # tu peux ajouter d’autres infos de la BDD ici
     }
-    return templates.TemplateResponse("base_details.html", context)
+    return templates.TemplateResponse(request, "base_details.html", context)
