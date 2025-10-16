@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from geneweb.web.utils import BASE_DIR
-from .routes import index, base_detail
+from .routes import index, base_detail, calendars
 
 def create_app(base_dir="bases", lang="fr"):
     """Crée et configure le serveur principal GeneWeb."""
@@ -14,5 +14,6 @@ def create_app(base_dir="bases", lang="fr"):
     # Routes
     app.include_router(index.router)
     app.include_router(base_detail.router)
+    app.include_router(calendars.router)
     
     return app
