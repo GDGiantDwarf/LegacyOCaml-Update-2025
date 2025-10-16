@@ -10,6 +10,7 @@ router = APIRouter()
 @router.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse(
+        request,
         "index.html",
         {"request": request, "title": "GeneWeb - Accueil"}
     )
@@ -18,7 +19,7 @@ async def index(request: Request):
 async def select_base(request: Request, base_name: str = Form(...)):
     # Ici tu peux vérifier si la base existe, etc.
     if not Database.is_base_exist(base_name):
-        return templates.TemplateResponse("index.html", {
+        return templates.TemplateResponse(request, "index.html", {
             "request": request,
             "error_message": f"La base '{base_name}' n'existe pas"
         })
