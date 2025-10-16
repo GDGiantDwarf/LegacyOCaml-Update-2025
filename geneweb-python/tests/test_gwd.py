@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import patch
-import geneweb.gwd
 
 def test_main_calls_run(mocker):
     mock_cli = mocker.Mock()
