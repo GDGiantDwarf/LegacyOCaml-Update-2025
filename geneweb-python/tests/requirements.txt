@@ -4,3 +4,4 @@ fastapi
 pytest-mock
 jinja2
 httpx
+python-multipart
