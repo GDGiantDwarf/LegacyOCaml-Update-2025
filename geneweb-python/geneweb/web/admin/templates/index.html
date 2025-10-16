@@ -24,10 +24,10 @@
     <li>
         <span class="base-item">{{ b }}</span>
         <span class="actions">
-              <a href="#" onclick="deleteBase('{{ b }}')">🗑 Supprimer</a>
-              <a href="#">↩️ Renommer</a>
-              <a href="#">🧹 Nettoyer</a>
-            </span>
+          <a href="#" onclick="event.preventDefault(); deleteBase('{{ b }}')">🗑 Supprimer</a>
+          <a href="#" onclick="event.preventDefault(); renameBase('{{ b }}')">↩️ Renommer</a>
+          <a href="#" onclick="event.preventDefault(); cleanupBase('{{ b }}')">🧹 Nettoyer</a>
+        </span>
     </li>
     {% endfor %}
 </ul>
