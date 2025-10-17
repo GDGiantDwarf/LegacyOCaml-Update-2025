@@ -25,3 +25,8 @@ async def select_base(request: Request, base_name: str = Form(...)):
         })
     url = f"/base/{base_name}"  # URL vers la page de gestion
     return RedirectResponse(url=url, status_code=303)  # PRG pattern
+
+
+
+
+
