@@ -22,12 +22,12 @@ def _count_rows(db_path: Path) -> dict:
     con = sqlite3.connect(db_path)
     try:
         cur = con.cursor()
-        for t in KNOWN_TABLES:
+        for table in KNOWN_TABLES:
             try:
-                cur.execute(f"SELECT COUNT(*) FROM {t}")
-                counts[t] = cur.fetchone()[0]
-            except sqlite3.Error:
-                counts[t] = None
+                count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+                counts[table] = count if count is not None else 0
+            except Exception:
+                counts[table] = 0
     finally:
         con.close()
     return counts
