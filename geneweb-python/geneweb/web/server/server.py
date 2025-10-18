@@ -9,6 +9,7 @@ from geneweb.core.services.language_manager import LanguageManager
 from geneweb.core.services.template_config import ExtendedJinja2Templates
 
 IS_START = True
+from .routes import index, base_detail, calendars
 
 def create_app(base_dir="bases", lang="en"):
     app = FastAPI(title=f"GeneWeb Public — {lang.upper()}")
@@ -45,4 +46,7 @@ def create_app(base_dir="bases", lang="en"):
     app.include_router(set_language.router)
 
     app.add_middleware(SessionMiddleware, secret_key="secret")
+    return app
+    app.include_router(calendars.router)
+    
     return app

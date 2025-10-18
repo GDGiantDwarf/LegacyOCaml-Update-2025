@@ -4,4 +4,5 @@ jinja2
 sqlalchemy
 pydantic
 python-multipart
-deep_translator
+httpx
+pytest-mock

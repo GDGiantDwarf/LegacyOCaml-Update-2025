@@ -13,4 +13,9 @@ def test_index_page_renders_html():
     response = client.get("/")
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
-    assert "Panneau d&#39;administration" in response.text
+
+    text = response.text
+    assert (
+            "Panneau d'administration" in text
+            or "Panneau d&#39;administration" in text
+    ), f"Le texte attendu n'est pas présent dans la réponse : {text[:200]}"
