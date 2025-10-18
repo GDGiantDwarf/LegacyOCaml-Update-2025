@@ -1,5 +1,8 @@
 # geneweb/cli/parser.py
 import argparse
+import pathlib
+
+BASE_DIR = pathlib.Path(__file__).resolve().parent
 
 class GenewebCLI:
     def __init__(self):
@@ -20,8 +23,8 @@ class GenewebCLI:
         g.add_argument("-version", action="store_true", help="Print the GeneWeb version and exit")
         g.add_argument("-hd", help="Root directory containing etc/, images/, lang/", default="gw")
         g.add_argument("-etc_prefix", help="Directory for etc/", default=None)
-        g.add_argument("-bd", "--base-dir", help="Directory where databases are installed", default="bases")
-        g.add_argument("-lang", help="Default language", default="fr")
+        g.add_argument("-bd", "--base-dir", help="Directory where databases are installed", default=BASE_DIR)
+        g.add_argument("-lang", help="Default language", default="en")
         g.add_argument("-blang", action="store_true", help="Select language according to browser")
         g.add_argument("-p", "--port", type=int, default=2317, help="HTTP listening port")
         g.add_argument("-a", "--address", default="0.0.0.0", help="Listening IP address")

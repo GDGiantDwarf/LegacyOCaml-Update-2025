@@ -160,7 +160,7 @@
             {% endif %}
         </div>
 
-        <h1>Choisir une généalogie</h1>
+        <h1> {{ t("choose a genealogy") }} </h1>
 
         <div class="section">
             <p class="section-title">Tapez à l'identique le nom de la généalogie que vous voulez utiliser :</p>
@@ -179,6 +179,15 @@
             <p class="section-title">Sélectionner la langue :</p>
             <div class="language-grid">
                 <div class="lang-row">
+                    <form action="/set-language" method="post">
+                        <button class="lang-btn" name="lang" value="en">Anglais</button>
+                    </form>
+                    <form action="/set-language" method="post">
+                        <button class="lang-btn" name="lang" value="fr">Francais</button>
+                    </form>
+                    <form action="/set-language" method="post">
+                        <button class="lang-btn" name="lang" value="ge">test wrong langue</button>
+                    </form>
                     <button class="lang-btn" onclick="selectLanguage('Afrikaans')">Afrikaans</button>
                     <button class="lang-btn" onclick="selectLanguage('العربية')">العربية</button>
                     <button class="lang-btn" onclick="selectLanguage('български')">български</button>
