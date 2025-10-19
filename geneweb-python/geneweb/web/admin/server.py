@@ -3,21 +3,30 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from geneweb.web.admin.routes import index, bases
+from geneweb.web.admin.routes import (
+    index,
+    bases,
+    stats,
+    exports,
+    imports,
+    backup,
+    merge,
+)
 
 
 def create_app(base_dir: str | None = None, lang: str | None = None) -> FastAPI:
     """
     Application FastAPI pour le module d'administration (gwsetup).
-    Permet de gérer les bases : création, suppression, renommage, nettoyage.
+    Permet de gérer les bases : création, suppression, renommage, nettoyage,
+    ainsi que les fonctionnalités avancées (stats, export, import, backup, merge).
     """
     app = FastAPI(
         title="GeneWeb Admin (gwsetup)",
         description="Interface d'administration pour la gestion des bases GeneWeb",
-        version="0.1",
+        version="0.1.0",
     )
 
-    # Dossiers statiques et templates
+    # --- Dossiers statiques et templates ---
     base_path = Path(__file__).resolve().parent
     static_dir = base_path / "static"
     templates_dir = base_path / "templates"
@@ -28,14 +37,21 @@ def create_app(base_dir: str | None = None, lang: str | None = None) -> FastAPI:
     if templates_dir.exists():
         Jinja2Templates(directory=templates_dir)
 
-    # Routes
+    # --- Routes principales ---
     app.include_router(index.router)
     app.include_router(bases.router, prefix="/api/bases", tags=["bases"])
+
+    # --- Routes additionnelles (nouveaux endpoints admin) ---
+    app.include_router(stats.router)
+    app.include_router(exports.router)
+    app.include_router(imports.router)
+    app.include_router(backup.router)
+    app.include_router(merge.router)
 
     return app
 
 
-# --- Entry point utilisé par geneweb/gwsetup.py ---
+# --- Point d’entrée utilisé par geneweb/gwsetup.py ---
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(create_app(), host="0.0.0.0", port=2316)
