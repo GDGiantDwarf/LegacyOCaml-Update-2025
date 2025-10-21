@@ -7,3 +7,4 @@ fastapi
 jinja2
 httpx
 uvicorn
+itsdangerous
