@@ -24,9 +24,9 @@ jobs:
 
       - name: 🔧 Build and start services
         run: |
-          docker compose up --build
+          docker compose up -d --build
           echo "Containers launched. Waiting for startup..."
-          sleep 20
+          sleep 15
           docker compose ps
 
       - name: ✅ Check running containers
