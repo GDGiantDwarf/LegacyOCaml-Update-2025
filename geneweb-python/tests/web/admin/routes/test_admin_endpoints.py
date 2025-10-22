@@ -90,10 +90,6 @@ def test_merge_stub():
 # /api/bases/{name}/stats → vérifie que count = 0 sur base vide
 # --------------------------------------------------------------------------------
 
-# --------------------------------------------------------------------------------
-# /api/bases/{name}/stats → vérifie que count = 0 sur base vide
-# --------------------------------------------------------------------------------
-
 def test_stats_counts_default_zero(tmp_path):
     base_dir = tmp_path / "bases"
     base_dir.mkdir(exist_ok=True)
