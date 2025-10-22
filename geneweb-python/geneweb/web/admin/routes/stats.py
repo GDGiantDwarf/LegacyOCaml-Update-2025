@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from pathlib import Path
 import sqlite3
 import os
@@ -17,6 +17,7 @@ KNOWN_TABLES = [
     "sources",
 ]
 
+
 def _count_rows(db_path: Path) -> dict:
     counts = {}
     con = sqlite3.connect(db_path)
@@ -24,19 +25,24 @@ def _count_rows(db_path: Path) -> dict:
         cur = con.cursor()
         for table in KNOWN_TABLES:
             try:
-                count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-                counts[table] = count if count is not None else 0
+                cur.execute(f"SELECT COUNT(*) FROM {table}")
+                result = cur.fetchone()
+                counts[table] = result[0] if result and result[0] is not None else 0
             except Exception:
                 counts[table] = 0
     finally:
         con.close()
     return counts
 
+
 @router.get("/{name}/stats")
 def get_base_stats(name: str, base_dir: str | None = None):
+    base_dir = base_dir or os.getenv("BASES_PATH", "./bases")
+
     path = BaseManager.base_path(name, base_dir)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Base not found")
+
     return {
         "name": name,
         "path": str(path),
