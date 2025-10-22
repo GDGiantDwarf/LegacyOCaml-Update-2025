@@ -1,39 +1,125 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title>{{ title }}</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+<head>
+    <meta charset="UTF-8" />
+    <title>Panneau d'administration</title>
     <style>
-      body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 24px; }
-      header { margin-bottom: 18px; }
-      .card { border: 1px solid #e5e7eb; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
-      .muted { color: #6b7280; font-size: 0.9rem; }
+        body { font-family: sans-serif; margin: 3em; }
+        h1 { font-size: 1.6em; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 0.3em 0; }
+        .empty { color: #888; }
+        .base-item { font-weight: 600; }
+        .actions a { margin-left: 1em; text-decoration: none; color: #007aff; }
+        .actions a:hover { text-decoration: underline; }
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>{{ title }}</h1>
-      <p class="muted">Mini démonstration : liste des bases disponibles</p>
-    </header>
+</head>
+<body>
+<h1>Panneau d'administration</h1>
+<p>Mini démonstration : liste des bases disponibles</p>
 
-    <main>
-      {% if bases %}
-        <section>
-          {% for b in bases %}
-            <div class="card">
-              <strong>{{ b.name }}</strong><br/>
-              <span class="muted">{{ b.persons }} personnes — import: {{ b.last_import }}</span>
-            </div>
-          {% endfor %}
-        </section>
-      {% else %}
-        <p>Aucune base trouvée.</p>
-      {% endif %}
-    </main>
+{% if bases %}
+<ul>
+    {% for b in bases %}
+    <li>
+        <span class="base-item">{{ b }}</span>
+        <span class="actions">
+          <a href="#" onclick="event.preventDefault(); deleteBase('{{ b }}')">🗑 Supprimer</a>
+          <a href="#" onclick="event.preventDefault(); renameBase('{{ b }}')">↩️ Renommer</a>
+          <a href="#" onclick="event.preventDefault(); cleanupBase('{{ b }}')">🧹 Nettoyer</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty">Aucune base trouvée.</p>
+{% endif %}
 
-    <footer class="muted" style="margin-top:24px;">
-      Demo — généalogie — &copy; toi
-    </footer>
-  </body>
+<h3>Créer une base</h3>
+<form id="create-form">
+    <input type="text" name="name" placeholder="Nom de la base" required />
+    <button type="submit">Créer</button>
+</form>
+
+<script>
+    // === UTILITAIRES ===
+    function showToast(message, type = "info") {
+        const toast = document.createElement("div");
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        Object.assign(toast.style, {
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            padding: "12px 18px",
+            backgroundColor: type === "error" ? "#e74c3c" : "#2ecc71",
+            color: "#fff",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+            fontSize: "14px",
+            zIndex: 9999,
+            opacity: 0,
+            transition: "opacity 0.3s ease"
+        });
+        document.body.appendChild(toast);
+        setTimeout(() => toast.style.opacity = 1, 50);
+        setTimeout(() => {
+            toast.style.opacity = 0;
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
+    async function deleteBase(name) {
+        if (!confirm(`Supprimer la base "${name}" ?`)) return;
+        const res = await fetch(`/api/bases/${name}`, { method: "DELETE" });
+        if (res.status === 204) {
+            showToast(`Base "${name}" supprimée.`, "success");
+            setTimeout(() => location.reload(), 800);
+        } else showToast("Erreur lors de la suppression.", "error");
+    }
+
+    async function renameBase(name) {
+        const newName = prompt(`Nouveau nom pour la base "${name}" :`, name);
+        if (!newName || newName === name) return;
+        const res = await fetch(`/api/bases/${name}/rename`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ new_name: newName }),
+        });
+        if (res.status === 200) {
+            showToast(`Base renommée en "${newName}"`, "success");
+            setTimeout(() => location.reload(), 800);
+        } else {
+            const err = await res.json().catch(() => ({}));
+            showToast("Erreur lors du renommage : " + (err.detail || res.status), "error");
+        }
+    }
+
+    async function cleanupBase(name) {
+        if (!confirm(`Nettoyer la base "${name}" (VACUUM/OPTIMIZE) ?`)) return;
+        const res = await fetch(`/api/bases/${name}/cleanup`, { method: "POST" });
+        if (res.status === 200) showToast(`Base "${name}" nettoyée.`, "success");
+        else {
+            const err = await res.json().catch(() => ({}));
+            showToast("Erreur lors du nettoyage : " + (err.detail || res.status), "error");
+        }
+    }
+
+    const form = document.getElementById("create-form");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = e.target.name.value.trim();
+        if (!name) return;
+        const res = await fetch("/api/bases", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name }),
+        });
+        if (res.status === 201) {
+            showToast(`Base "${name}" créée.`, "success");
+            setTimeout(() => location.reload(), 800);
+        } else showToast("Erreur lors de la création.", "error");
+    });
+</script>
+</body>
 </html>

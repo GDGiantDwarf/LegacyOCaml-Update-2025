@@ -4,3 +4,6 @@ jinja2
 sqlalchemy
 pydantic
 python-multipart
+httpx
+pytest-mock
+itsdangerous
