@@ -164,14 +164,15 @@
 
         <div class="section">
             <p class="section-title">Tapez à l'identique le nom de la généalogie que vous voulez utiliser :</p>
-            <form class="input-group" action="/select-base" method="post">
-                <input type="text" name="base_name" placeholder="Nom de la base" required>
-                <button class="ok-btn" type="submit">Ok</button>
+            <form id="select-base-form" class="input-group" onsubmit="submitForm(event)">
+                <input type="text" id="base-input" placeholder="Nom de la base" required>
+                <button type="submit" class="ok-btn">Ok</button>
             </form>
             <div class="links">
                 Listes des généalogies disponibles : 
-                <a href="#" onclick="fillInput('base-test')">base-test</a>, 
-                <a href="#" onclick="fillInput('base-test2')">base-test2</a>
+                {% for base in list_bases %}
+                    <a href="#" onclick="submitBase('{{ base }}'); return false;">{{ base }}</a>
+                {% endfor %}
             </div>
         </div>
 
@@ -333,29 +334,30 @@
     <script>
         let selectedLang = 'français';
 
-        function selectLanguage(lang) {
-            selectedLang = lang;
-            console.log('Langue sélectionnée:', lang);
+        function submitForm(event) {
+            event.preventDefault(); // Empêche le submit classique
+            const baseName = document.getElementById('base-input').value;
+            
+            // Crée un formulaire temporaire pour envoyer le POST vers /select-base/<base_name>
+            console.log(baseName)
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/select-base/' + encodeURIComponent(baseName);
+            document.body.appendChild(form);
+            form.submit();
         }
 
-        function fillInput(genealogy) {
-            event.preventDefault();
-            document.getElementById('genealogyInput').value = genealogy;
-        }
-
-        function selectGenealogy() {
-            const input = document.getElementById('genealogyInput').value.trim();
-            if (input) {
-                console.log('Généalogie:', input, 'Langue:', selectedLang);
-                // window.location.href = `/genealogy/${input}?lang=${selectedLang}`;
-            } else {
-                alert('Veuillez entrer un nom de généalogie');
-            }
+        function submitBase(baseName) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/select-base/' + encodeURIComponent(baseName);
+            document.body.appendChild(form);
+            form.submit();
         }
 
         document.getElementById('genealogyInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                selectGenealogy();
+                submitForm();
             }
         });
     </script>
