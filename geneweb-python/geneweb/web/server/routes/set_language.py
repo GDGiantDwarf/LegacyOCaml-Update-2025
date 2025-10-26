@@ -10,6 +10,4 @@ router = APIRouter()
 @router.post("/set-language")
 async def set_language(request: Request, lang: str = Form(...)):
     request.session["lang"] = lang
-    # Redirige vers la page précédente ou /
-    print(request.session["lang"])
     return RedirectResponse(url=request.headers.get("referer", "/"), status_code=303)
