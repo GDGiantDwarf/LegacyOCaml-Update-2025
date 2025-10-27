@@ -13,6 +13,7 @@ async def index(request: Request):
     templates = request.app.state.templates
     context = templates.get_context(request)
     context.update({
+        "request": request,
         "list_bases": bases
     })
     return templates.TemplateResponse(request, "index.html", context)
@@ -20,10 +21,12 @@ async def index(request: Request):
 @router.post("/select-base/{base_name}")
 async def select_base(request: Request, base_name: str):
     if not Database.is_base_exist(base_name):
+        bases = Database.get_existing_bases()
         templates = request.app.state.templates
-        context = templates.get_context()
+        context = templates.get_context(request)
         context.update({
             "request": request,
+            "list_bases": bases,
             "error_message": f"La base '{base_name}' n'existe pas"
         })
         return templates.TemplateResponse(request, "index.html", context)
