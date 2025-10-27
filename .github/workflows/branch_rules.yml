@@ -39,6 +39,7 @@ jobs:
           if [[ "$HEAD" == feature/* && "$BASE" == "preprod" ]]; then exit 0; fi
           if [[ "$HEAD" == "preprod" && "$BASE" == "main" ]]; then exit 0; fi
           if [[ "$HEAD" == hotfix/* && ( "$BASE" == "main" || "$BASE" == "preprod" ) ]]; then exit 0; fi
+          if [[ "$HEAD" == "main" && "$BASE" == "preprod" ]]; then exit 0; fi
 
           echo "❌ ERROR: Merge from '$HEAD' to '$BASE' is NOT allowed."
           exit 1
