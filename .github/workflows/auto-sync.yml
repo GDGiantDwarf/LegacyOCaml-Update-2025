@@ -28,7 +28,7 @@ jobs:
           body: |
             Automatic synchronization from **main** to **preprod**.
             (Triggered by a push on main)
-          labels: ["auto-sync"]
+          labels: auto-sync
           commit-message: "chore(sync): merge main into preprod"
           draft: false
           delete-branch: false
