@@ -1,6 +1,313 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneWeb - Management and Creation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: #90c24e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo-text span {
+            color: #90c24e;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #555;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #90c24e;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 5px 0;
+            color: #555;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight {
+            color: #90c24e;
+            font-weight: bold;
+        }
+
+        .advanced-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .advanced-section h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #90c24e;
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .section h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            border-top: 2px solid #ddd;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .doc-link {
+            display: inline-block;
+            margin: 15px 0;
+            color: #0066cc;
+        }
+
+        .lang-selector {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .version {
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .main-grid, .advanced-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🌳</div>
+                <div class="logo-text">gene<span>web</span></div>
+            </div>
+            <h1>Management and creation</h1>
+        </header>
+
+        <div class="main-grid">
+            <div class="card">
+                <h2>Consult</h2>
+                <ul>
+                    <li>family Trees (<a href="#list">list</a>)</li>
+                    <li>the error history and statistics (<a href="#errors">errors</a>)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Create Family Tree</h2>
+                <ul>
+                    <li>from a GEDCOM source file (<a href="#ged2gwb">ged2gwb</a>)</li>
+                    <li>from a GeneWeb source file (<a href="#gwc">gwc</a>)</li>
+                    <li>from an empty file (<a href="/create_base_empty">gwc</a>)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Save</h2>
+                <ul>
+                    <li>a GEDCOM source file (<a href="#gwb2ged">gwb2ged</a>)</li>
+                    <li>a <span class="highlight">GeneWeb</span> source file (<a href="#gwu">gwu</a>)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Configure</h2>
+                <ul>
+                    <li>The parameters of a database (<a href="#gwf">gwf</a>)</li>
+                    <li>The parameters of the gwd service (<a href="#gwd">gwd</a>)</li>
+                    <li>Name and places cache files for auto completion (<a href="#cache_files">cache_files</a>)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="advanced-section">
+            <h2>Advanced Options</h2>
+            <div class="advanced-grid">
+                <div class="section">
+                    <ul>
+                        <li>Clean up (<a href="#cleanup">cleanup</a>)</li>
+                        <li>Renaming (<a href="#rename">rename</a>)</li>
+                        <li>Deletion (<a href="#delete">delete</a>)</li>
+                        <li>Merging with other databases (<a href="#merge">merge</a>)</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <ul>
+                        <li>Saving and restoring (<a href="#gwu">gwu</a>)</li>
+                        <li>initialisation of consanguinities (<a href="#consang">consang</a>)</li>
+                        <li>Update links page / family chronicle (<a href="#update_nldb">update_nldb</a>)</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <ul>
+                        <li>Compute connected components (<a href="#connex">connex</a>)</li>
+                        <li>Compute the difference between two bases (<a href="#gwdiff">gwdiff</a>)</li>
+                        <li>Fixes problems in a base (<a href="#gwfixbase">gwfixbase</a>)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>You can also consult the complete documentation of <span class="highlight">GeneWeb</span>. (<a href="#doc" class="doc-link">doc</a>)</p>
+            
+            <div class="lang-selector">
+                <span>Display in:</span>
+                <a href="#corsu">Corsu</a>
+                <a href="#deutsch">Deutsch</a>
+                <a href="#english">English</a>
+                <a href="#espanol">Español</a>
+                <a href="#francais">Français</a>
+                <a href="#italiano">Italiano</a>
+                <a href="#latviesu">Latviešu</a>
+                <a href="#svenska">Svenska</a>
+            </div>
+            
+            <div class="version">
+                Version 7.1-beta Copyright © 1998-2021
+            </div>
+        </footer>
+    </div>
+    <script>
+        // === UTILITAIRES ===
+        function showToast(message, type = "info") {
+            const toast = document.createElement("div");
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            Object.assign(toast.style, {
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                padding: "12px 18px",
+                backgroundColor: type === "error" ? "#e74c3c" : "#2ecc71",
+                color: "#fff",
+                borderRadius: "8px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+                fontSize: "14px",
+                zIndex: 9999,
+                opacity: 0,
+                transition: "opacity 0.3s ease"
+            });
+            document.body.appendChild(toast);
+            setTimeout(() => toast.style.opacity = 1, 50);
+            setTimeout(() => {
+                toast.style.opacity = 0;
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
     <meta charset="UTF-8" />
     <title>Panneau d'administration</title>
     <style>
