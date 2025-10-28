@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
-from starlette.responses import RedirectResponse
 
 from geneweb.web.utils import BASE_DIR
 from .routes import index, base_detail, set_language
@@ -44,9 +43,8 @@ def create_app(base_dir="bases", lang="en"):
     app.include_router(index.router)
     app.include_router(base_detail.router)
     app.include_router(set_language.router)
+    app.include_router(calendars.router)
 
     app.add_middleware(SessionMiddleware, secret_key="secret")
-    return app
-    app.include_router(calendars.router)
     
     return app
