@@ -21,7 +21,6 @@ It ensures **reproducibility**, **ease of use**, and adherence to **DevOps best 
 | `make re` | Equivalent to `make fclean all` — performs a complete rebuild and relaunch. |
 | `make admin` | Launches the **Admin interface**: `python -m geneweb.gwsetup`. Accepts additional runtime arguments via `ARGS`. |
 | `make user` | Launches the **User interface**: `python -m geneweb.gwd`. Accepts additional runtime arguments via `ARGS`. |
-| `make logs` | Displays live logs from all running Docker containers. |
 | `make stop` | Stops all active containers. |
 
 ---
