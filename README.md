@@ -13,9 +13,10 @@ It ensures **reproducibility**, **ease of use**, and adherence to **DevOps best 
 
 | Command | Description |
 |----------|--------------|
-| `make` / `make all` | Runs the full workflow: executes unit tests, then builds and launches the Docker containers if tests pass. |
+| `make` / `make all` | Runs the full workflow: executes audit, unit tests, then builds and launches the Docker containers if tests pass. |
 | `make test` | Executes all unit tests using **pytest** with verbose output. Stops immediately if any test fails. |
 | `make build` | Builds and runs all containers defined in `docker-compose.yml` in **interactive mode** (logs appear directly in the terminal). |
+| `make audit` | Executes an audit using pip-audit to detect any vulnerabilitie in requirements.txt.Stops immediately if any test fails.
 | `make clean` | Stops containers and removes Python cache folders (`__pycache__`, `.pytest_cache`, `.coverage`, etc.). |
 | `make fclean` | Performs a full cleanup: same as `clean` + removes all Docker images labeled for the project. |
 | `make re` | Equivalent to `make fclean all` — performs a complete rebuild and relaunch. |

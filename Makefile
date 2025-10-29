@@ -7,7 +7,7 @@ DOCKER_COMPOSE = docker compose -f $(PROJECT_DIR)/docker-compose.yml
 PYTEST = pytest -v --disable-warnings
 PYTHON = python3.10
 
-all: test build
+all: audit test build
 
 test:
 	@echo "🧪 Running pytest on all tests..."
@@ -18,6 +18,10 @@ build:
 	@echo "🐳 Building and launching docker containers..."
 	@$(DOCKER_COMPOSE) up --build
 	@echo "🚀 Containers started successfully!"
+
+audit:
+	@echo "Running pip-audit to detect any vulnerabilities..."
+	@pip-audit -r ./$(PROJECT_DIR)/requirements.txt || (echo "❌ Vulnerability found!" && exit 1)
 
 clean:
 	@echo "🧹 Cleaning containers and Python caches..."
