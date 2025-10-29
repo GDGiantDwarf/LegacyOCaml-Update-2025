@@ -9,3 +9,4 @@ pytest-mock
 itsdangerous
 pycodestyle
 pip-audit
+coverage

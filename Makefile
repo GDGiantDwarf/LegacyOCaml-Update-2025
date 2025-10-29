@@ -6,7 +6,7 @@ PROJECT_DIR = geneweb-python
 DOCKER_DIR = geneweb-python/docker
 REQUIREMENTS_PATH = $(PROJECT_DIR)/requirements.txt
 DOCKER_COMPOSE = docker compose -f $(DOCKER_DIR)/docker-compose.yml
-PYTEST = pytest -v --disable-warnings
+PYTEST = pytest -v --cov=geneweb --disable-warnings
 PYTHON = python3.10
 
 all: requirements audit conventions test build
