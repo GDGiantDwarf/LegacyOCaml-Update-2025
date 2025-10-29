@@ -1,6 +1,7 @@
 from conftest import db
 from geneweb.core.repositories.media_repository import MediaRepository
 
+
 def test_add_media(db):
     repo = MediaRepository(db.session)
     file_path = "path"

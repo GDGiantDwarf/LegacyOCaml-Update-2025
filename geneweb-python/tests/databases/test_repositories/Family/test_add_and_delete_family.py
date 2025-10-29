@@ -3,6 +3,7 @@ from datetime import date
 from geneweb.core.repositories.person_repository import PersonRepository
 from geneweb.core.repositories.family_repository import FamilyRepository
 
+
 def test_add_one_family_and_delete_it(db):
     person_repo = PersonRepository(db.session)
     repo = FamilyRepository(db.session)
@@ -20,7 +21,8 @@ def test_add_one_family_and_delete_it(db):
 
     delete_found = repo.get_family_by_id(created.id)
     assert delete_found is None
-    
+
+
 def test_add_one_family_and_delete_the_wrong_one(db):
     person_repo = PersonRepository(db.session)
     repo = FamilyRepository(db.session)
@@ -39,4 +41,3 @@ def test_add_one_family_and_delete_the_wrong_one(db):
 
     delete_found = repo.get_family_by_id(created.id)
     assert delete_found is not None
-    

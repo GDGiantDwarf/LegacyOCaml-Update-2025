@@ -9,6 +9,7 @@ app.include_router(router)
 
 client = TestClient(app)
 
+
 def test_base_detail_page_renders_html():
     base_name = "base-teste"
 

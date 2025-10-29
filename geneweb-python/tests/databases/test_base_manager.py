@@ -6,6 +6,7 @@ from geneweb.core.database import BaseManager
 # FIXTURES
 # ------------------------------------------------------
 
+
 @pytest.fixture
 def base_dir(tmp_path) -> Path:
     """Crée un dossier temporaire pour les tests."""
@@ -17,6 +18,7 @@ def base_dir(tmp_path) -> Path:
 # ------------------------------------------------------
 # TESTS DE BASES CRUD
 # ------------------------------------------------------
+
 
 def test_create_and_list_and_delete_base(base_dir):
     """Crée, liste, renomme, nettoie et supprime une base."""
@@ -45,6 +47,7 @@ def test_create_and_list_and_delete_base(base_dir):
 # ------------------------------------------------------
 # TESTS D'ERREURS ET VALIDATIONS
 # ------------------------------------------------------
+
 
 def test_create_existing_base_raises(base_dir):
     """Créer deux fois la même base doit lever une erreur."""

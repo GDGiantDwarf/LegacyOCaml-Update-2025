@@ -3,11 +3,17 @@
 # =============================
 
 PROJECT_DIR = geneweb-python
+REQUIREMENTS_PATH = $(PROJECT_DIR)/requirements.txt
 DOCKER_COMPOSE = docker compose -f $(PROJECT_DIR)/docker-compose.yml
 PYTEST = pytest -v --disable-warnings
 PYTHON = python3.10
 
-all: audit test build
+all: requirements audit conventions test build
+
+requirements:
+	@echo "Install python requirements..."
+	@pip install -r $(REQUIREMENTS_PATH) || (echo "❌ Module python failed!" && exit 1)
+	@echo "✅ Python requirements successfully!"
 
 test:
 	@echo "🧪 Running pytest on all tests..."
@@ -22,6 +28,12 @@ build:
 audit:
 	@echo "Running pip-audit to detect any vulnerabilities..."
 	@pip-audit -r ./$(PROJECT_DIR)/requirements.txt || (echo "❌ Vulnerability found!" && exit 1)
+	@echo "✅ No audit founds!"
+
+conventions:
+	@echo "Running conventions pycodestyle(PEP8)..."
+	@pycodestyle . || (echo "❌ Conventions error found!" && exit 1)
+	@echo "✅ No conventions error founds!"
 
 clean:
 	@echo "🧹 Cleaning containers and Python caches..."

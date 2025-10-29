@@ -2,9 +2,10 @@ from sqlalchemy import Column, Integer, String, Date, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from geneweb.core.models.alchemyBase import Base
 
+
 class Person(Base):
-    __tablename__ = 'persons'
-    
+    __tablename__ = "persons"
+
     id = Column(Integer, primary_key=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
@@ -17,6 +18,3 @@ class Person(Base):
     notes = Column(Text, nullable=True)
 
     calendar_dates = relationship("CalendarDate", back_populates="person")
-
-
-

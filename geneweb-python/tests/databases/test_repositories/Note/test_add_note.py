@@ -1,6 +1,7 @@
 from conftest import db
 from geneweb.core.repositories.note_repository import NoteRepository
 
+
 def test_add_note(db):
     repo = NoteRepository(db.session)
 

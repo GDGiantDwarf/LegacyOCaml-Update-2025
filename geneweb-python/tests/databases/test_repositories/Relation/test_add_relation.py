@@ -3,6 +3,7 @@ from conftest import db
 from geneweb.core.repositories.relation_repository import RelationRepository
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_add_relation(db):
     repo_person = PersonRepository(db.session)
     repo = RelationRepository(db.session)
@@ -14,6 +15,7 @@ def test_add_relation(db):
     assert relation is not None
     assert relation.person1_id == person1.id
     assert relation.person2_id == person2.id
+
 
 def test_add_relation_person1_none(db):
     repo_person = PersonRepository(db.session)
@@ -27,6 +29,7 @@ def test_add_relation_person1_none(db):
 
     assert "person1_id is invalid" in str(excinfo.value)
 
+
 def test_add_relation_person2_none(db):
     repo_person = PersonRepository(db.session)
     repo = RelationRepository(db.session)
@@ -39,6 +42,7 @@ def test_add_relation_person2_none(db):
 
     assert "person2_id is invalid" in str(excinfo.value)
 
+
 def test_add_relation_relation_type_none(db):
     repo_person = PersonRepository(db.session)
     repo = RelationRepository(db.session)
@@ -50,6 +54,7 @@ def test_add_relation_relation_type_none(db):
         repo.add_relation(person1.id, person2.id, None)
 
     assert "relation_type is invalid" in str(excinfo.value)
+
 
 def test_add_relation_relation_type_empty(db):
     repo_person = PersonRepository(db.session)
