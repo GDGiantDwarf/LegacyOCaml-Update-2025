@@ -1,6 +1,7 @@
 from conftest import db
 from geneweb.core.database import Database
 
+
 def test_list_existings_bases(tmp_path, monkeypatch):
     monkeypatch.setattr(Database, "BASES_FOLDER", tmp_path)
 

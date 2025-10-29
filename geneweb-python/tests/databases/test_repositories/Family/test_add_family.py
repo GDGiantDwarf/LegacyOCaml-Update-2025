@@ -3,6 +3,7 @@ from datetime import date
 from geneweb.core.repositories.person_repository import PersonRepository
 from geneweb.core.repositories.family_repository import FamilyRepository
 
+
 def test_add_a_family(db):
     person_repo = PersonRepository(db.session)
     repo = FamilyRepository(db.session)
@@ -21,7 +22,7 @@ def test_add_a_family(db):
         marriage_date=marriage_date,
         marriage_place=marriage_place,
         divorce_date=divorce_date,
-        notes=notes
+        notes=notes,
     )
 
     found = repo.get_family_by_id(created.id)

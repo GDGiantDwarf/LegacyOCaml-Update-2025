@@ -13,7 +13,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./geneweb-python
+        working-directory: ./geneweb-python/docker
 
     steps:
       - name: 🧩 Checkout repository
@@ -45,3 +45,4 @@ jobs:
       - name: 🧹 Clean up
         if: always()
         run: docker compose down
+ 

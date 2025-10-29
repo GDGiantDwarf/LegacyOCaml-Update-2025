@@ -3,9 +3,10 @@ from conftest import db
 from datetime import date
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_add_delete_and_det_person(db):
     repo = PersonRepository(db.session)
-    
+
     first_name = "John"
     last_name = "John"
     gender = "M"
@@ -20,12 +21,12 @@ def test_add_delete_and_det_person(db):
         first_name=first_name,
         last_name=last_name,
         gender=gender,
-        birth_date=birth_date, 
+        birth_date=birth_date,
         death_date=death_date,
         birth_place=birth_place,
         death_place=death_place,
         occupation=occupation,
-        notes=notes
+        notes=notes,
     )
 
     found = repo.get_a_person_by_first_name(first_name)
@@ -36,9 +37,10 @@ def test_add_delete_and_det_person(db):
     found = repo.get_a_person_by_first_name(first_name)
     assert found is None
 
+
 def test_delete_person_not_found(db):
     repo = PersonRepository(db.session)
-    
+
     first_name = "John"
 
     result = repo.delete_person_by_first_name(first_name)

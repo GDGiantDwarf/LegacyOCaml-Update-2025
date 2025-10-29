@@ -2,6 +2,7 @@ import pytest
 from conftest import db
 from geneweb.core.repositories.media_repository import MediaRepository
 
+
 def test_update_media(db):
     repo = MediaRepository(db.session)
     file_path = "path"
@@ -16,6 +17,7 @@ def test_update_media(db):
     get_note = repo.get_media_by_id(note.id)
     assert get_note is not None
     assert get_note.file_path == updated_file_path
+
 
 def test_update_media_with_wrong_media_id(db):
     repo = MediaRepository(db.session)

@@ -27,6 +27,7 @@ def create_dummy_db(base_dir, name="alpha"):
 # /api/bases/{name}/stats
 # --------------------------------------------------------------------------------
 
+
 def test_stats_empty_base(tmp_base_dir):
     db_path = create_dummy_db(tmp_base_dir, "alpha")
     os.environ["BASES_PATH"] = str(tmp_base_dir)
@@ -42,6 +43,7 @@ def test_stats_empty_base(tmp_base_dir):
 # --------------------------------------------------------------------------------
 # /api/bases/import + /api/bases/{name}/export
 # --------------------------------------------------------------------------------
+
 
 def test_import_and_export(tmp_base_dir):
     db_path = create_dummy_db(tmp_base_dir, "alpha")
@@ -62,6 +64,7 @@ def test_import_and_export(tmp_base_dir):
 # /api/bases/{name}/backup + /api/bases/restore
 # --------------------------------------------------------------------------------
 
+
 def test_backup_and_restore(tmp_base_dir):
     create_dummy_db(tmp_base_dir, "alpha")
 
@@ -81,14 +84,17 @@ def test_backup_and_restore(tmp_base_dir):
 # /api/bases/merge
 # --------------------------------------------------------------------------------
 
+
 def test_merge_stub():
-    resp = client.post("/api/bases/merge?base_a=alpha&base_b=beta&target=gamma")
+    resp = client.post(
+        "/api/bases/merge?base_a=alpha&base_b=beta&target=gamma")
     assert resp.status_code in (200, 501)
 
 
 # --------------------------------------------------------------------------------
 # /api/bases/{name}/stats → vérifie que count = 0 sur base vide
 # --------------------------------------------------------------------------------
+
 
 def test_stats_counts_default_zero(tmp_path):
     base_dir = tmp_path / "bases"

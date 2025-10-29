@@ -9,31 +9,28 @@ class CalendarDate(Base):
     id = Column(Integer, primary_key=True, index=True)
     person_id = Column(Integer, ForeignKey("persons.id"), nullable=True)
     event_type = Column(String, nullable=False)
-    
 
     gregorian_year = Column(Integer, nullable=False)
     gregorian_month = Column(Integer, nullable=False)
     gregorian_day = Column(Integer, nullable=False)
     gregorian_date = Column(Date, nullable=False)
-    
 
     julian_year = Column(Integer, nullable=True)
     julian_month = Column(Integer, nullable=True)
     julian_day = Column(Integer, nullable=True)
     julian_day_number = Column(Integer, nullable=True)
-    
 
     french_year = Column(Integer, nullable=True)
     french_month = Column(String, nullable=True)
     french_day = Column(Integer, nullable=True)
-    
 
     hebrew_year = Column(Integer, nullable=True)
     hebrew_month = Column(String, nullable=True)
     hebrew_day = Column(Integer, nullable=True)
-    
 
     person = relationship("Person", back_populates="calendar_dates")
 
     def __repr__(self):
-        return f"<CalendarDate(event={self.event_type}, gregorian={self.gregorian_year}-{self.gregorian_month}-{self.gregorian_day})>"
+        return f"<CalendarDate(event={self.event_type}, \
+            gregorian={self.gregorian_year}-\
+            {self.gregorian_month}-{self.gregorian_day})>"

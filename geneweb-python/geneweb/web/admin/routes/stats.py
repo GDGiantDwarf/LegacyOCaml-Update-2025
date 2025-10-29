@@ -27,7 +27,11 @@ def _count_rows(db_path: Path) -> dict:
             try:
                 cur.execute(f"SELECT COUNT(*) FROM {table}")
                 result = cur.fetchone()
-                counts[table] = result[0] if result and result[0] is not None else 0
+                counts[table] = (
+                    result[0]
+                    if result and result[0] is not None
+                    else 0
+                )
             except Exception:
                 counts[table] = 0
     finally:

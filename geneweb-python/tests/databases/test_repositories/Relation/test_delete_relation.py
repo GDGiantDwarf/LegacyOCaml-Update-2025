@@ -3,6 +3,7 @@ from conftest import db
 from geneweb.core.repositories.relation_repository import RelationRepository
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_delete_relation(db):
     repo_person = PersonRepository(db.session)
     repo = RelationRepository(db.session)
@@ -16,7 +17,7 @@ def test_delete_relation(db):
     assert relation.person2_id == person2.id
 
     deleted_relation = repo.delete_relation_by_id(relation.id)
-    assert deleted_relation == True
+    assert deleted_relation
 
 
 def test_delete_relation_with_wrong_id(db):
@@ -32,4 +33,4 @@ def test_delete_relation_with_wrong_id(db):
     assert relation.person2_id == person2.id
 
     deleted_relation = repo.delete_relation_by_id(4)
-    assert deleted_relation == False
+    assert deleted_relation is False

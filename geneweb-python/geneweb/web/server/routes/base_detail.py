@@ -6,6 +6,7 @@ from geneweb.web.utils import BASE_DIR
 templates = Jinja2Templates(directory=str(BASE_DIR / "server/templates"))
 router = APIRouter()
 
+
 @router.get("/base/{base_name}", response_class=HTMLResponse)
 async def base_detail(request: Request, base_name: str):
     context = {

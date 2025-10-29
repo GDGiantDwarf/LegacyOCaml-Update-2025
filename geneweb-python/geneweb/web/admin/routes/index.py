@@ -6,7 +6,10 @@ from pathlib import Path
 
 router = APIRouter()
 
-templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent.parent / "templates"))
+templates = Jinja2Templates(
+    directory=str(Path(__file__).resolve().parent.parent / "templates")
+)
+
 
 @router.get("/", response_class=HTMLResponse)
 async def admin_index(request: Request):

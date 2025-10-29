@@ -7,6 +7,7 @@ import pytest
 from geneweb.web.server.server import create_app
 from geneweb.web.utils import BASE_DIR
 
+
 def test_create_app_returns_fastapi_instance():
     app = create_app()
     assert isinstance(app, FastAPI)

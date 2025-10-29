@@ -2,6 +2,7 @@ from conftest import db
 from datetime import date
 from geneweb.core.repositories.source_repository import SourceRepository
 
+
 def test_add_one_source(db):
     repo = SourceRepository(db.session)
 

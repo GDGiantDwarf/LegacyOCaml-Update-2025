@@ -7,10 +7,12 @@ import pytest
 from geneweb.web.admin.server import create_app
 from geneweb.web.utils import BASE_DIR
 
+
 def test_create_app_returns_fastapi_instance():
     app = create_app()
     assert isinstance(app, FastAPI)
     assert "GeneWeb Admin" in app.title
+
 
 def test_create_app_mounts_static_dir(tmp_path, monkeypatch):
     static_dir = tmp_path / "server/static"

@@ -1,6 +1,7 @@
 from conftest import db
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_get_a_person_by_id(db):
     repo = PersonRepository(db.session)
 

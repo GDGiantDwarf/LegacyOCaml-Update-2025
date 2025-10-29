@@ -2,6 +2,7 @@ from conftest import db
 from datetime import date
 from geneweb.core.repositories.source_repository import SourceRepository
 
+
 def test_add_and_delete_an_event(db):
     repo = SourceRepository(db.session)
 
@@ -13,7 +14,8 @@ def test_add_and_delete_an_event(db):
     assert source is not None
 
     event_deleted = repo.delete_source_by_id(source.id)
-    assert event_deleted == True
+    assert event_deleted
+
 
 def test_add_and_delete_a_wrong_event(db):
     repo = SourceRepository(db.session)
@@ -26,4 +28,4 @@ def test_add_and_delete_a_wrong_event(db):
     assert source is not None
 
     event_deleted = repo.delete_source_by_id(5)
-    assert event_deleted == False
+    assert event_deleted is False

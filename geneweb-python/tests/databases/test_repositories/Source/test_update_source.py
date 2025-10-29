@@ -2,6 +2,7 @@ import pytest
 from conftest import db
 from geneweb.core.repositories.source_repository import SourceRepository
 
+
 def test_update_source(db):
     repo = SourceRepository(db.session)
 
