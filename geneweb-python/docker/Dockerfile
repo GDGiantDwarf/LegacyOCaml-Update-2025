@@ -15,5 +15,4 @@ USER appuser
 
 EXPOSE 2317
 
-# Lancer la CLI gwd
 CMD ["python", "-m", "geneweb.gwd"]

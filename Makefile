@@ -6,15 +6,15 @@ PROJECT_DIR = geneweb-python
 DOCKER_DIR = geneweb-python/docker
 REQUIREMENTS_PATH = $(PROJECT_DIR)/requirements.txt
 DOCKER_COMPOSE = docker compose -f $(DOCKER_DIR)/docker-compose.yml
-PYTEST = pytest -v --cov=geneweb --disable-warnings
+PYTEST = pytest -v --cov=geneweb --cov-report=term-missing --cov-report html --disable-warnings
 PYTHON = python3.10
 
-all: requirements audit conventions test build
+all: dependencies audit conventions test build
 
-requirements:
-	@echo "Install python requirements..."
+dependencies:
+	@echo "Install python dependencies..."
 	@pip install -r $(REQUIREMENTS_PATH) || (echo "❌ Module python failed!" && exit 1)
-	@echo "✅ Python requirements successfully!"
+	@echo "✅ Python dependencies successfully!"
 
 test:
 	@echo "🧪 Running pytest on all tests..."

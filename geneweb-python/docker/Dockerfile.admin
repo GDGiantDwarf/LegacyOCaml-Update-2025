@@ -15,5 +15,4 @@ USER appuser
 
 EXPOSE 2316
 
-# Lancer la CLI gwsetup
 CMD ["python", "-m", "geneweb.gwsetup"]
