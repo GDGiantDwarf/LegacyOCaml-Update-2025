@@ -3,6 +3,7 @@ from conftest import db
 from geneweb.core.repositories.relation_repository import RelationRepository
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_update_relation(db):
     repo_person = PersonRepository(db.session)
     repo = RelationRepository(db.session)
@@ -16,7 +17,8 @@ def test_update_relation(db):
     assert relation.person2_id == person2.id
     assert relation.relation_type == "amant"
 
-    relation_update = repo.update_relation_by_id(relation.id, relation_type="friend")
+    relation_update = repo.update_relation_by_id(
+        relation.id, relation_type="friend")
     assert relation_update is not None
     assert relation_update.person1_id == person1.id
     assert relation_update.person2_id == person2.id

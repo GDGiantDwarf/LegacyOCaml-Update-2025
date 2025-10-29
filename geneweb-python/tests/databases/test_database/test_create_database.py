@@ -3,6 +3,7 @@ from pathlib import Path
 from geneweb.core.database import Database
 import shutil
 
+
 def test_create_file_database(tmp_path):
     bases_folder = tmp_path / "test_databases"
     db_name = "test_db"
@@ -46,6 +47,7 @@ def test_create_database_with_none_name(tmp_path):
     assert "base_name must be provided" in str(excinfo.value)
 
     shutil.rmtree(tmp_path)
+
 
 def test_create_database_with_empty_name(tmp_path):
     Database.BASES_FOLDER = tmp_path

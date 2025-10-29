@@ -3,6 +3,7 @@ from conftest import db
 from geneweb.core.repositories.relation_repository import RelationRepository
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_get_a_relation(db):
     repo_person = PersonRepository(db.session)
     repo = RelationRepository(db.session)
@@ -14,7 +15,6 @@ def test_get_a_relation(db):
     assert relation is not None
     assert relation.person1_id == person1.id
     assert relation.person2_id == person2.id
-
 
     relation_get = repo.get_relation_by_id(relation.id)
     assert relation_get is not None

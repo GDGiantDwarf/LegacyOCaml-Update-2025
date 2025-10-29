@@ -2,12 +2,15 @@ import json
 import pathlib
 from typing import Dict
 
+
 class LanguageManager:
     def __init__(self, base_dir: pathlib.Path, default_lang: str = "en"):
         BASES_FOLDER = pathlib.Path(__file__).parent.parent / "locales"
         self.default_lang = default_lang
         self.locales_path = BASES_FOLDER / "base.json"
-        self.translations_json: Dict[str, Dict[str, str]] = self._load_translations()
+        self.translations_json: Dict[
+            str, Dict[str, str]
+        ] = self._load_translations()
 
     def _load_translations(self) -> Dict[str, Dict[str, str]]:
         with open(self.locales_path, "r", encoding="utf-8") as f:

@@ -2,6 +2,7 @@ from conftest import db
 from geneweb.core.repositories.person_repository import PersonRepository
 from geneweb.core.repositories.family_repository import FamilyRepository
 
+
 def test_add_two_families_and_get_all(db):
     person_repo = PersonRepository(db.session)
     repo = FamilyRepository(db.session)
@@ -18,4 +19,3 @@ def test_add_two_families_and_get_all(db):
     found = repo.get_all_families()
     assert found is not None
     assert len(found) == 2
-

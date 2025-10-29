@@ -1,6 +1,7 @@
 from conftest import db
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_get_all_person_in_a_empyt_base(db):
     repo = PersonRepository(db.session)
 
@@ -8,6 +9,7 @@ def test_get_all_person_in_a_empyt_base(db):
     print(list)
 
     assert list == []
+
 
 def test_get_all_person_in_a_base_with_one_person(db):
     repo = PersonRepository(db.session)
@@ -20,6 +22,7 @@ def test_get_all_person_in_a_base_with_one_person(db):
     persons = repo.get_all_person()
 
     assert len(persons) == 1
+
 
 def test_get_all_person_in_a_base_with_four_person(db):
     repo = PersonRepository(db.session)
@@ -34,6 +37,3 @@ def test_get_all_person_in_a_base_with_four_person(db):
     persons = repo.get_all_person()
 
     assert len(persons) == nb_person
-
-
-

@@ -4,6 +4,7 @@ from geneweb.core.repositories.person_repository import PersonRepository
 from geneweb.core.repositories.family_repository import FamilyRepository
 from geneweb.core.repositories.child_repository import ChildRepository
 
+
 def test_add_child_in_a_base(db):
     repo_person = PersonRepository(db.session)
     repo_family = FamilyRepository(db.session)
@@ -35,6 +36,7 @@ def test_add_child_with_none_person_id(db):
         repo.add_child(person_id=None, family_id=family.id)
 
     assert "A person_id must be provided" in str(excinfo.value)
+
 
 def test_add_child_with_none_family_id(db):
     repo_person = PersonRepository(db.session)

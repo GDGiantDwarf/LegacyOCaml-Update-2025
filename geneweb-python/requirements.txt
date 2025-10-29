@@ -7,3 +7,6 @@ python-multipart
 httpx
 pytest-mock
 itsdangerous
+pycodestyle
+pip-audit
+coverage

@@ -4,6 +4,7 @@ from datetime import date
 from geneweb.core.repositories.person_repository import PersonRepository
 from geneweb.core.repositories.family_repository import FamilyRepository
 
+
 def test_add_and_update_a_family(db):
     person_repo = PersonRepository(db.session)
     repo = FamilyRepository(db.session)
@@ -23,7 +24,7 @@ def test_add_and_update_a_family(db):
         marriage_date=marriage_date,
         marriage_place=marriage_place,
         divorce_date=divorce_date,
-        notes=notes
+        notes=notes,
     )
 
     family = repo.get_family_by_id(created.id)
@@ -34,12 +35,14 @@ def test_add_and_update_a_family(db):
     assert family.marriage_place == marriage_place
     assert family.notes == notes
 
-    updated_family = repo.update_family_by_id(family.id, spouse1_id=new_spouse1)
+    updated_family = repo.update_family_by_id(
+        family.id, spouse1_id=new_spouse1)
     assert updated_family is not None
 
     get_updated_family = repo.get_family_by_id(family.id)
     assert get_updated_family is not None
     assert get_updated_family.spouse1_id == new_spouse1
+
 
 def test_add_and_update_a_wrong_family(db):
     person_repo = PersonRepository(db.session)
@@ -60,7 +63,7 @@ def test_add_and_update_a_wrong_family(db):
         marriage_date=marriage_date,
         marriage_place=marriage_place,
         divorce_date=divorce_date,
-        notes=notes
+        notes=notes,
     )
 
     family = repo.get_family_by_id(created.id)

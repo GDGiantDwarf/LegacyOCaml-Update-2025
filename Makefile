@@ -3,11 +3,18 @@
 # =============================
 
 PROJECT_DIR = geneweb-python
-DOCKER_COMPOSE = docker compose -f $(PROJECT_DIR)/docker-compose.yml
-PYTEST = pytest -v --disable-warnings
+DOCKER_DIR = geneweb-python/docker
+REQUIREMENTS_PATH = $(PROJECT_DIR)/requirements.txt
+DOCKER_COMPOSE = docker compose -f $(DOCKER_DIR)/docker-compose.yml
+PYTEST = pytest -v --cov=geneweb --cov-report=term-missing --cov-report html --disable-warnings
 PYTHON = python3.10
 
-all: test build
+all: dependencies audit conventions test build
+
+dependencies:
+	@echo "Install python dependencies..."
+	@pip install -r $(REQUIREMENTS_PATH) || (echo "❌ Module python failed!" && exit 1)
+	@echo "✅ Python dependencies successfully!"
 
 test:
 	@echo "🧪 Running pytest on all tests..."
@@ -19,6 +26,16 @@ build:
 	@$(DOCKER_COMPOSE) up --build
 	@echo "🚀 Containers started successfully!"
 
+audit:
+	@echo "Running pip-audit to detect any vulnerabilities..."
+	@pip-audit -r ./$(PROJECT_DIR)/requirements.txt || (echo "❌ Vulnerability found!" && exit 1)
+	@echo "✅ No audit founds!"
+
+conventions:
+	@echo "Running conventions pycodestyle(PEP8)..."
+	@pycodestyle . || (echo "❌ Conventions error found!" && exit 1)
+	@echo "✅ No conventions error founds!"
+
 clean:
 	@echo "🧹 Cleaning containers and Python caches..."
 	@$(DOCKER_COMPOSE) down || true
@@ -29,6 +46,7 @@ clean:
 		find "$$ROOT_DIR" -type d -name "$$DIR_NAME" -exec rm -rf {} + 2>/dev/null || true; \
 	done ; \
 	find "$$ROOT_DIR" -type f -name "*.pyc" -delete 2>/dev/null || true ; \
+	find "$$ROOT_DIR" -type f -name ".coverage" -delete 2>/dev/null || true ; \
 	echo "✅ Cache cleanup done!"
 
 fclean: clean

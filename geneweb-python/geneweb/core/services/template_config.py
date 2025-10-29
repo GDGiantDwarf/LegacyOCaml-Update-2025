@@ -3,14 +3,17 @@ from starlette.requests import Request
 from jinja2 import pass_context
 from .language_manager import LanguageManager
 
+
 class ExtendedJinja2Templates(Jinja2Templates):
     def __init__(self, directory: str, lang_manager: LanguageManager):
         super().__init__(directory=directory)
         self.lang_manager = lang_manager
 
     def get_context(self, request: Request):
-        """Renvoie le contexte pour le template avec la fonction t() et la langue"""
         lang = getattr(request.state, "lang", self.lang_manager.default_lang)
+
         # t(key) renvoie directement la traduction selon la langue active
-        t = lambda key: self.lang_manager.get_text(key, lang)
+        def t(key):
+            return self.lang_manager.get_text(key, lang)
+
         return {"request": request, "t": t, "lang": lang}

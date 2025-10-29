@@ -2,6 +2,11 @@
 Epitech Project which consists in modernizing a OCaml app
 
 
+# You can find our documents to this link
+
+https://www.notion.so/AWKWARD-LEGACY-26b5abaf37a48050a429ef73b7526a2f?source=copy_link
+
+
 # ⚙️ Project Automation — Makefile
 
 To simplify testing, building, and running the project, we implemented a **Makefile-based automation system**.  
@@ -13,9 +18,12 @@ It ensures **reproducibility**, **ease of use**, and adherence to **DevOps best 
 
 | Command | Description |
 |----------|--------------|
-| `make` / `make all` | Runs the full workflow: executes unit tests, then builds and launches the Docker containers if tests pass. |
+| `make` / `make all` | Runs the full workflow: executes requirements, audit, conventions, unit tests, then builds and launches the Docker containers if tests pass. |
+| `make dependencies` | Executes pip install on file requirements.txt. Stops immediately if any module fails. |
 | `make test` | Executes all unit tests using **pytest** with verbose output. Stops immediately if any test fails. |
 | `make build` | Builds and runs all containers defined in `docker-compose.yml` in **interactive mode** (logs appear directly in the terminal). |
+| `make audit` | Executes an audit using pip-audit to detect any vulnerabilitie in requirements.txt.Stops immediately if any audit founds.
+| `make conventions` | Executes conventions pycodestyle(PEP8).Stops immediately if any conventions error found.
 | `make clean` | Stops containers and removes Python cache folders (`__pycache__`, `.pytest_cache`, `.coverage`, etc.). |
 | `make fclean` | Performs a full cleanup: same as `clean` + removes all Docker images labeled for the project. |
 | `make re` | Equivalent to `make fclean all` — performs a complete rebuild and relaunch. |
@@ -35,6 +43,18 @@ Example usage:
 make user ARGS="--port 8081 --debug"
 make admin ARGS="--config config/dev.yaml"
 ```
+
+## dependencies
+
+Executes pip install on file requirements.txt
+
+```bash
+make requirements
+```
+*   Prints an error message if dependencies fail.
+    
+*   Prints a success message if all dependencies pass.
+
 
 ## test
 
@@ -61,6 +81,32 @@ make build
     
 *   Displays messages before and after building containers.
     
+
+### audit
+
+Executes an audit using pip-audit to detect any vulnerabilitie in requirements.txt.
+
+```bash
+make audit
+```
+
+*   Prints an error message if audit fail.
+    
+*   Prints a success message if audit pass.
+
+
+### conventions
+
+Executes conventions pycodestyle(PEP8)
+
+```bash
+make conventions
+```
+
+*   Prints an error message if pycodestyle fail.
+    
+*   Prints a success message if pycodestyle pass.
+
 
 ### clean
 

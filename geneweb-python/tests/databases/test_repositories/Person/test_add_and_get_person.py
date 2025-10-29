@@ -2,6 +2,7 @@ from conftest import db
 from datetime import date
 from geneweb.core.repositories.person_repository import PersonRepository
 
+
 def test_add_and_get_person(db):
     repo = PersonRepository(db.session)
 
@@ -19,12 +20,12 @@ def test_add_and_get_person(db):
         first_name=first_name,
         last_name=last_name,
         gender=gender,
-        birth_date=birth_date, 
+        birth_date=birth_date,
         death_date=death_date,
         birth_place=birth_place,
         death_place=death_place,
         occupation=occupation,
-        notes=notes
+        notes=notes,
     )
 
     found = repo.get_a_person_by_first_name(first_name)

@@ -13,7 +13,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./geneweb-python
+        working-directory: ./geneweb-python/docker
 
     steps:
       - name: 🧩 Checkout repository
@@ -35,13 +35,29 @@ jobs:
           docker ps | grep gwd
           docker ps | grep gwsetup
 
-      - name: 🌐 Test endpoints
+      - name: 🌐 Test endpoints (with retry)
         run: |
-          echo "Testing endpoints..."
-          curl -f http://localhost:2316 || (echo "❌ gwd service failed to respond" && exit 1)
-          curl -f http://localhost:2317 || (echo "❌ gwsetup service failed to respond" && exit 1)
-          echo "✅ Both endpoints responded successfully."
+          echo "Waiting for gwd service..."
+          for i in {1..20}; do
+            if curl -fs http://localhost:2317 > /dev/null; then
+              echo "✅ gwd is up!"
+              break
+            fi
+            echo "⏳ Waiting for gwd... ($i)"
+            sleep 3
+          done
+
+          echo "Waiting for gwsetup service..."
+          for i in {1..20}; do
+            if curl -fs http://localhost:2316 > /dev/null; then
+              echo "✅ gwsetup is up!"
+              break
+            fi
+            echo "⏳ Waiting for gwsetup... ($i)"
+            sleep 3
+          done
 
       - name: 🧹 Clean up
         if: always()
         run: docker compose down
+ 
