@@ -3,8 +3,9 @@
 # =============================
 
 PROJECT_DIR = geneweb-python
+DOCKER_DIR = geneweb-python/docker
 REQUIREMENTS_PATH = $(PROJECT_DIR)/requirements.txt
-DOCKER_COMPOSE = docker compose -f $(PROJECT_DIR)/docker-compose.yml
+DOCKER_COMPOSE = docker compose -f $(DOCKER_DIR)/docker-compose.yml
 PYTEST = pytest -v --disable-warnings
 PYTHON = python3.10
 
@@ -45,6 +46,7 @@ clean:
 		find "$$ROOT_DIR" -type d -name "$$DIR_NAME" -exec rm -rf {} + 2>/dev/null || true; \
 	done ; \
 	find "$$ROOT_DIR" -type f -name "*.pyc" -delete 2>/dev/null || true ; \
+	find "$$ROOT_DIR" -type f -name ".coverage" -delete 2>/dev/null || true ; \
 	echo "✅ Cache cleanup done!"
 
 fclean: clean
