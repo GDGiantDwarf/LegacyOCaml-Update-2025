@@ -1,365 +1,66 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends "base_layout.html" %}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: white;
-            padding: 40px 20px;
-            color: #333;
-        }
+{% block title %}GeneWeb - {{ t("choose a genealogy") }}{% endblock %}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+{% block content %}
+<div id="error-alert"
+     class="text-danger text-center mb-3"
+     role="alert">
+  {% if error_message %}
+    {{ error_message }}
+  {% endif %}
+</div>
 
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 50px;
-            color: #333;
-        }
+<h1 class="text-center font-weight-light mb-5">
+  <span data-i18n="choose a genealogy">
+    {{ t("choose a genealogy") }}
+  </span>
+</h1>
 
-        .section {
-            margin-bottom: 50px;
-        }
+<div class="mb-5">
+  <p class="text-center">
+    {{ t("choose a genealogy") }}:
+  </p>
+  <form id="select-base-form"
+        class="d-flex justify-content-center mb-3"
+        onsubmit="submitForm(event)">
+    <label for="base-input" class="sr-only">Base name</label>
+    <input type="text" id="base-input"
+           class="form-control w-50 mr-2"
+           placeholder="Base name" required>
+    <button type="submit"
+            class="btn btn-outline-secondary">Ok</button>
+  </form>
+  <div class="text-center">
+    {% for base in list_bases %}
+      <a href="#"
+         onclick="submitBase('{{ base }}'); return false;">
+        {{ base }}
+      </a>
+      {% if not loop.last %} | {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
 
-        .section-title {
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #333;
-            font-weight: normal;
-        }
+{% block scripts %}
+<script>
+  function submitForm(event) {
+    event.preventDefault();
+    var baseName = document.getElementById('base-input').value;
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/select-base/' + encodeURIComponent(baseName);
+    document.body.appendChild(form);
+    form.submit();
+  }
 
-        .input-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
-        input[type="text"] {
-            width: 500px;
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .ok-btn {
-            padding: 8px 30px;
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .ok-btn:hover {
-            background: #e0e0e0;
-        }
-
-        .links {
-            text-align: center;
-            font-size: 1rem;
-            color: #333;
-        }
-
-        .links a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-
-        .language-section {
-            text-align: center;
-        }
-
-        .language-grid {
-            display: inline-block;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .lang-row {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .lang-btn {
-            padding: 8px 16px;
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            color: #333;
-            min-width: 120px;
-            text-align: center;
-        }
-
-        .lang-btn:hover {
-            background: #e0e0e0;
-        }
-
-        .footer {
-            text-align: right;
-            margin-top: 80px;
-            padding-top: 20px;
-            color: #666;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .footer a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-logos {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        .footer-logo {
-            height: 30px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div id="error-alert" style="color:red; text-align:center; margin-bottom:15px;">
-            {% if error_message %}
-                {{ error_message }}
-            {% endif %}
-        </div>
-
-        <h1> {{ t("choose a genealogy") }} </h1>
-
-        <div class="section">
-            <p class="section-title">Tapez à l'identique le nom de la généalogie que vous voulez utiliser :</p>
-            <form id="select-base-form" class="input-group" onsubmit="submitForm(event)">
-                <input type="text" id="base-input" placeholder="Nom de la base" required>
-                <button type="submit" class="ok-btn">Ok</button>
-            </form>
-            <div class="links">
-                Listes des généalogies disponibles : 
-                {% for base in list_bases %}
-                    <a href="#" onclick="submitBase('{{ base }}'); return false;">{{ base }}</a>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="section language-section">
-            <p class="section-title">Sélectionner la langue :</p>
-            <div class="language-grid">
-                <div class="lang-row">
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="fr">Francais</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="af">Afrikaans</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="ar">العربية</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="bg">български</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="br">brezhoneg</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="ca">català</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="cs">corsu</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="cs">čeština</button>
-                    </form>
-                    
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="da">dansk</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="de">Deutsch</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="en">English</button>
-                    </form>
-                </div>
-                <div class="lang-row">
-                    
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="eo">esperanto</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="en">Español</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="et">eesti</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="fi">suomi</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="fr">français</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="he">עברית</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="is">íslenska</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="it">italiano</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="lv">Latviešu</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="lt">Lietuvių</button>
-                    </form>
-                </div>
-                <div class="lang-row">
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="nt">Nederlands</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="no">norsk</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="oc">occitan</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="pl">polski</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="pt">Português</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="pt-br">Português-do-Brasil</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="ro">romaneste</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="ru">русский</button>
-                    </form>
-                </div>
-                <div class="lang-row">
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="sk">slovenčina</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="sl">slovenščina</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="sv">svenska</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="tr">turkish</button>
-                    </form>
-
-                    <form action="/set-language" method="post">
-                        <button class="lang-btn" name="lang" value="zh">中文</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-            <span>GeneWeb v. 7.1-beta © <a href="https://www.inria.fr" target="_blank">INRIA</a> 1998–2017</span>
-            <div class="footer-logos">
-                <img src="/static/images/logo_bas.png" alt="INRIA" class="footer-logo">
-                <img src="/static/images/logo_bas.png" alt="INRIA" class="footer-logo">
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let selectedLang = 'français';
-
-        function submitForm(event) {
-            event.preventDefault(); // Empêche le submit classique
-            const baseName = document.getElementById('base-input').value;
-            
-            // Crée un formulaire temporaire pour envoyer le POST vers /select-base/<base_name>
-            console.log(baseName)
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/select-base/' + encodeURIComponent(baseName);
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-        function submitBase(baseName) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/select-base/' + encodeURIComponent(baseName);
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-        document.getElementById('genealogyInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                submitForm();
-            }
-        });
-    </script>
-</body>
-</html>
+  function submitBase(baseName) {
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/select-base/' + encodeURIComponent(baseName);
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+<title>Surnames - {{ base_name }} - GeneWeb</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<main id="main-content" class="container mt-3">
+
+<!-- Header -->
+<div class="d-flex align-items-center mb-3">
+  <a href="/base/{{ base_name }}"
+     class="btn btn-outline-secondary btn-sm mr-3">
+    <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>
+    Back to base
+  </a>
+  <h1 class="h3 mb-0">
+    <i class="fa fa-signature mr-2" aria-hidden="true"></i>
+    {{ t("SURNAME") }} - {{ base_name }}
+  </h1>
+</div>
+
+<!-- Sort controls -->
+<div class="mb-3">
+  <span class="mr-2">Sort:</span>
+  <a href="/base/{{ base_name }}?m=N&tri=A"
+     class="btn btn-sm
+     {% if tri == 'A' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+    <i class="fa fa-arrow-down-a-z mr-1" aria-hidden="true"></i>
+    Alphabetical
+  </a>
+  <a href="/base/{{ base_name }}?m=N&tri=F"
+     class="btn btn-sm
+     {% if tri == 'F' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+    <i class="fa fa-arrow-down-wide-short mr-1" aria-hidden="true"></i>
+    Frequency
+  </a>
+</div>
+
+<p class="text-muted">
+  {{ items | length }} distinct surname(s),
+  {{ total }} individual(s) total.
+</p>
+
+{% if items %}
+<div class="row">
+{% for item in items %}
+  <div class="col-6 col-md-4 col-lg-3 mb-1">
+    <a href="/base/{{ base_name }}?m=S&n={{ item.last_name | urlencode }}"
+       class="d-flex justify-content-between
+              align-items-center text-decoration-none
+              px-2 py-1 border-bottom">
+      <span>{{ item.last_name }}</span>
+      <span class="badge badge-secondary badge-pill">
+        {{ item.cnt }}
+      </span>
+    </a>
+  </div>
+{% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+  No surnames found in this base.
+</div>
+{% endif %}
+
+</main><!-- /.container -->
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

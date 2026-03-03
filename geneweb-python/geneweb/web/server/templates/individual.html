@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+<title>
+  {% if person %}
+    {{ person.first_name }} {{ person.last_name }}
+  {% else %}
+    Individual not found
+  {% endif %}
+  - {{ base_name }} - GeneWeb
+</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
+<style>
+.info-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 130px;
+}
+.person-card {
+  border-left: 4px solid #007bff;
+  padding-left: 1rem;
+}
+.person-card.female {
+  border-left-color: #e83e8c;
+}
+</style>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<main id="main-content" class="container mt-3">
+
+<!-- Header -->
+<div class="d-flex align-items-center mb-3">
+  <a href="/base/{{ base_name }}"
+     class="btn btn-outline-secondary btn-sm mr-3">
+    <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>
+    Back to base
+  </a>
+  <h1 class="h3 mb-0">
+    <i class="fa fa-user mr-2" aria-hidden="true"></i>
+    {{ base_name }}
+  </h1>
+</div>
+
+{% if person %}
+<!-- Person header -->
+<div class="card mb-4">
+<div class="card-body
+     person-card{% if person.gender == 'F' %} female{% endif %}">
+  <h2 class="card-title mb-1">
+    {% if person.gender == 'M' %}
+      <i class="fa fa-mars text-primary mr-1" aria-hidden="true"></i>
+      <span class="sr-only">Male</span>
+    {% elif person.gender == 'F' %}
+      <i class="fa fa-venus text-danger mr-1" aria-hidden="true"></i>
+      <span class="sr-only">Female</span>
+    {% endif %}
+    {{ person.first_name }}
+    <strong>{{ person.last_name }}</strong>
+  </h2>
+  {% if person.occupation %}
+  <p class="text-muted mb-0">
+    <i class="fa fa-briefcase mr-1" aria-hidden="true"></i>
+    {{ person.occupation }}
+  </p>
+  {% endif %}
+</div>
+</div>
+
+<!-- Dates & places -->
+<div class="card mb-4">
+<div class="card-header">
+  <i class="fa fa-calendar-days mr-1" aria-hidden="true"></i>
+  Dates &amp; Places
+</div>
+<div class="card-body">
+<table class="table table-borderless table-sm mb-0">
+<tbody>
+  {% if person.birth_date or person.birth_place %}
+  <tr>
+    <td class="info-label">
+      <i class="fa fa-baby mr-1" aria-hidden="true"></i> Birth
+    </td>
+    <td>
+      {{ person.birth_date or '' }}
+      {% if person.birth_place %}
+        &mdash; {{ person.birth_place }}
+      {% endif %}
+    </td>
+  </tr>
+  {% endif %}
+  {% if person.death_date or person.death_place %}
+  <tr>
+    <td class="info-label">
+      <i class="fa fa-cross mr-1" aria-hidden="true"></i> Death
+    </td>
+    <td>
+      {{ person.death_date or '' }}
+      {% if person.death_place %}
+        &mdash; {{ person.death_place }}
+      {% endif %}
+    </td>
+  </tr>
+  {% endif %}
+</tbody>
+</table>
+{% if not person.birth_date
+      and not person.death_date
+      and not person.birth_place
+      and not person.death_place %}
+<p class="text-muted mb-0">
+  No date or place information available.
+</p>
+{% endif %}
+</div>
+</div>
+
+<!-- Parents -->
+<div class="card mb-4">
+<div class="card-header">
+  <i class="fa fa-users mr-1" aria-hidden="true"></i>
+  Parents
+</div>
+<div class="card-body">
+{% if father or mother %}
+<ul class="list-unstyled mb-0">
+  {% if father %}
+  <li class="mb-1">
+    <i class="fa fa-mars text-primary mr-1" aria-hidden="true"></i>
+    Father:
+    <a href="/base/{{ base_name }}?i={{ father.id }}">
+      {{ father.first_name }}
+      <strong>{{ father.last_name }}</strong>
+    </a>
+  </li>
+  {% endif %}
+  {% if mother %}
+  <li>
+    <i class="fa fa-venus text-danger mr-1" aria-hidden="true"></i>
+    Mother:
+    <a href="/base/{{ base_name }}?i={{ mother.id }}">
+      {{ mother.first_name }}
+      <strong>{{ mother.last_name }}</strong>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% else %}
+<p class="text-muted mb-0">
+  No parent information available.
+</p>
+{% endif %}
+</div>
+</div>
+
+<!-- Families (unions) -->
+<div class="card mb-4">
+<div class="card-header">
+  <i class="fa fa-heart mr-1" aria-hidden="true"></i>
+  Unions
+</div>
+<div class="card-body">
+{% if families %}
+{% for fam in families %}
+<div class="mb-3{% if not loop.last %} border-bottom pb-3{% endif %}">
+  <h6>
+    Union {{ loop.index }}
+    {% if fam.marriage_date %}
+      &mdash; {{ fam.marriage_date }}
+    {% endif %}
+    {% if fam.marriage_place %}
+      ({{ fam.marriage_place }})
+    {% endif %}
+  </h6>
+
+  <!-- Show the spouse (the other person) -->
+  {% if fam.s1_id == person.id %}
+    {% if fam.s2_id %}
+    <p class="mb-1">
+      Spouse:
+      <a href="/base/{{ base_name }}?i={{ fam.s2_id }}">
+        {{ fam.s2_fn }}
+        <strong>{{ fam.s2_ln }}</strong>
+      </a>
+    </p>
+    {% endif %}
+  {% else %}
+    {% if fam.s1_id %}
+    <p class="mb-1">
+      Spouse:
+      <a href="/base/{{ base_name }}?i={{ fam.s1_id }}">
+        {{ fam.s1_fn }}
+        <strong>{{ fam.s1_ln }}</strong>
+      </a>
+    </p>
+    {% endif %}
+  {% endif %}
+
+  {% if fam.divorce_date %}
+  <p class="mb-1 text-muted">
+    <i class="fa fa-gavel mr-1" aria-hidden="true"></i>
+    Divorced: {{ fam.divorce_date }}
+  </p>
+  {% endif %}
+</div>
+{% endfor %}
+{% else %}
+<p class="text-muted mb-0">
+  No union information available.
+</p>
+{% endif %}
+</div>
+</div>
+
+<!-- Children -->
+<div class="card mb-4">
+<div class="card-header">
+  <i class="fa fa-children mr-1" aria-hidden="true"></i>
+  Children
+</div>
+<div class="card-body">
+{% if children %}
+<ul class="list-unstyled mb-0">
+{% for ch in children %}
+  <li class="mb-1">
+    {% if ch.gender == 'M' %}
+      <i class="fa fa-mars text-primary mr-1" aria-hidden="true"></i>
+      <span class="sr-only">Male</span>
+    {% elif ch.gender == 'F' %}
+      <i class="fa fa-venus text-danger mr-1" aria-hidden="true"></i>
+      <span class="sr-only">Female</span>
+    {% else %}
+      <i class="fa fa-genderless text-muted mr-1" aria-hidden="true"></i>
+      <span class="sr-only">Unknown gender</span>
+    {% endif %}
+    <a href="/base/{{ base_name }}?i={{ ch.id }}">
+      {{ ch.first_name }}
+      <strong>{{ ch.last_name }}</strong>
+    </a>
+    {% if ch.birth_date %}
+      <span class="text-muted ml-1">
+        ({{ ch.birth_date }})
+      </span>
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% else %}
+<p class="text-muted mb-0">
+  No children recorded.
+</p>
+{% endif %}
+</div>
+</div>
+
+<!-- Events -->
+{% if events %}
+<div class="card mb-4">
+<div class="card-header">
+  <i class="fa fa-timeline mr-1" aria-hidden="true"></i>
+  Events
+</div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-striped table-sm mb-0">
+<caption class="sr-only">Events for this individual</caption>
+<thead class="thead-light">
+  <tr>
+    <th scope="col">Type</th>
+    <th scope="col">Date</th>
+    <th scope="col">Place</th>
+    <th scope="col">Description</th>
+  </tr>
+</thead>
+<tbody>
+{% for ev in events %}
+  <tr>
+    <td>{{ ev.event_type }}</td>
+    <td>{{ ev.date or '' }}</td>
+    <td>{{ ev.place or '' }}</td>
+    <td>{{ ev.description or '' }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+{% endif %}
+
+<!-- Notes -->
+{% if person.notes %}
+<div class="card mb-4">
+<div class="card-header">
+  <i class="fa fa-sticky-note mr-1" aria-hidden="true"></i>
+  Notes
+</div>
+<div class="card-body">
+  <p class="mb-0" style="white-space:pre-wrap;">{{
+    person.notes
+  }}</p>
+</div>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Person not found -->
+<div class="alert alert-warning mt-4">
+  <i class="fa fa-triangle-exclamation mr-1" aria-hidden="true"></i>
+  Individual not found in this base.
+</div>
+{% endif %}
+
+</main><!-- /.container -->
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
