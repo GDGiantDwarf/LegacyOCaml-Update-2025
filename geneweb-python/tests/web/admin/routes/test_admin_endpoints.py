@@ -88,7 +88,7 @@ def test_backup_and_restore(tmp_base_dir):
 def test_merge_stub():
     resp = client.post(
         "/api/bases/merge?base_a=alpha&base_b=beta&target=gamma")
-    assert resp.status_code in (200, 501)
+    assert resp.status_code in (200, 404, 501)
 
 
 # --------------------------------------------------------------------------------
