@@ -1,12 +1,8 @@
 import pytest
-import html
 from fastapi.testclient import TestClient
-from geneweb.web.server.routes.base_detail import router
-from fastapi import FastAPI
+from geneweb.web.server.server import create_app
 
-app = FastAPI()
-app.include_router(router)
-
+app = create_app()
 client = TestClient(app)
 
 
@@ -15,5 +11,6 @@ def test_base_detail_page_renders_html():
 
     response = client.get(f"/base/{base_name}")
     assert response.status_code == 200
-    assert response.headers["content-type"].startswith("text/html")
+    content_type = response.headers["content-type"]
+    assert content_type.startswith("text/html")
     assert base_name in response.text

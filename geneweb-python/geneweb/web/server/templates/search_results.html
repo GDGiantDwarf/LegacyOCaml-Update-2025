@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+<title>Search - {{ base_name }} - GeneWeb</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<main id="main-content" class="container mt-3">
+
+<!-- Header -->
+<div class="d-flex align-items-center mb-3">
+  <a href="/base/{{ base_name }}"
+     class="btn btn-outline-secondary btn-sm mr-3">
+    <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>
+    Back to base
+  </a>
+  <h1 class="h3 mb-0">
+    <i class="fa fa-magnifying-glass mr-2" aria-hidden="true"></i>
+    {{ t("SEARCH") }} - {{ base_name }}
+  </h1>
+</div>
+
+<!-- Search form (inline repeat) -->
+<form method="get"
+      action="/base/{{ base_name }}"
+      class="mb-4">
+<input type="hidden" name="m" value="S">
+<div class="form-row align-items-end">
+  <div class="col-md-4 mb-2">
+    <label for="n">{{ t("SURNAME") }}</label>
+    <input type="search" class="form-control"
+           id="n" name="n"
+           value="{{ surname }}"
+           placeholder="{{ t('SURNAME') }}">
+  </div>
+  <div class="col-md-4 mb-2">
+    <label for="p">{{ t("FIRSTNAMES") }}</label>
+    <input type="search" class="form-control"
+           id="p" name="p"
+           value="{{ firstname }}"
+           placeholder="{{ t('FIRSTNAMES') }}">
+  </div>
+  <div class="col-md-2 mb-2">
+    <button class="btn btn-primary w-100"
+            type="submit">
+      <i class="fa fa-magnifying-glass mr-1" aria-hidden="true"></i>
+      {{ t("SEARCH") }}
+    </button>
+  </div>
+</div>
+</form>
+
+<!-- Results -->
+<p class="text-muted">
+  {{ result_count }} result(s) found.
+</p>
+
+{% if results %}
+<div class="table-responsive">
+<table class="table table-striped table-hover
+              table-sm">
+<caption class="sr-only">Search results</caption>
+<thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">{{ t("SURNAME") }}</th>
+    <th scope="col">{{ t("FIRSTNAMES") }}</th>
+    <th scope="col">Gender</th>
+    <th scope="col">Birth</th>
+    <th scope="col">Death</th>
+    <th scope="col">Occupation</th>
+  </tr>
+</thead>
+<tbody>
+{% for row in results %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>
+      <a href="/base/{{ base_name }}?i={{ row.id }}">
+        <strong>{{ row.last_name }}</strong>
+      </a>
+    </td>
+    <td>
+      <a href="/base/{{ base_name }}?i={{ row.id }}">
+        {{ row.first_name }}
+      </a>
+    </td>
+    <td>
+      {% if row.gender == 'M' %}
+        <i class="fa fa-mars text-primary" aria-hidden="true"></i>
+        <span class="sr-only">Male</span>
+      {% elif row.gender == 'F' %}
+        <i class="fa fa-venus text-danger" aria-hidden="true"></i>
+        <span class="sr-only">Female</span>
+      {% else %}
+        <i class="fa fa-genderless text-muted" aria-hidden="true"></i>
+        <span class="sr-only">Unknown</span>
+      {% endif %}
+    </td>
+    <td>{{ row.birth_date or '' }}</td>
+    <td>{{ row.death_date or '' }}</td>
+    <td>{{ row.occupation or '' }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% elif surname or firstname %}
+<div class="alert alert-info">
+  No matching individuals found.
+</div>
+{% endif %}
+
+</main><!-- /.container -->
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

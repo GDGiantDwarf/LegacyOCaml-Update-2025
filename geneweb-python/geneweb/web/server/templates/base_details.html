@@ -1,421 +1,571 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ lang | default('en') }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base généalogique base-test - GeneWeb</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: #f8f9fa;
-            padding: 20px;
-        }
-
-        .header {
-            background: white;
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .logo {
-            width: 180px;
-            height: 180px;
-        }
-
-        .header-content {
-            flex: 1;
-        }
-
-        .header-content h1 {
-            font-size: 2.5rem;
-            font-weight: 400;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .header-content p {
-            font-size: 1.2rem;
-            color: #666;
-        }
-
-        .search-section {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-
-        .search-help {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .help-icon {
-            color: #2196F3;
-            font-size: 1.2rem;
-            cursor: help;
-        }
-
-        .search-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .sort-icons {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .sort-icon {
-            color: #2196F3;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #2196F3;
-        }
-
-        .checkboxes {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-        }
-
-        .checkbox-label input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .small-inputs-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .input-group .list-icon {
-            color: #2196F3;
-            font-size: 1.2rem;
-        }
-
-        .search-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 30px;
-            background: white;
-            color: #2196F3;
-            border: 2px solid #2196F3;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .search-button:hover {
-            background: #2196F3;
-            color: white;
-        }
-
-        .section {
-            background: white;
-            padding: 25px 30px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .section-title .icon {
-            font-size: 1.5rem;
-        }
-
-        .button-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .action-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: white;
-            border: 2px solid #4CAF50;
-            border-radius: 4px;
-            color: #4CAF50;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .action-button:hover {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .action-button.blue {
-            border-color: #2196F3;
-            color: #2196F3;
-        }
-
-        .action-button.blue:hover {
-            background: #2196F3;
-            color: white;
-        }
-
-        .action-button.orange {
-            border-color: #FF9800;
-            color: #FF9800;
-        }
-
-        .action-button.orange:hover {
-            background: #FF9800;
-            color: white;
-        }
-
-        .footer {
-            text-align: right;
-            padding: 20px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .footer a {
-            color: #2196F3;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-icons {
-            display: inline-flex;
-            gap: 10px;
-            margin-left: 10px;
-        }
-
-        .footer-icon {
-            font-size: 1.2rem;
-            color: #2196F3;
-        }
-    </style>
+<title>
+  {{ t("FAMILY_TREE_BASE") }} {{ base_name }} - GeneWeb
+</title>
+<meta name="robots" content="none">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="apple-touch-icon"
+      href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
 </head>
 <body>
-    <div class="header">
-        <svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="100" cy="190" rx="35" ry="8" fill="#999" opacity="0.3"/>
-            <rect x="95" y="140" width="10" height="50" fill="#8B4513"/>
-            <circle cx="100" cy="90" r="70" fill="none"/>
-            <g id="leaves">
-                <circle cx="100" cy="40" r="8" fill="#7CB342"/>
-                <circle cx="85" cy="50" r="7" fill="#8BC34A"/>
-                <circle cx="115" cy="50" r="7" fill="#9CCC65"/>
-                <circle cx="70" cy="60" r="8" fill="#7CB342"/>
-                <circle cx="130" cy="60" r="8" fill="#8BC34A"/>
-                <circle cx="100" cy="65" r="9" fill="#9CCC65"/>
-                <circle cx="55" cy="75" r="7" fill="#7CB342"/>
-                <circle cx="145" cy="75" r="7" fill="#8BC34A"/>
-                <circle cx="85" cy="75" r="8" fill="#9CCC65"/>
-                <circle cx="115" cy="75" r="8" fill="#7CB342"/>
-                <circle cx="40" cy="90" r="8" fill="#8BC34A"/>
-                <circle cx="160" cy="90" r="8" fill="#9CCC65"/>
-                <circle cx="70" cy="90" r="9" fill="#7CB342"/>
-                <circle cx="130" cy="90" r="9" fill="#8BC34A"/>
-                <circle cx="100" cy="95" r="10" fill="#9CCC65"/>
-                <circle cx="50" cy="105" r="7" fill="#7CB342"/>
-                <circle cx="150" cy="105" r="7" fill="#8BC34A"/>
-                <circle cx="85" cy="105" r="8" fill="#9CCC65"/>
-                <circle cx="115" cy="105" r="8" fill="#7CB342"/>
-                <circle cx="65" cy="120" r="8" fill="#8BC34A"/>
-                <circle cx="135" cy="120" r="8" fill="#9CCC65"/>
-                <circle cx="100" cy="120" r="9" fill="#7CB342"/>
-                <circle cx="80" cy="130" r="7" fill="#8BC34A"/>
-                <circle cx="120" cy="130" r="7" fill="#9CCC65"/>
-            </g>
-        </svg>
-        <div class="header-content">
-            <h1>Base généalogique {{ base_name }}</h1>
-            <p>0 personne</p>
-        </div>
-    </div>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<script>
+  window.TRANSLATIONS = {{ translations_json | safe }};
+  window.LANG = "{{ lang }}";
+</script>
+<main id="main-content" class="container">
+<meta name="format-detection" content="telephone=no">
 
-    <div class="search-section">
-        <div class="search-help">
-            <span class="help-icon">ⓘ</span>
-            <span>Rechercher personne, patronyme, nom public, alias, clé</span>
-        </div>
+<!-- Header: logo + base info -->
+<div class="d-flex flex-column flex-md-row
+            justify-content-lg-center mt-lg-3">
+<div class="d-none d-lg-block col-md-3 order-md-1"></div>
+<div class="col-xs-12 col-md-3 order-md-3 ml-md-2 px-0">
+<div class="d-flex flex-column">
+<div class="btn-group btn-group-xs mt-1" role="group">
+</div>
+</div>
+</div>
+<div class="bg-white my-0 order-md-2 flex-fill
+            text-lg-center align-self-md-center">
+<img src="/static/images/gwlogo.png"
+     alt="GeneWeb" title="GeneWeb">
+<h1 class="font-weight-bolder">
+  <span data-i18n="FAMILY_TREE_BASE">
+    {{ t("FAMILY_TREE_BASE") }}
+  </span>
+  {{ base_name }}
+</h1>
+<div class="d-flex justify-content-center">
+<span class="h2 font-weight-light">
+  {{ person_count }}
+  <span data-i18n="INDIVIDUALS">
+    {{ t("INDIVIDUALS") }}
+  </span>
+</span>
+<a class="align-self-center"
+   href="/base/{{ base_name }}?i=random"
+   title="Display a random individual"
+   aria-label="Display a random individual">
+  <i class="fa-solid fa-dice ml-1 mb-2" aria-hidden="true"></i>
+</a>
+</div>
+</div>
+</div>
 
-        <div class="search-row">
-            <div class="sort-icons">
-                <span class="sort-icon">⬆</span>
-                <span class="sort-icon">⬇</span>
-            </div>
-            <input type="text" class="search-input" placeholder="Prénom(s)">
-            <div class="checkboxes">
-                <label class="checkbox-label">
-                    <input type="checkbox">
-                    <span>Un prénom</span>
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox">
-                    <span>Même ordre</span>
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox">
-                    <span>Partiel</span>
-                </label>
-            </div>
-        </div>
+<!-- ==================== SEARCH SECTION ==================== -->
+<div class="flex-row justify-content-center">
 
-        <div class="search-row">
-            <div class="sort-icons">
-                <span class="sort-icon">⬆</span>
-                <span class="sort-icon">⬇</span>
-            </div>
-            <input type="text" class="search-input" placeholder="Patronyme">
-            <div style="width: 180px;"></div>
-        </div>
+<!-- Form 1: Surname search -->
+<form class="mt-3 mt-xl-5" method="get"
+      action="/base/{{ base_name }}">
+<input type="hidden" name="m" value="S">
+<div class="d-flex justify-content-center">
+<div class="d-flex flex-column justify-content-center
+            col-xs-11 col-md-9 col-lg-7 w-75">
+<div class="d-flex">
+<div class="btn-group-vertical mr-2">
+<a role="button"
+   href="/base/{{ base_name }}?m=N&tri=A"
+   title="Surnames, sort by alphabetical order"
+   aria-label="Surnames, sort by alphabetical order">
+  <i class="fa fa-arrow-down-a-z fa-fw" aria-hidden="true"></i>
+</a>
+<a role="button"
+   href="/base/{{ base_name }}?m=N&tri=F"
+   title="Frequency surnames, sort by number of individuals"
+   aria-label="Frequency surnames, sort by number of individuals">
+  <i class="fa fa-arrow-down-wide-short fa-fw" aria-hidden="true"></i>
+</a>
+</div>
+<label for="surname"
+       class="sr-only col-form-label col-sm-2">
+  <span data-i18n="SURNAME">
+    {{ t("SURNAME") }}
+  </span>
+</label>
+<input type="search" id="surname"
+       class="form-control form-control-lg"
+       name="n"
+       placeholder="{{ t('SURNAME_PUBLIC_ALIAS') }}"
+       data-i18n="SURNAME_PUBLIC_ALIAS"
+       title="Search surname, public name, alias"
+       autofocus tabindex="1">
+</div>
 
-        <div class="small-inputs-row">
-            <div class="input-group">
-                <span class="list-icon">☰</span>
-                <input type="text" class="search-input" placeholder="Titre">
-            </div>
-            <div class="input-group">
-                <span class="list-icon">☰</span>
-                <input type="text" class="search-input" placeholder="Domaine">
-            </div>
-            <button class="search-button">
-                <span>🔍</span>
-                <span>Rechercher</span>
-            </button>
-        </div>
-    </div>
+<!-- First name input -->
+<div class="d-flex mt-2">
+<div class="btn-group-vertical mr-2">
+<a role="button"
+   href="/base/{{ base_name }}?m=P&tri=A"
+   title="First names, sort by alphabetical order"
+   aria-label="First names, sort by alphabetical order">
+  <i class="fa fa-arrow-down-a-z fa-fw" aria-hidden="true"></i>
+</a>
+<a role="button"
+   href="/base/{{ base_name }}?m=P&tri=F"
+   title="Frequency first names, sort by number of individuals"
+   aria-label="Frequency first names, sort by number of individuals">
+  <i class="fa fa-arrow-down-wide-short fa-fw" aria-hidden="true"></i>
+</a>
+</div>
+<label for="firstname"
+       class="sr-only col-form-label col-sm-2">
+  <span data-i18n="FIRSTNAMES">
+    {{ t("FIRSTNAMES") }}
+  </span>
+</label>
+<input type="search" id="firstname"
+       class="form-control form-control-lg border-top-0"
+       name="p"
+       placeholder="{{ t('FIRSTNAMES') }}"
+       data-i18n="FIRSTNAMES"
+       tabindex="2">
+</div>
+</div>
+<button class="btn btn-outline-primary
+               align-self-center ml-2" type="submit">
+  <i class="fa fa-magnifying-glass fa-fw fa-2x mt-1" aria-hidden="true"></i>
+  <br>
+  <span data-i18n="SEARCH">{{ t("SEARCH") }}</span>
+  <br>
+  <span data-i18n="INDIVIDUAL">{{ t("INDIVIDUAL") }}</span>
+</button>
+</div>
+</form>
 
-    <div class="section">
-        <div class="section-title">
-            <span class="icon">🛠</span>
-            <span>Outils</span>
-        </div>
-        <div class="button-grid">
-            <button class="action-button">📝 Saisir une chronique</button>
-            <button class="action-button blue">📊 Statistiques</button>
-            <button class="action-button blue">🎂 Anniversaires</button>
-            <button class="action-button blue">🌍 Lieux/patronyme</button>
-            <button class="action-button blue">🔍 Requête évoluée</button>
-            <button class="action-button blue">📅 Calendriers</button>
-            <button class="action-button orange">⚙️ Configuration</button>
-            <button class="action-button orange">📌 Ajouter note</button>
-            <button class="action-button">👥 Ajouter famille</button>
-        </div>
-    </div>
+<!-- Form 2: Title / Fief search -->
+<form class="mt-2 mt-md-3 mt-lg-4" method="get"
+      action="/base/{{ base_name }}">
+<input type="hidden" name="m" value="TT">
+<div class="d-flex justify-content-center mx-5">
+<div class="d-flex flex-column justify-content-center
+            col-xs-9 col-md-7 col-lg-5 w-75">
+<div class="d-flex">
+<a class="mr-2 align-self-center" role="button"
+   href="/base/{{ base_name }}?m=TT"
+   title="All the titles"
+   aria-label="All the titles">
+  <i class="fa fa-list-ul fa-fw" aria-hidden="true"></i>
+</a>
+<label for="titles"
+       class="sr-only col-form-label col-sm-2">
+  <span data-i18n="TITLE">{{ t("TITLE") }}</span>
+</label>
+<input type="search"
+       class="form-control border-top-0
+              border-right-0 border-left-0"
+       name="t" id="titles"
+       placeholder="{{ t('TITLE') }}"
+       data-i18n="TITLE" tabindex="3">
+</div>
+<div class="d-flex mt-2">
+<a class="mr-2 align-self-center" role="button"
+   href="/base/{{ base_name }}?m=TT&p=*"
+   title="All the fiefs"
+   aria-label="All the fiefs">
+  <i class="fa fa-list-ul fa-fw" aria-hidden="true"></i>
+</a>
+<label for="estates"
+       class="sr-only col-form-label col-sm-2">
+  <span data-i18n="FIEF">{{ t("FIEF") }}</span>
+</label>
+<input type="search"
+       class="form-control border-top-0
+              border-right-0 border-left-0"
+       name="p" id="estates"
+       placeholder="{{ t('FIEF') }}"
+       data-i18n="FIEF" tabindex="4">
+</div>
+</div>
+<button class="btn btn-outline-primary btn-sm
+               align-self-center ml-2 px-0 py-3"
+        type="submit" title="Search title/fief"
+        aria-label="Search title/fief">
+  <i class="fa fa-magnifying-glass fa-fw fa-2x mx-3" aria-hidden="true"></i>
+</button>
+</div>
+</form>
+</div>
 
-    <div class="section">
-        <div class="section-title">
-            <span class="icon">📚</span>
-            <span>Dictionnaires</span>
-        </div>
-        <div class="button-grid">
-            <button class="action-button">🚶 Prénoms</button>
-            <button class="action-button">👨‍👩‍👧‍👦 Patronymes</button>
-            <button class="action-button">✏️ Noms publics</button>
-            <button class="action-button">💬 Sobriquets</button>
-            <button class="action-button">👓 Alias</button>
-            <button class="action-button">👔 Professions</button>
-            <button class="action-button">🏛 Lieux</button>
-            <button class="action-button">📄 Sources</button>
-            <button class="action-button">👑 Titres</button>
-            <button class="action-button">🏰 Domaines</button>
-            <button class="action-button">🔤</button>
-        </div>
-    </div>
+<!-- ==================== TOOLS SECTION ==================== -->
+<div class="d-flex flex-column justify-items-lg-center
+            mt-3 mt-lg-4">
+<div class="h4 text-lg-center">
+  <i class="fas fa-screwdriver-wrench fa-sm fa-fw
+            text-secondary mr-1" aria-hidden="true"></i>
+  <span data-i18n="TOOLS">{{ t("TOOLS") }}</span>
+</div>
+<div class="d-inline-flex justify-content-lg-center">
+<a role="button"
+   class="btn btn-outline-primary mr-1"
+   href="/base/{{ base_name }}/notes">
+  <span data-i18n="ADD_NOTES">
+    {{ t("ADD_NOTES") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-primary mr-1"
+   href="/base/{{ base_name }}/stats">
+  <i class="far fa-chart-bar fa-fw mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="STATISTICS">
+    {{ t("STATISTICS") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-primary"
+   href="/base/{{ base_name }}/anniversaries">
+  <i class="fa fa-cake-candles fa-fw mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="ANNIVERSARIES">
+    {{ t("ANNIVERSARIES") }}
+  </span>
+</a>
+</div>
+<div class="d-inline-flex justify-content-lg-center
+            mt-1 mt-lg-2">
+<a role="button"
+   class="btn btn-outline-success mr-1"
+   href="/base/{{ base_name }}/add-family">
+  <i class="fas fa-user-plus mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="ADD_FAMILY">
+    {{ t("ADD_FAMILY") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-primary mr-1"
+   href="/base/{{ base_name }}/places?bi=on&ba=on&ma=on&de=on&bu=on">
+  <i class="fas fa-globe fa-fw mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="PLACES_SURNAME">
+    {{ t("PLACES_SURNAME") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-primary mr-1"
+   href="/base/{{ base_name }}?m=AS">
+  <i class="fa fa-magnifying-glass-plus fa-fw mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="ADVANCED_REQUEST">
+    {{ t("ADVANCED_REQUEST") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-primary mr-1"
+   href="/calendars">
+  <i class="far fa-calendar-days fa-fw mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="CALENDARS">
+    {{ t("CALENDARS") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-success mr-1"
+   href="/base/{{ base_name }}/config">
+  <i class="fas fa-gear fa-fw mr-1"
+     aria-hidden="true"></i>
+  <span data-i18n="CONFIGURATION">
+    {{ t("CONFIGURATION") }}
+  </span>
+</a>
+</div>
+</div>
 
-    <div class="footer">
-        <span>🔷 GeneWeb v. 7.1-beta</span><br>
-        <a href="#">FR</a> ▴<br>
-        © <a href="https://www.inria.fr" target="_blank">INRIA</a> 1998–2007
-        <span class="footer-icons">
-            <span class="footer-icon">Ⓦ</span>
-            <span class="footer-icon">🐙</span>
-        </span>
-    </div>
+<!-- ==================== BOOKS SECTION ==================== -->
+<div class="d-flex flex-column flex-lg-row
+            justify-content-lg-center mt-2 mt-lg-4">
+<div class="h4 align-self-lg-center mr-lg-2">
+  <i class="fas fa-book fa-sm fa-fw text-muted mr-1" aria-hidden="true"></i>
+  <span data-i18n="BOOKS">{{ t("BOOKS") }}</span>
+</div>
+<div class="d-inline-flex justify-content-lg-center">
+<a role="button"
+   class="btn btn-outline-success mr-1"
+   href="/base/{{ base_name }}/book/fn">
+  <i class="fa fa-child fa-fw mr-1" aria-hidden="true"></i>
+  <span data-i18n="FIRSTNAMES_BOOK">
+    {{ t("FIRSTNAMES_BOOK") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-success mr-1"
+   href="/base/{{ base_name }}/book/sn">
+  <i class="fa fa-signature fa-fw mr-1" aria-hidden="true"></i>
+  <span data-i18n="SURNAMES_BOOK">
+    {{ t("SURNAMES_BOOK") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-success mr-1"
+   href="/base/{{ base_name }}/book/place">
+  <i class="fa fa-map-location-dot fa-fw mr-1" aria-hidden="true"></i>
+  <span data-i18n="PLACES_BOOK">
+    {{ t("PLACES_BOOK") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-success mr-1"
+   href="/base/{{ base_name }}/book/occu">
+  <i class="fa fa-user-doctor fa-fw mr-1" aria-hidden="true"></i>
+  <span data-i18n="OCCUPATIONS_BOOK">
+    {{ t("OCCUPATIONS_BOOK") }}
+  </span>
+</a>
+<a role="button"
+   class="btn btn-outline-success"
+   href="/base/{{ base_name }}/book/src">
+  <i class="fa fa-box-archive fa-fw mr-1" aria-hidden="true"></i>
+  <span data-i18n="SOURCES_BOOK">
+    {{ t("SOURCES_BOOK") }}
+  </span>
+</a>
+</div>
+</div>
 
-    <script>
-        // Gestion de la recherche
-        document.querySelector('.search-button').addEventListener('click', function() {
-            console.log('Recherche lancée');
-        });
+<!-- ==================== FOOTER / COPYR ==================== -->
+<div class="d-flex ml-auto justify-content-end m-2"
+     id="copyr">
+<div class="btn-group dropup align-self-center">
+<button class="btn btn-link dropdown-toggle"
+        type="button" id="langDropdownBtn"
+        data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false"
+        title="">
+  <span class="sr-only">lang</span>
+  <span class="text-uppercase"
+        id="langDropdownText">{{ lang }}</span>
+  <span class="sr-only">, view in</span>
+</button>
+<div class="dropdown-menu scrollable-lang"
+     aria-labelledby="langDropdownBtn">
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=af"
+     title="lang af"><code>af&nbsp;&nbsp;&nbsp; </code>Afrikaans</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=ar"
+     title="lang ar"><code>ar&nbsp;&nbsp;&nbsp; </code>Arabic</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=bg"
+     title="lang bg"><code>bg&nbsp;&nbsp;&nbsp; </code>Bulgarian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=br"
+     title="lang br"><code>br&nbsp;&nbsp;&nbsp; </code>Breton</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=ca"
+     title="lang ca"><code>ca&nbsp;&nbsp;&nbsp; </code>Catalan</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=co"
+     title="lang co"><code>co&nbsp;&nbsp;&nbsp; </code>Corsican</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=cs"
+     title="lang cs"><code>cs&nbsp;&nbsp;&nbsp; </code>Czech</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=da"
+     title="lang da"><code>da&nbsp;&nbsp;&nbsp; </code>Danish</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=de"
+     title="lang de"><code>de&nbsp;&nbsp;&nbsp; </code>German</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=eo"
+     title="lang eo"><code>eo&nbsp;&nbsp;&nbsp; </code>Esperanto</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=en"
+     title="lang en"><code>en&nbsp;&nbsp;&nbsp; </code>English</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=es"
+     title="lang es"><code>es&nbsp;&nbsp;&nbsp; </code>Spanish</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=et"
+     title="lang et"><code>et&nbsp;&nbsp;&nbsp; </code>Estonian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=fi"
+     title="lang fi"><code>fi&nbsp;&nbsp;&nbsp; </code>Finnish</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=fr"
+     title="lang fr"><code>fr&nbsp;&nbsp;&nbsp; </code>French</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=he"
+     title="lang he"><code>he&nbsp;&nbsp;&nbsp; </code>Hebrew</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=is"
+     title="lang is"><code>is&nbsp;&nbsp;&nbsp; </code>Icelandic</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=it"
+     title="lang it"><code>it&nbsp;&nbsp;&nbsp; </code>Italian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=lt"
+     title="lang lt"><code>lt&nbsp;&nbsp;&nbsp; </code>Lithuanian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=lv"
+     title="lang lv"><code>lv&nbsp;&nbsp;&nbsp; </code>Latvian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=nl"
+     title="lang nl"><code>nl&nbsp;&nbsp;&nbsp; </code>Dutch</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=no"
+     title="lang no"><code>no&nbsp;&nbsp;&nbsp; </code>Norwegian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=oc"
+     title="lang oc"><code>oc&nbsp;&nbsp;&nbsp; </code>Occitan</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=pl"
+     title="lang pl"><code>pl&nbsp;&nbsp;&nbsp; </code>Polish</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=pt"
+     title="lang pt"><code>pt&nbsp;&nbsp;&nbsp; </code>Portuguese</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=pt-br"
+     title="lang pt-br"><code>pt-br </code>Brazilian-Portuguese</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=ro"
+     title="lang ro"><code>ro&nbsp;&nbsp;&nbsp; </code>Romanian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=ru"
+     title="lang ru"><code>ru&nbsp;&nbsp;&nbsp; </code>Russian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=sk"
+     title="lang sk"><code>sk&nbsp;&nbsp;&nbsp; </code>Slovak</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=sl"
+     title="lang sl"><code>sl&nbsp;&nbsp;&nbsp; </code>Slovenian</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=sv"
+     title="lang sv"><code>sv&nbsp;&nbsp;&nbsp; </code>Swedish</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=tr"
+     title="lang tr"><code>tr&nbsp;&nbsp;&nbsp; </code>Turkish</a>
+  <a class="dropdown-item"
+     href="/base/{{ base_name }}?lang=zh"
+     title="lang zh"><code>zh&nbsp;&nbsp;&nbsp; </code>Chinese</a>
+</div>
+</div>
+<div class="d-inline-flex flex-column
+            justify-content-end align-self-center ml-3">
+<div class="ml-auto">
+  <a href="https://github.com/geneweb/geneweb"
+     title="GeneWeb on Github">GeneWeb v. 7.1-beta</a>
+</div>
+<div class="btn-group">
+  <span>&copy;
+    <a href="https://www.inria.fr"
+       target="_blank"
+       rel="noreferrer noopener">INRIA</a>
+    1998-2007
+  </span>
+  <a href="https://geneweb.tuxfamily.org/wiki/GeneWeb"
+     class="ml-1" target="_blank"
+     rel="noreferrer noopener"
+     title="Documentation GeneWeb"
+     aria-label="Documentation GeneWeb">
+    <i class="fab fa-wikipedia-w" aria-hidden="true"></i>
+  </a>
+  <a href="https://github.com/geneweb/geneweb"
+     class="ml-1" target="_blank"
+     rel="noreferrer noopener"
+     title="GeneWeb on Github"
+     aria-label="GeneWeb on Github">
+    <i class="fab fa-github" aria-hidden="true"></i>
+  </a>
+</div>
+</div>
+</div>
 
-        // Gestion des icônes de tri
-        document.querySelectorAll('.sort-icon').forEach(icon => {
-            icon.addEventListener('click', function() {
-                console.log('Tri activé');
-            });
-        });
+</main><!-- /.container -->
 
-        // Gestion des boutons d'action
-        document.querySelectorAll('.action-button').forEach(button => {
-            button.addEventListener('click', function() {
-                console.log('Action:', this.textContent.trim());
-            });
-        });
-    </script>
+<!-- JS -->
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script>
+$('#load_once_p_mod').one('click', function() {
+  $.getScript('/static/js/p_mod.js');
+});
+$('#load_once_copylink').one('click', function() {
+  $.getScript('/static/js/copylink.js');
+});
+</script>
+<script>
+$('.modal').on('shown.bs.modal', function() {
+  $(this).find('[autofocus]').focus();
+});
+</script>
+<script>
+// i18n text replacement
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.TRANSLATIONS) {
+    document.querySelectorAll('[data-i18n]').forEach(
+      function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (window.TRANSLATIONS[key]) {
+          el.textContent = window.TRANSLATIONS[key];
+        }
+      }
+    );
+    document.querySelectorAll(
+      '[placeholder][data-i18n]'
+    ).forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (window.TRANSLATIONS[key]) {
+        el.setAttribute(
+          'placeholder', window.TRANSLATIONS[key]
+        );
+      }
+    });
+    document.querySelectorAll(
+      '[title][data-i18n]'
+    ).forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (window.TRANSLATIONS[key]) {
+        el.setAttribute(
+          'title', window.TRANSLATIONS[key]
+        );
+      }
+    });
+  }
+  if (window.LANG) {
+    var lang = window.LANG;
+    var langNames = {
+      'af': 'Afrikaans', 'ar': 'Arabic',
+      'bg': 'Bulgarian', 'br': 'Breton',
+      'ca': 'Catalan', 'co': 'Corsican',
+      'cs': 'Czech', 'da': 'Danish',
+      'de': 'German', 'en': 'English',
+      'eo': 'Esperanto', 'es': 'Spanish',
+      'et': 'Estonian', 'fi': 'Finnish',
+      'fr': 'French', 'he': 'Hebrew',
+      'is': 'Icelandic', 'it': 'Italian',
+      'lt': 'Lithuanian', 'lv': 'Latvian',
+      'nl': 'Dutch', 'no': 'Norwegian',
+      'oc': 'Occitan', 'pl': 'Polish',
+      'pt': 'Portuguese',
+      'pt-br': 'Brazilian-Portuguese',
+      'ro': 'Romanian', 'ru': 'Russian',
+      'sk': 'Slovak', 'sl': 'Slovenian',
+      'sv': 'Swedish', 'tr': 'Turkish',
+      'zh': 'Chinese'
+    };
+    var btn = document.getElementById('langDropdownBtn');
+    var txt = document.getElementById('langDropdownText');
+    if (btn && txt) {
+      txt.textContent = lang;
+      txt.title = 'View in: ' + (langNames[lang] || lang);
+      btn.title = langNames[lang] || lang;
+    }
+  }
+});
+</script>
 </body>
 </html>

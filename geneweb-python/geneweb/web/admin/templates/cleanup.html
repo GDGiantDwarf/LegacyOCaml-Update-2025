@@ -1,0 +1,138 @@
+{% extends "base_layout.html" %}
+
+{% block title %}GeneWeb Admin - Cleanup{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-broom mr-2"></i>
+            Cleaning Up a Database
+        </h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-broom mr-1"></i>
+                Select Database to Clean
+            </div>
+            <div class="card-body">
+                <p>
+                    If you made many modifications in your database,
+                    or if you simply entered much data, it is advised
+                    to perform a cleanup, especially if you observe
+                    that access has slowed down.
+                </p>
+
+                {% if bases %}
+                <form id="cleanup-form">
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            Select the database to clean up:
+                        </label>
+                        {% for b in bases %}
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="base"
+                                   id="base-{{ b }}"
+                                   value="{{ b }}"
+                                   {% if loop.first %}checked{% endif %}>
+                            <label class="form-check-label"
+                                   for="base-{{ b }}">
+                                {{ b }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit"
+                            class="btn btn-warning"
+                            id="cleanup-btn">
+                        <i class="fas fa-broom mr-1"></i>
+                        Clean Up
+                    </button>
+                </form>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    No databases found. Create one first.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert container -->
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;z-index:9999;
+            width:350px;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAlert(message, type) {
+    var cls = (type === "error") ? "danger" : "success";
+    var html = '<div class="alert alert-' + cls +
+        ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" ' +
+        'data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button></div>';
+    var container = document.getElementById("alert-container");
+    container.innerHTML = html;
+    setTimeout(function() {
+        container.innerHTML = "";
+    }, 4000);
+}
+
+var form = document.getElementById("cleanup-form");
+if (form) {
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        var selected = form.querySelector(
+            'input[name="base"]:checked'
+        );
+        if (!selected) {
+            showAlert("Please select a database.", "error");
+            return;
+        }
+        var name = selected.value;
+        var btn = document.getElementById("cleanup-btn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1">' +
+            '</i>Cleaning...';
+        try {
+            var res = await fetch(
+                "/api/bases/" + name + "/cleanup",
+                {method: "POST"}
+            );
+            if (res.status === 200) {
+                showAlert(
+                    'Database "' + name + '" cleaned up.',
+                    "success"
+                );
+            } else {
+                var err = await res.json().catch(
+                    function() { return {}; }
+                );
+                showAlert(
+                    "Error: " + (err.detail || res.status),
+                    "error"
+                );
+            }
+        } catch (ex) {
+            showAlert("Network error.", "error");
+        }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-broom mr-1"></i>Clean Up';
+    });
+}
+</script>
+{% endblock %}

@@ -1,239 +1,111 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeneWeb - Méthode simple</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends "base_layout.html" %}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f0;
-            padding: 20px;
-            color: #333;
-        }
+{% block title %}GeneWeb Admin - Create Empty Database{% endblock %}
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 5px;
-        }
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-file mr-2"></i>
+            Create an Empty Database
+        </h1>
+        <hr>
+    </div>
+</div>
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: #90c24e;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 30px;
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .logo-text span {
-            color: #90c24e;
-        }
-
-        h1 {
-            font-size: 28px;
-            color: #4a7c2c;
-            font-weight: bold;
-        }
-
-        .content {
-            margin: 30px 0;
-        }
-
-        .instruction {
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        input[type="text"] {
-            padding: 8px 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            width: 280px;
-            max-width: 100%;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 15px;
-            border: 2px solid #0066cc;
-            border-radius: 5px;
-            display: inline-flex;
-            cursor: pointer;
-        }
-
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        label {
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button {
-            padding: 8px 20px;
-            font-size: 16px;
-            border: 1px solid #333;
-            background: #f0f0f0;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #e0e0e0;
-        }
-
-        footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ccc;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .footer-logo {
-            width: 40px;
-            height: 40px;
-            background: #90c24e;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-
-        .version {
-            font-size: 14px;
-            font-style: italic;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            input[type="text"] {
-                width: 100%;
-            }
-
-            footer {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">🌳</div>
-                <div class="logo-text">gene<span>web</span></div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-plus-circle mr-1"></i>
+                New Database
             </div>
-            <h1>Méthode simple</h1>
-        </header>
+            <div class="card-body">
+                <p class="mb-4">
+                    Enter the name you want to give to your new database,
+                    then click the create button.
+                </p>
 
-        <form action="/create_base" method="post">
-            <div class="content">
-                <div class="form-group">
-                    <div class="instruction">
-                        • Indiquez le nom que vous voulez donner à votre base de données :
+                <form action="/create_base" method="post"
+                      id="create-empty-form">
+                    <div class="form-group">
+                        <label for="base_name"
+                               class="font-weight-bold">
+                            <i class="fas fa-database mr-1"></i>
+                            Database name
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="base_name"
+                               name="base_name"
+                               placeholder="e.g. my_family"
+                               required>
+                        <small class="form-text text-muted">
+                            Choose a meaningful name for your
+                            genealogical database.
+                        </small>
                     </div>
-                    <input type="text" name="base_name" placeholder="Nom de la base" required>
-                </div>
 
-                <div class="form-group">
-                    <div class="checkbox-group">
-                        <input type="checkbox" name="reorg" id="reorg">
-                        <label for="reorg">Mode reorg</label>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="reorg"
+                                   id="reorg"
+                                   value="on">
+                            <label class="form-check-label"
+                                   for="reorg">
+                                <i class="fas fa-sync-alt mr-1"></i>
+                                Reorg mode
+                            </label>
+                            <small class="form-text text-muted">
+                                Enable reorganization mode during
+                                database creation.
+                            </small>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="instruction">
-                        • Puis appuyez sur ce bouton :
-                    </div>
-                    <button type="submit">Créer</button>
-                </div>
+                    <button type="submit"
+                            class="btn btn-success">
+                        <i class="fas fa-plus mr-1"></i>
+                        Create
+                    </button>
+                    <a href="/welcome"
+                       class="btn btn-outline-secondary ml-2">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Back
+                    </a>
+                </form>
             </div>
-        </form>
-
-        <footer>
-            <div class="footer-logo">🌳</div>
-            <div class="version">Version 7.1-beta Copyright © 1998-2021</div>
-        </footer>
+        </div>
     </div>
 
-    <script>
-        function createBase() {
-            const basename = document.getElementById('basename').value;
-            const reorg = document.getElementById('reorg').checked;
-            
-            if (!basename.trim()) {
-                alert('Veuillez entrer un nom pour votre base de données');
-                return;
-            }
-            
-            console.log('Création de la base:', {
-                name: basename,
-                reorg: reorg
-            });
-            
-            alert(`Base "${basename}" créée${reorg ? ' en mode reorg' : ''}`);
-        }
+    <!-- Sidebar info -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-info-circle mr-1"></i>
+                Information
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>Empty database</strong> creates a blank
+                    genealogical database that you can populate
+                    later through the GeneWeb interface.
+                </p>
+                <p class="mb-0">
+                    You can also create a database by
+                    <a href="/api/bases/import">importing</a>
+                    a GEDCOM or GeneWeb source file.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-        // Permettre la soumission avec Enter dans le champ de texte
-        document.getElementById('basename').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                createBase();
-            }
-        });
-    </script>
-</body>
-</html>
+<!-- Alert container -->
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;z-index:9999;
+            width:350px;">
+</div>
+{% endblock %}

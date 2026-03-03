@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang | default('en') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,106 +83,141 @@
             color: #4CAF50;
             text-decoration: none;
         }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .sr-only-focusable:active,
+        .sr-only-focusable:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
     </style>
 </head>
 <body>
+    <a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+    <main id="main-content">
     <h1>Calendars</h1>
     <div class="time-display" id="currentTime">Friday - 21:15:23</div>
     
     <table>
+        <caption class="sr-only">Calendar date conversion</caption>
         <thead>
             <tr>
-                <th></th>
-                <th>Month</th>
-                <th>Day</th>
-                <th>Year</th>
-                <th></th>
+                <th scope="col">Calendar</th>
+                <th scope="col">Month</th>
+                <th scope="col">Day</th>
+                <th scope="col">Year</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>Gregorian</td>
                 <td>
-                    <button onclick="changeMonth('gregorian', -1)">&lt;</button>
+                    <button onclick="changeMonth('gregorian', -1)" aria-label="Previous Gregorian month">&lt;</button>
+                    <label for="gregorian-month" class="sr-only">Gregorian month</label>
                     <select id="gregorian-month">
                         <option selected>October</option>
                     </select>
-                    <button onclick="changeMonth('gregorian', 1)">&gt;</button>
+                    <button onclick="changeMonth('gregorian', 1)" aria-label="Next Gregorian month">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeDay('gregorian', -1)">&lt;</button>
+                    <button onclick="changeDay('gregorian', -1)" aria-label="Previous Gregorian day">&lt;</button>
+                    <label for="gregorian-day" class="sr-only">Gregorian day</label>
                     <input type="number" id="gregorian-day" value="3" min="1" max="31">
-                    <button onclick="changeDay('gregorian', 1)">&gt;</button>
+                    <button onclick="changeDay('gregorian', 1)" aria-label="Next Gregorian day">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeYear('gregorian', -1)">&lt;</button>
+                    <button onclick="changeYear('gregorian', -1)" aria-label="Previous Gregorian year">&lt;</button>
+                    <label for="gregorian-year" class="sr-only">Gregorian year</label>
                     <input type="number" id="gregorian-year" value="2025" min="1" max="9999">
-                    <button onclick="changeYear('gregorian', 1)">&gt;</button>
+                    <button onclick="changeYear('gregorian', 1)" aria-label="Next Gregorian year">&gt;</button>
                 </td>
-                <td><button onclick="updateFromGregorian()">≡</button></td>
+                <td><button onclick="updateFromGregorian()" aria-label="Convert from Gregorian">≡</button></td>
             </tr>
             <tr>
                 <td>Julian</td>
                 <td>
-                    <button onclick="changeMonth('julian', -1)">&lt;</button>
+                    <button onclick="changeMonth('julian', -1)" aria-label="Previous Julian month">&lt;</button>
+                    <label for="julian-month" class="sr-only">Julian month</label>
                     <select id="julian-month">
                         <option selected>September</option>
                     </select>
-                    <button onclick="changeMonth('julian', 1)">&gt;</button>
+                    <button onclick="changeMonth('julian', 1)" aria-label="Next Julian month">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeDay('julian', -1)">&lt;</button>
+                    <button onclick="changeDay('julian', -1)" aria-label="Previous Julian day">&lt;</button>
+                    <label for="julian-day" class="sr-only">Julian day</label>
                     <input type="number" id="julian-day" value="20" min="1" max="31">
-                    <button onclick="changeDay('julian', 1)">&gt;</button>
+                    <button onclick="changeDay('julian', 1)" aria-label="Next Julian day">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeYear('julian', -1)">&lt;</button>
+                    <button onclick="changeYear('julian', -1)" aria-label="Previous Julian year">&lt;</button>
+                    <label for="julian-year" class="sr-only">Julian year</label>
                     <input type="number" id="julian-year" value="2025" min="1" max="9999">
-                    <button onclick="changeYear('julian', 1)">&gt;</button>
+                    <button onclick="changeYear('julian', 1)" aria-label="Next Julian year">&gt;</button>
                 </td>
-                <td><button onclick="updateFromJulian()">≡</button></td>
+                <td><button onclick="updateFromJulian()" aria-label="Convert from Julian">≡</button></td>
             </tr>
             <tr>
                 <td>French republican</td>
                 <td>
-                    <button onclick="changeMonth('french', -1)">&lt;</button>
+                    <button onclick="changeMonth('french', -1)" aria-label="Previous French republican month">&lt;</button>
+                    <label for="french-month" class="sr-only">French republican month</label>
                     <select id="french-month">
                         <option selected>Vendémiaire</option>
                     </select>
-                    <button onclick="changeMonth('french', 1)">&gt;</button>
+                    <button onclick="changeMonth('french', 1)" aria-label="Next French republican month">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeDay('french', -1)">&lt;</button>
+                    <button onclick="changeDay('french', -1)" aria-label="Previous French republican day">&lt;</button>
+                    <label for="french-day" class="sr-only">French republican day</label>
                     <input type="number" id="french-day" value="12" min="1" max="30">
-                    <button onclick="changeDay('french', 1)">&gt;</button>
+                    <button onclick="changeDay('french', 1)" aria-label="Next French republican day">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeYear('french', -1)">&lt;</button>
+                    <button onclick="changeYear('french', -1)" aria-label="Previous French republican year">&lt;</button>
+                    <label for="french-year" class="sr-only">French republican year</label>
                     <input type="number" id="french-year" value="234" min="1" max="999">
-                    <button onclick="changeYear('french', 1)">&gt;</button>
+                    <button onclick="changeYear('french', 1)" aria-label="Next French republican year">&gt;</button>
                 </td>
-                <td><button onclick="updateFromFrench()">≡</button></td>
+                <td><button onclick="updateFromFrench()" aria-label="Convert from French republican">≡</button></td>
             </tr>
             <tr>
                 <td>Hebrew</td>
                 <td>
-                    <button onclick="changeMonth('hebrew', -1)">&lt;</button>
+                    <button onclick="changeMonth('hebrew', -1)" aria-label="Previous Hebrew month">&lt;</button>
+                    <label for="hebrew-month" class="sr-only">Hebrew month</label>
                     <select id="hebrew-month">
                         <option selected>Tishri</option>
                     </select>
-                    <button onclick="changeMonth('hebrew', 1)">&gt;</button>
+                    <button onclick="changeMonth('hebrew', 1)" aria-label="Next Hebrew month">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeDay('hebrew', -1)">&lt;</button>
+                    <button onclick="changeDay('hebrew', -1)" aria-label="Previous Hebrew day">&lt;</button>
+                    <label for="hebrew-day" class="sr-only">Hebrew day</label>
                     <input type="number" id="hebrew-day" value="11" min="1" max="30">
-                    <button onclick="changeDay('hebrew', 1)">&gt;</button>
+                    <button onclick="changeDay('hebrew', 1)" aria-label="Next Hebrew day">&gt;</button>
                 </td>
                 <td>
-                    <button onclick="changeYear('hebrew', -1)">&lt;</button>
+                    <button onclick="changeYear('hebrew', -1)" aria-label="Previous Hebrew year">&lt;</button>
+                    <label for="hebrew-year" class="sr-only">Hebrew year</label>
                     <input type="number" id="hebrew-year" value="5786" min="1" max="9999">
-                    <button onclick="changeYear('hebrew', 1)">&gt;</button>
+                    <button onclick="changeYear('hebrew', 1)" aria-label="Next Hebrew year">&gt;</button>
                 </td>
-                <td><button onclick="updateFromHebrew()">≡</button></td>
+                <td><button onclick="updateFromHebrew()" aria-label="Convert from Hebrew">≡</button></td>
             </tr>
         </tbody>
     </table>
@@ -192,12 +227,13 @@
         <p><strong>Julian day:</strong> <span id="julian-day-number">2,460,952</span></p>
     </div>
 
-    <div class="footer">
+    </main>
+    <footer class="footer">
         <p>
-            🗺️ <a href="#">GeneWeb v. 7.1-beta</a><br>
-            © <a href="#">INRIA</a> 1998-2007 📖 🐙
+            <a href="#">GeneWeb v. 7.1-beta</a><br>
+            &copy; <a href="#">INRIA</a> 1998-2007
         </p>
-    </div>
+    </footer>
 
     <script>
         function updateTime() {
