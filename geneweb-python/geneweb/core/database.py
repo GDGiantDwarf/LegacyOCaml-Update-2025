@@ -116,6 +116,57 @@ class BaseManager:
         os.replace(src, dst)
 
     @classmethod
+    def merge_bases(
+        cls,
+        base_a: str,
+        base_b: str,
+        target: str,
+        base_dir: str | Path | None = None,
+    ):
+        """Merge two bases into a new target base."""
+        cls._validate_name(target)
+        path_a = cls.base_path(base_a, base_dir)
+        path_b = cls.base_path(base_b, base_dir)
+        path_t = cls.base_path(target, base_dir)
+        if not path_a.exists():
+            raise FileNotFoundError(
+                f"Base '{base_a}' not found"
+            )
+        if not path_b.exists():
+            raise FileNotFoundError(
+                f"Base '{base_b}' not found"
+            )
+        if path_t.exists():
+            raise FileExistsError(
+                f"Target '{target}' already exists"
+            )
+        import shutil
+
+        shutil.copy2(path_a, path_t)
+        con = sqlite3.connect(str(path_t))
+        try:
+            con.execute(
+                "ATTACH DATABASE ? AS src",
+                (str(path_b),),
+            )
+            tables = [
+                r[0]
+                for r in con.execute(
+                    "SELECT name FROM sqlite_master "
+                    "WHERE type='table'"
+                ).fetchall()
+            ]
+            for table in tables:
+                con.execute(
+                    f"INSERT INTO main.[{table}] "
+                    f"SELECT * FROM src.[{table}]"
+                )
+            con.commit()
+        finally:
+            con.execute("DETACH DATABASE src")
+            con.close()
+
+    @classmethod
     def cleanup_base(cls, name: str, base_dir: str | Path | None = None):
         path = cls.base_path(name, base_dir)
         if not path.exists():
