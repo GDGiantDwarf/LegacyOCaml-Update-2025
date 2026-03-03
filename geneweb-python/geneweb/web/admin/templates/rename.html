@@ -1,0 +1,152 @@
+{% extends "base_layout.html" %}
+
+{% block title %}GeneWeb Admin - Rename{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-pen mr-2"></i>
+            Rename a Database
+        </h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-pen mr-1"></i>
+                Rename Database
+            </div>
+            <div class="card-body">
+                {% if bases %}
+                <form id="rename-form">
+                    <div class="form-group">
+                        <label for="rename-select"
+                               class="font-weight-bold">
+                            Select the database to rename:
+                        </label>
+                        <select class="form-control"
+                                id="rename-select"
+                                name="base"
+                                required>
+                            {% for b in bases %}
+                            <option value="{{ b }}">{{ b }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-name"
+                               class="font-weight-bold">
+                            New name:
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="new-name"
+                               name="new_name"
+                               placeholder="Enter new database name"
+                               required>
+                    </div>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="rename-btn">
+                        <i class="fas fa-pen mr-1"></i>
+                        Rename
+                    </button>
+                </form>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    No databases found. Create one first.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert container -->
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;z-index:9999;
+            width:350px;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAlert(message, type) {
+    var cls = (type === "error") ? "danger" : "success";
+    var html = '<div class="alert alert-' + cls +
+        ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" ' +
+        'data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button></div>';
+    var container = document.getElementById("alert-container");
+    container.innerHTML = html;
+    setTimeout(function() {
+        container.innerHTML = "";
+    }, 4000);
+}
+
+var form = document.getElementById("rename-form");
+if (form) {
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        var name = document.getElementById("rename-select").value;
+        var newName = document.getElementById("new-name")
+            .value.trim();
+        if (!newName) {
+            showAlert("Please enter a new name.", "error");
+            return;
+        }
+        if (newName === name) {
+            showAlert(
+                "New name must differ from current name.", "error"
+            );
+            return;
+        }
+        var btn = document.getElementById("rename-btn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1">' +
+            '</i>Renaming...';
+        try {
+            var res = await fetch(
+                "/api/bases/" + name + "/rename",
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({new_name: newName})
+                }
+            );
+            if (res.status === 200) {
+                showAlert(
+                    'Renamed "' + name + '" to "' + newName + '".',
+                    "success"
+                );
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            } else {
+                var err = await res.json().catch(
+                    function() { return {}; }
+                );
+                showAlert(
+                    "Error: " + (err.detail || res.status),
+                    "error"
+                );
+            }
+        } catch (ex) {
+            showAlert("Network error.", "error");
+        }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-pen mr-1"></i>Rename';
+    });
+}
+</script>
+{% endblock %}

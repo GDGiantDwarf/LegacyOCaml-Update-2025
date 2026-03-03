@@ -1,0 +1,5 @@
+render_api_key = "your-render-api-key"
+render_owner_id = "your-render-owner-id"
+repo_url = "https://github.com/YOUR_USERNAME/YOUR_REPO"
+# service_name = "geneweb-gwd"
+# region = "frankfurt"

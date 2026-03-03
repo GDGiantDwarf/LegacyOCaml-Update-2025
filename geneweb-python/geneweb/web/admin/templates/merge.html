@@ -1,0 +1,191 @@
+{% extends "base_layout.html" %}
+
+{% block title %}GeneWeb Admin - Merge{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-object-group mr-2"></i>
+            Merge Databases
+        </h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-object-group mr-1"></i>
+                Merge Two Databases
+            </div>
+            <div class="card-body">
+                <p>
+                    All databases to merge must already be in
+                    GeneWeb format. If some are still GEDCOM files,
+                    create them first, then return here.
+                </p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <strong>Note:</strong> Merging is a simple
+                    concatenation. After merging you should check for
+                    duplicate persons or families.
+                </div>
+
+                {% if bases and bases|length >= 2 %}
+                <form id="merge-form">
+                    <div class="form-group">
+                        <label for="merge-base-a"
+                               class="font-weight-bold">
+                            First database (Base A):
+                        </label>
+                        <select class="form-control"
+                                id="merge-base-a"
+                                name="base_a"
+                                required>
+                            {% for b in bases %}
+                            <option value="{{ b }}">{{ b }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="merge-base-b"
+                               class="font-weight-bold">
+                            Second database (Base B):
+                        </label>
+                        <select class="form-control"
+                                id="merge-base-b"
+                                name="base_b"
+                                required>
+                            {% for b in bases %}
+                            <option value="{{ b }}"
+                                {% if loop.index == 2 %}
+                                    selected
+                                {% endif %}>
+                                {{ b }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="merge-target"
+                               class="font-weight-bold">
+                            Target database name:
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="merge-target"
+                               name="target"
+                               placeholder="e.g. merged_family"
+                               required>
+                    </div>
+                    <button type="submit"
+                            class="btn btn-success"
+                            id="merge-btn">
+                        <i class="fas fa-object-group mr-1"></i>
+                        Merge
+                    </button>
+                </form>
+                {% elif bases and bases|length == 1 %}
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    At least two databases are required to merge.
+                    Only one database found.
+                </div>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    No databases found. Create at least two first.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert container -->
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;z-index:9999;
+            width:350px;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAlert(message, type) {
+    var cls = (type === "error") ? "danger" : "success";
+    var html = '<div class="alert alert-' + cls +
+        ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" ' +
+        'data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button></div>';
+    var container = document.getElementById("alert-container");
+    container.innerHTML = html;
+    setTimeout(function() {
+        container.innerHTML = "";
+    }, 4000);
+}
+
+var form = document.getElementById("merge-form");
+if (form) {
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        var baseA = document.getElementById("merge-base-a").value;
+        var baseB = document.getElementById("merge-base-b").value;
+        var target = document.getElementById("merge-target")
+            .value.trim();
+
+        if (baseA === baseB) {
+            showAlert(
+                "Source databases must be different.", "error"
+            );
+            return;
+        }
+        if (!target) {
+            showAlert("Please enter a target name.", "error");
+            return;
+        }
+
+        var btn = document.getElementById("merge-btn");
+        btn.disabled = true;
+        btn.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-1"></i>' +
+            'Merging...';
+
+        try {
+            var url = "/api/bases/merge?base_a=" +
+                encodeURIComponent(baseA) +
+                "&base_b=" + encodeURIComponent(baseB) +
+                "&target=" + encodeURIComponent(target);
+            var res = await fetch(url, {method: "POST"});
+            if (res.status === 200) {
+                showAlert(
+                    'Merged "' + baseA + '" and "' + baseB +
+                    '" into "' + target + '".',
+                    "success"
+                );
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            } else {
+                var err = await res.json().catch(
+                    function() { return {}; }
+                );
+                showAlert(
+                    "Error: " + (err.detail || res.status),
+                    "error"
+                );
+            }
+        } catch (ex) {
+            showAlert("Network error.", "error");
+        }
+        btn.disabled = false;
+        btn.innerHTML =
+            '<i class="fas fa-object-group mr-1"></i>Merge';
+    });
+}
+</script>
+{% endblock %}

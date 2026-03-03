@@ -1,12 +1,23 @@
-from .routes import index, base_detail, calendars
 from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from geneweb.web.utils import BASE_DIR
-from .routes import index, base_detail, set_language
-from geneweb.core.services.language_manager import LanguageManager
-from geneweb.core.services.template_config import ExtendedJinja2Templates
+from .routes import (
+    index,
+    base_actions,
+    base_data,
+    base_info,
+    set_language,
+    calendars,
+    translations_api,
+)
+from geneweb.core.services.language_manager import (
+    LanguageManager,
+)
+from geneweb.core.services.template_config import (
+    ExtendedJinja2Templates,
+)
 
 IS_START = True
 
@@ -43,18 +54,21 @@ def create_app(base_dir="bases", lang="en"):
         response = await call_next(request)
         return response
 
-    static_dir = BASE_DIR / "server/static"
-    if static_dir.exists():
+    shared_static = BASE_DIR / "shared_static"
+    if shared_static.exists():
         app.mount(
             "/static",
             StaticFiles(
-                directory=str(static_dir)),
+                directory=str(shared_static)),
             name="static")
 
     app.include_router(index.router)
-    app.include_router(base_detail.router)
+    app.include_router(base_actions.router)
+    app.include_router(base_data.router)
+    app.include_router(base_info.router)
     app.include_router(set_language.router)
     app.include_router(calendars.router)
+    app.include_router(translations_api.router)
 
     app.add_middleware(SessionMiddleware, secret_key="secret")
 

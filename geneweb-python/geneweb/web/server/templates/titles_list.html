@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+<title>Titles - {{ base_name }} - GeneWeb</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<main id="main-content" class="container mt-3">
+
+<!-- Header -->
+<div class="d-flex align-items-center mb-3">
+  <a href="/base/{{ base_name }}"
+     class="btn btn-outline-secondary btn-sm mr-3">
+    <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>
+    Back to base
+  </a>
+  <h1 class="h3 mb-0">
+    <i class="fa fa-crown mr-2" aria-hidden="true"></i>
+    {{ t("TITLE") }} - {{ base_name }}
+  </h1>
+</div>
+
+{% if mode == 'list' %}
+<!-- All titles / occupations -->
+<p class="text-muted">
+  {{ items | length }} distinct title(s) / occupation(s).
+</p>
+
+{% if items %}
+<div class="row">
+{% for item in items %}
+  <div class="col-6 col-md-4 col-lg-3 mb-1">
+    <a href="/base/{{ base_name }}?m=TT&t={{ item.occupation | urlencode }}"
+       class="d-flex justify-content-between
+              align-items-center text-decoration-none
+              px-2 py-1 border-bottom">
+      <span>{{ item.occupation }}</span>
+      <span class="badge badge-secondary badge-pill">
+        {{ item.cnt }}
+      </span>
+    </a>
+  </div>
+{% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+  No titles or occupations found in this base.
+</div>
+{% endif %}
+
+{% else %}
+<!-- Filtered persons by title/fief -->
+<p class="text-muted">
+  {% if title_q %}Title: <strong>{{ title_q }}</strong>{% endif %}
+  {% if fief_q %}Fief: <strong>{{ fief_q }}</strong>{% endif %}
+  &mdash; {{ persons | length }} person(s) found.
+</p>
+
+{% if persons %}
+<div class="table-responsive">
+<table class="table table-striped table-hover
+              table-sm">
+<caption class="sr-only">Persons matching title or fief</caption>
+<thead class="thead-light">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">{{ t("SURNAME") }}</th>
+    <th scope="col">{{ t("FIRSTNAMES") }}</th>
+    <th scope="col">Occupation</th>
+    <th scope="col">Birth place</th>
+    <th scope="col">Death place</th>
+  </tr>
+</thead>
+<tbody>
+{% for p in persons %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>
+      <a href="/base/{{ base_name }}?i={{ p.id }}">
+        <strong>{{ p.last_name }}</strong>
+      </a>
+    </td>
+    <td>
+      <a href="/base/{{ base_name }}?i={{ p.id }}">
+        {{ p.first_name }}
+      </a>
+    </td>
+    <td>{{ p.occupation or '' }}</td>
+    <td>{{ p.birth_place or '' }}</td>
+    <td>{{ p.death_place or '' }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="alert alert-info">
+  No matching persons found.
+</div>
+{% endif %}
+{% endif %}
+
+</main><!-- /.container -->
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
