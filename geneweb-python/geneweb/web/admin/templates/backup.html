@@ -1,0 +1,251 @@
+{% extends "base_layout.html" %}
+
+{% block title %}GeneWeb Admin - Backup & Restore{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-hdd mr-2"></i>
+            Saving and Restoring
+        </h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Backup -->
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-download mr-1"></i>
+                Backup a Database
+            </div>
+            <div class="card-body">
+                {% if bases %}
+                <form id="backup-form">
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            Select the database to backup:
+                        </label>
+                        {% for b in bases %}
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="base"
+                                   id="bk-{{ b }}"
+                                   value="{{ b }}"
+                                   {% if loop.first %}
+                                   checked
+                                   {% endif %}>
+                            <label class="form-check-label"
+                                   for="bk-{{ b }}">
+                                {{ b }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="backup-btn">
+                        <i class="fas fa-download mr-1">
+                        </i>Download Backup
+                    </button>
+                </form>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-1">
+                    </i>No databases found.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore -->
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-upload mr-1"></i>
+                Restore from Backup
+            </div>
+            <div class="card-body">
+                <form id="restore-form"
+                      enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            Name for the restored database:
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="restore-name"
+                               name="target_name"
+                               placeholder="restored_base"
+                               required
+                               pattern=
+                               "[A-Za-z0-9_-]{1,64}">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            Select backup file (.zip):
+                        </label>
+                        <input type="file"
+                               class="form-control-file"
+                               id="restore-file"
+                               name="file"
+                               required
+                               accept=".zip">
+                    </div>
+                    <button type="submit"
+                            class="btn btn-warning"
+                            id="restore-btn">
+                        <i class="fas fa-upload mr-1">
+                        </i>Restore
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-12">
+        <a href="/welcome" class="btn btn-secondary">
+            <i class="fas fa-arrow-left mr-1"></i>Back
+        </a>
+    </div>
+</div>
+
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;
+            z-index:9999;width:350px;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAlert(message, type) {
+    var cls = (type === "error") ? "danger" : "success";
+    var html = '<div class="alert alert-' + cls +
+        ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" ' +
+        'data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button></div>';
+    var c = document.getElementById("alert-container");
+    c.innerHTML = html;
+    setTimeout(function() { c.innerHTML = ""; }, 5000);
+}
+
+/* Backup */
+var bkForm = document.getElementById("backup-form");
+if (bkForm) {
+    bkForm.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        var sel = bkForm.querySelector(
+            'input[name="base"]:checked'
+        );
+        if (!sel) {
+            showAlert(
+                "Please select a database.", "error"
+            );
+            return;
+        }
+        var btn = document.getElementById("backup-btn");
+        btn.disabled = true;
+        btn.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-1">' +
+            '</i>Backing up...';
+        try {
+            var res = await fetch(
+                "/api/bases/" + sel.value + "/backup",
+                {method: "POST"}
+            );
+            if (res.ok) {
+                var blob = await res.blob();
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = sel.value + ".zip";
+                a.click();
+                showAlert(
+                    "Backup downloaded!", "success"
+                );
+            } else {
+                var err = await res.json().catch(
+                    function() { return {}; }
+                );
+                showAlert(
+                    "Error: " +
+                    (err.detail || res.status),
+                    "error"
+                );
+            }
+        } catch (ex) {
+            showAlert("Network error.", "error");
+        }
+        btn.disabled = false;
+        btn.innerHTML =
+            '<i class="fas fa-download mr-1">' +
+            '</i>Download Backup';
+    });
+}
+
+/* Restore */
+var rsForm = document.getElementById("restore-form");
+if (rsForm) {
+    rsForm.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        var fileIn = document.getElementById(
+            "restore-file"
+        );
+        var nameIn = document.getElementById(
+            "restore-name"
+        );
+        if (!fileIn.files.length) {
+            showAlert(
+                "Please select a file.", "error"
+            );
+            return;
+        }
+        var btn = document.getElementById("restore-btn");
+        btn.disabled = true;
+        btn.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-1">' +
+            '</i>Restoring...';
+        var fd = new FormData();
+        fd.append("file", fileIn.files[0]);
+        fd.append("target_name", nameIn.value);
+        try {
+            var res = await fetch(
+                "/api/bases/restore",
+                {method: "POST", body: fd}
+            );
+            var data = await res.json().catch(
+                function() { return {}; }
+            );
+            if (res.ok) {
+                showAlert(
+                    'Database "' + nameIn.value +
+                    '" restored!',
+                    "success"
+                );
+                rsForm.reset();
+            } else {
+                showAlert(
+                    "Error: " +
+                    (data.detail || res.status),
+                    "error"
+                );
+            }
+        } catch (ex) {
+            showAlert("Network error.", "error");
+        }
+        btn.disabled = false;
+        btn.innerHTML =
+            '<i class="fas fa-upload mr-1">' +
+            '</i>Restore';
+    });
+}
+</script>
+{% endblock %}
