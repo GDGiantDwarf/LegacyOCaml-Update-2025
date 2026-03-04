@@ -29,8 +29,8 @@ def test_select_base_redirects_if_valid(
     """POST /select-base/{name} redirects when valid."""
     monkeypatch.setattr(
         "geneweb.web.server.routes.index"
-        ".Database.is_base_exist",
-        lambda name: True,
+        ".BaseManager.list_bases",
+        lambda base_dir=None: ["test_base"],
     )
     response = client.post(
         "/select-base/test_base",
@@ -47,13 +47,8 @@ def test_select_base_shows_error_if_invalid(
     """POST /select-base/{name} shows error if missing."""
     monkeypatch.setattr(
         "geneweb.web.server.routes.index"
-        ".Database.is_base_exist",
-        lambda name: False,
-    )
-    monkeypatch.setattr(
-        "geneweb.web.server.routes.index"
-        ".Database.get_existing_bases",
-        lambda: [],
+        ".BaseManager.list_bases",
+        lambda base_dir=None: [],
     )
     response = client.post("/select-base/fake")
     assert response.status_code == 200

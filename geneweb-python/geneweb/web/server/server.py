@@ -25,6 +25,8 @@ IS_START = True
 def create_app(base_dir="bases", lang="en"):
     app = FastAPI(title=f"GeneWeb Public — {lang.upper()}")
 
+    app.state.base_dir = base_dir
+
     # --- Initialisation de la langue ---
     lang_manager = LanguageManager(BASE_DIR, lang)
     templates = ExtendedJinja2Templates(
