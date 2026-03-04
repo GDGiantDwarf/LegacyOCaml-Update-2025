@@ -7,6 +7,7 @@ from geneweb.web.admin.routes import (
     backup,
     merge,
     create_bases_empty,
+    pages,
 )
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -60,12 +61,12 @@ def create_app(base_dir: str | None = None,
         response = await call_next(request)
         return response
 
-    static_dir = BASE_DIR / "admin/static"
-    if static_dir.exists():
+    shared_static = BASE_DIR / "shared_static"
+    if shared_static.exists():
         app.mount(
             "/static",
             StaticFiles(
-                directory=str(static_dir)),
+                directory=str(shared_static)),
             name="static")
 
     """
@@ -89,6 +90,7 @@ def create_app(base_dir: str | None = None,
     app.include_router(backup.router)
     app.include_router(merge.router)
     app.include_router(create_bases_empty.router)
+    app.include_router(pages.router)
 
     app.add_middleware(SessionMiddleware, secret_key="secret")
 

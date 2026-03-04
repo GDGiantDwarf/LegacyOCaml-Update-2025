@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+<title>Advanced search - {{ base_name }} - GeneWeb</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<main id="main-content" class="container mt-3">
+
+<!-- Header -->
+<div class="d-flex align-items-center mb-3">
+  <a href="/base/{{ base_name }}"
+     class="btn btn-outline-secondary btn-sm mr-3">
+    <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>
+    Back to base
+  </a>
+  <h1 class="h3 mb-0">
+    <i class="fa fa-magnifying-glass-plus mr-2" aria-hidden="true"></i>
+    {{ t("ADVANCED_REQUEST") }} - {{ base_name }}
+  </h1>
+</div>
+
+<form method="get"
+      action="/base/{{ base_name }}"
+      class="card card-body mb-4">
+<input type="hidden" name="m" value="S">
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="n">{{ t("SURNAME") }}</label>
+    <input type="text" class="form-control"
+           id="n" name="n"
+           placeholder="{{ t('SURNAME') }}">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="p">{{ t("FIRSTNAMES") }}</label>
+    <input type="text" class="form-control"
+           id="p" name="p"
+           placeholder="{{ t('FIRSTNAMES') }}">
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="birth_place">Birth place</label>
+    <input type="text" class="form-control"
+           id="birth_place" name="birth_place"
+           placeholder="Birth place">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="death_place">Death place</label>
+    <input type="text" class="form-control"
+           id="death_place" name="death_place"
+           placeholder="Death place">
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="occu">Occupation</label>
+    <input type="text" class="form-control"
+           id="occu" name="occu"
+           placeholder="Occupation">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="birth_y1">Birth year from</label>
+    <input type="number" class="form-control"
+           id="birth_y1" name="birth_y1"
+           placeholder="e.g. 1800"
+           min="0" max="2100">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="birth_y2">Birth year to</label>
+    <input type="number" class="form-control"
+           id="birth_y2" name="birth_y2"
+           placeholder="e.g. 1900"
+           min="0" max="2100">
+  </div>
+</div>
+
+<button type="submit"
+        class="btn btn-primary">
+  <i class="fa fa-magnifying-glass mr-1" aria-hidden="true"></i>
+  {{ t("SEARCH") }}
+</button>
+</form>
+
+</main><!-- /.container -->
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

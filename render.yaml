@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: geneweb-gwd
+    runtime: python
+    repo: https://github.com/GDGiantDwarf/LegacyOCaml-Update-2025.git
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r geneweb-python/requirements.txt
+    startCommand: cd geneweb-python && uvicorn geneweb.web.server.server:create_app --host 0.0.0.0 --port $PORT --factory
+    envVars:
+      - key: PYTHONPATH
+        value: geneweb-python
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+    autoDeploy: true
+    branch: main
+
+  - type: web
+    name: geneweb-gwsetup
+    runtime: python
+    repo: https://github.com/GDGiantDwarf/LegacyOCaml-Update-2025.git
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r geneweb-python/requirements.txt
+    startCommand: cd geneweb-python && uvicorn geneweb.web.admin.server:create_app --host 0.0.0.0 --port $PORT --factory
+    envVars:
+      - key: PYTHONPATH
+        value: geneweb-python
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+    autoDeploy: true
+    branch: main

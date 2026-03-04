@@ -1,0 +1,185 @@
+{% extends "base_layout.html" %}
+
+{% block title %}GeneWeb Admin - Welcome{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-th-large mr-2"></i>
+            Management and Creation
+        </h1>
+        <hr>
+    </div>
+</div>
+
+<!-- Top row: Consult & Create -->
+<div class="row mb-4">
+    <!-- Consult -->
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-eye mr-1"></i>
+                Consult
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-sitemap mr-1
+                           text-muted"></i>
+                        Family Trees
+                        (<a href="/list">list</a>)
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-bar mr-1
+                           text-muted"></i>
+                        Statistics
+                        (<a href="/list">stats</a>)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Family Tree -->
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-plus-circle mr-1"></i>
+                Create Family Tree
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-file-import mr-1
+                           text-muted"></i>
+                        From a GEDCOM source file
+                        (<a href="/import-page">
+                            import</a>)
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-file-code mr-1
+                           text-muted"></i>
+                        From a GeneWeb source file
+                        (<a href="/import-page">
+                            import</a>)
+                    </li>
+                    <li>
+                        <i class="fas fa-file mr-1
+                           text-muted"></i>
+                        From an empty file
+                        (<a href="/create_base_empty">
+                            create</a>)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second row: Save / Export & Advanced -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-save mr-1"></i>
+                Save / Export
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-file-export mr-1
+                           text-muted"></i>
+                        A GEDCOM source file
+                        (<a href="/export-page">
+                            export</a>)
+                    </li>
+                    <li>
+                        <i class="fas fa-file-export mr-1
+                           text-muted"></i>
+                        A GeneWeb source file
+                        (<a href="/export-page">
+                            export</a>)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Operations -->
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-tools mr-1"></i>
+                Advanced Operations
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-broom mr-1
+                           text-muted"></i>
+                        Clean up
+                        (<a href="/cleanup">cleanup</a>)
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-pen mr-1
+                           text-muted"></i>
+                        Renaming
+                        (<a href="/rename">rename</a>)
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-trash-alt mr-1
+                           text-muted"></i>
+                        Deletion
+                        (<a href="/delete">delete</a>)
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-object-group
+                           mr-1 text-muted"></i>
+                        Merging with other databases
+                        (<a href="/merge-page">
+                            merge</a>)
+                    </li>
+                    <li>
+                        <i class="fas fa-hdd mr-1
+                           text-muted"></i>
+                        Saving and restoring
+                        (<a href="/backup-page">
+                            backup</a>)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Documentation link -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-book mr-1"></i>
+                You can also consult the complete
+                documentation of
+                <strong style="color:#90c24e;">
+                    GeneWeb</strong>.
+                <a href=
+                   "http://geneweb.tuxfamily.org/wiki/manual"
+                   target="_blank"
+                   class="btn btn-sm
+                          btn-outline-secondary ml-2">
+                    <i class="fas fa-external-link-alt
+                       mr-1"></i>
+                    Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert container -->
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;
+            z-index:9999;width:350px;">
+</div>
+{% endblock %}

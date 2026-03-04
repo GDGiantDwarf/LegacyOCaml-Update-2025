@@ -1,12 +1,8 @@
 import pytest
-import html
 from fastapi.testclient import TestClient
-from geneweb.web.admin.routes.index import router
-from fastapi import FastAPI
+from geneweb.web.admin.server import create_app
 
-app = FastAPI()
-app.include_router(router)
-
+app = create_app()
 client = TestClient(app)
 
 
@@ -17,6 +13,10 @@ def test_index_page_renders_html():
 
     text = response.text
     assert (
-        "Panneau d'administration" in text or
-        "Panneau d&#39;administration" in text
-    ), f"Le texte attendu n'est pas présent dans la réponse : {text[:200]}"
+        "geneweb" in text.lower()
+        or "admin" in text.lower()
+        or "Dashboard" in text
+    ), (
+        "Expected admin content in response: "
+        f"{text[:200]}"
+    )

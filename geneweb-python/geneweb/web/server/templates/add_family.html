@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="none">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1,
+               shrink-to-fit=no">
+<title>Add Family - {{ base_name }} - GeneWeb</title>
+<link rel="icon" href="/static/images/favicon_gwd.png">
+<link rel="apple-touch-icon"
+      href="/static/images/favicon_gwd.png">
+<link rel="stylesheet"
+      href="/static/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="/static/css/all.min.css">
+<link rel="stylesheet"
+      href="/static/css/css.css">
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+<main id="main-content" class="container mt-3">
+
+<!-- Back link -->
+<a href="/base/{{ base_name }}"
+   class="btn btn-outline-secondary btn-sm mb-3">
+  <i class="fas fa-arrow-left mr-1" aria-hidden="true"></i>
+  Back to base
+</a>
+
+<h2 class="mb-4">
+  <i class="fas fa-user-plus mr-2 text-success" aria-hidden="true"></i>
+  Add Family
+  <small class="text-muted">- {{ base_name }}</small>
+</h2>
+
+{% if success %}
+<div class="alert alert-success alert-dismissible
+            fade show" role="alert">
+  Family created successfully.
+  <button type="button" class="close"
+          data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger alert-dismissible
+            fade show" role="alert">
+  Error: {{ error }}
+  <button type="button" class="close"
+          data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+<form method="post"
+      action="/base/{{ base_name }}/add-family">
+
+<!-- Spouses row -->
+<div class="row">
+
+<!-- Spouse 1 -->
+<div class="col-md-6">
+<div class="card mb-3">
+<div class="card-header bg-primary text-white">
+  <i class="fas fa-user mr-1" aria-hidden="true"></i> Spouse 1
+</div>
+<div class="card-body">
+  <div class="form-group">
+    <label for="sp1_first_name">First Name</label>
+    <input type="text" class="form-control"
+           id="sp1_first_name"
+           name="sp1_first_name" required>
+  </div>
+  <div class="form-group">
+    <label for="sp1_last_name">Last Name</label>
+    <input type="text" class="form-control"
+           id="sp1_last_name"
+           name="sp1_last_name" required>
+  </div>
+  <div class="form-group">
+    <label for="sp1_gender">Gender</label>
+    <select class="form-control" id="sp1_gender"
+            name="sp1_gender">
+      <option value="M" selected>Male</option>
+      <option value="F">Female</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sp1_birth_date">Birth Date</label>
+    <input type="date" class="form-control"
+           id="sp1_birth_date"
+           name="sp1_birth_date">
+  </div>
+  <div class="form-group">
+    <label for="sp1_birth_place">Birth Place</label>
+    <input type="text" class="form-control"
+           id="sp1_birth_place"
+           name="sp1_birth_place">
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Spouse 2 -->
+<div class="col-md-6">
+<div class="card mb-3">
+<div class="card-header bg-info text-white">
+  <i class="fas fa-user mr-1" aria-hidden="true"></i> Spouse 2
+</div>
+<div class="card-body">
+  <div class="form-group">
+    <label for="sp2_first_name">First Name</label>
+    <input type="text" class="form-control"
+           id="sp2_first_name"
+           name="sp2_first_name" required>
+  </div>
+  <div class="form-group">
+    <label for="sp2_last_name">Last Name</label>
+    <input type="text" class="form-control"
+           id="sp2_last_name"
+           name="sp2_last_name" required>
+  </div>
+  <div class="form-group">
+    <label for="sp2_gender">Gender</label>
+    <select class="form-control" id="sp2_gender"
+            name="sp2_gender">
+      <option value="M">Male</option>
+      <option value="F" selected>Female</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sp2_birth_date">Birth Date</label>
+    <input type="date" class="form-control"
+           id="sp2_birth_date"
+           name="sp2_birth_date">
+  </div>
+  <div class="form-group">
+    <label for="sp2_birth_place">Birth Place</label>
+    <input type="text" class="form-control"
+           id="sp2_birth_place"
+           name="sp2_birth_place">
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- /.row spouses -->
+
+<!-- Marriage info -->
+<div class="card mb-3">
+<div class="card-header bg-success text-white">
+  <i class="fas fa-ring mr-1" aria-hidden="true"></i> Marriage
+</div>
+<div class="card-body">
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="marriage_date">
+        Marriage Date
+      </label>
+      <input type="date" class="form-control"
+             id="marriage_date"
+             name="marriage_date">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="marriage_place">
+        Marriage Place
+      </label>
+      <input type="text" class="form-control"
+             id="marriage_place"
+             name="marriage_place">
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Children -->
+<div class="card mb-4">
+<div class="card-header bg-warning text-dark
+            d-flex justify-content-between
+            align-items-center">
+  <span>
+    <i class="fas fa-child mr-1" aria-hidden="true"></i> Children
+  </span>
+  <button type="button"
+          class="btn btn-sm btn-outline-dark"
+          id="addChildBtn">
+    <i class="fas fa-plus mr-1" aria-hidden="true"></i> Add Child
+  </button>
+</div>
+<div class="card-body" id="childrenContainer">
+  <p class="text-muted" id="noChildrenMsg">
+    No children added yet.
+    Click "Add Child" to add one.
+  </p>
+</div>
+</div>
+
+<button type="submit"
+        class="btn btn-success btn-lg mb-4">
+  <i class="fas fa-save mr-1" aria-hidden="true"></i>
+  Create Family
+</button>
+
+</form>
+
+</main><!-- /.container -->
+
+<!-- JS -->
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js">
+</script>
+<script>
+(function() {
+  var childIdx = 0;
+  var container = document.getElementById(
+    'childrenContainer'
+  );
+  var noMsg = document.getElementById(
+    'noChildrenMsg'
+  );
+  var addBtn = document.getElementById('addChildBtn');
+
+  addBtn.addEventListener('click', function() {
+    if (noMsg) noMsg.style.display = 'none';
+    var div = document.createElement('div');
+    div.className = 'row mb-2 align-items-end '
+      + 'child-row';
+    div.innerHTML =
+      '<div class="col-md-3">' +
+      '<label>First Name</label>' +
+      '<input type="text" class="form-control" ' +
+      'name="child_' + childIdx +
+      '_first_name"></div>' +
+      '<div class="col-md-3">' +
+      '<label>Last Name</label>' +
+      '<input type="text" class="form-control" ' +
+      'name="child_' + childIdx +
+      '_last_name"></div>' +
+      '<div class="col-md-2">' +
+      '<label>Gender</label>' +
+      '<select class="form-control" ' +
+      'name="child_' + childIdx + '_gender">' +
+      '<option value="M">M</option>' +
+      '<option value="F">F</option>' +
+      '</select></div>' +
+      '<div class="col-md-3">' +
+      '<label>Birth Date</label>' +
+      '<input type="date" class="form-control" ' +
+      'name="child_' + childIdx +
+      '_birth_date"></div>' +
+      '<div class="col-md-1">' +
+      '<button type="button" ' +
+      'class="btn btn-sm btn-outline-danger ' +
+      'remove-child-btn" ' +
+      'aria-label="Remove child">' +
+      '<i class="fas fa-trash" aria-hidden="true"></i>' +
+      '</button></div>';
+    container.appendChild(div);
+    childIdx++;
+  });
+
+  container.addEventListener('click', function(e) {
+    var btn = e.target.closest('.remove-child-btn');
+    if (btn) {
+      btn.closest('.child-row').remove();
+      if (!container.querySelector('.child-row')) {
+        if (noMsg) noMsg.style.display = 'block';
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

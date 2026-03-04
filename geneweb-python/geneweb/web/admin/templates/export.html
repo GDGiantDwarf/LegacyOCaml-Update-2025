@@ -1,0 +1,191 @@
+{% extends "base_layout.html" %}
+
+{% block title %}GeneWeb Admin - Export{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3">
+            <i class="fas fa-file-export mr-2"></i>
+            Export a Database
+        </h1>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-gw">
+                <i class="fas fa-download mr-1"></i>
+                Select Database and Format
+            </div>
+            <div class="card-body">
+                {% if bases %}
+                <form id="export-form">
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            Select the database to export:
+                        </label>
+                        {% for b in bases %}
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="base"
+                                   id="base-{{ b }}"
+                                   value="{{ b }}"
+                                   {% if loop.first %}
+                                   checked
+                                   {% endif %}>
+                            <label class="form-check-label"
+                                   for="base-{{ b }}">
+                                {{ b }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            Export format:
+                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="format"
+                                   id="fmt-gedcom"
+                                   value="gedcom"
+                                   checked>
+                            <label class="form-check-label"
+                                   for="fmt-gedcom">
+                                GEDCOM (.ged)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="format"
+                                   id="fmt-sqlite"
+                                   value="sqlite">
+                            <label class="form-check-label"
+                                   for="fmt-sqlite">
+                                SQLite (.db)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="format"
+                                   id="fmt-zip"
+                                   value="zip">
+                            <label class="form-check-label"
+                                   for="fmt-zip">
+                                ZIP archive (.zip)
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="export-btn">
+                        <i class="fas fa-download mr-1"></i>
+                        Export
+                    </button>
+                    <a href="/welcome"
+                       class="btn btn-secondary ml-2">
+                        <i class="fas fa-arrow-left mr-1">
+                        </i>Back
+                    </a>
+                </form>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    No databases found. Create one first.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="alert-container"
+     style="position:fixed;top:70px;right:20px;
+            z-index:9999;width:350px;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAlert(message, type) {
+    var cls = (type === "error") ? "danger" : "success";
+    var html = '<div class="alert alert-' + cls +
+        ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" ' +
+        'data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button></div>';
+    var c = document.getElementById("alert-container");
+    c.innerHTML = html;
+    setTimeout(function() { c.innerHTML = ""; }, 5000);
+}
+
+var form = document.getElementById("export-form");
+if (form) {
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        var sel = form.querySelector(
+            'input[name="base"]:checked'
+        );
+        var fmt = form.querySelector(
+            'input[name="format"]:checked'
+        );
+        if (!sel) {
+            showAlert(
+                "Please select a database.", "error"
+            );
+            return;
+        }
+        var btn = document.getElementById("export-btn");
+        btn.disabled = true;
+        btn.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-1">' +
+            '</i>Exporting...';
+        try {
+            var url = "/api/bases/" + sel.value +
+                "/export?format=" + fmt.value;
+            var res = await fetch(url, {method: "POST"});
+            if (res.ok) {
+                var blob = await res.blob();
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                var ext = {
+                    gedcom: ".ged",
+                    sqlite: ".db",
+                    zip: ".zip",
+                };
+                a.download = sel.value +
+                    (ext[fmt.value] || ".db");
+                a.click();
+                showAlert(
+                    "Export downloaded!", "success"
+                );
+            } else {
+                var err = await res.json().catch(
+                    function() { return {}; }
+                );
+                showAlert(
+                    "Error: " +
+                    (err.detail || res.status),
+                    "error"
+                );
+            }
+        } catch (ex) {
+            showAlert("Network error.", "error");
+        }
+        btn.disabled = false;
+        btn.innerHTML =
+            '<i class="fas fa-download mr-1">' +
+            '</i>Export';
+    });
+}
+</script>
+{% endblock %}
