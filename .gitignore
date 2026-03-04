@@ -214,4 +214,3 @@ __marimo__/
 *.tfstate
 *.tfstate.backup
 terraform.tfvars
-CLAUDE.md

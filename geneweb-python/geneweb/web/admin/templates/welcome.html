@@ -25,14 +25,16 @@
             <div class="card-body">
                 <ul class="list-unstyled mb-0">
                     <li class="mb-2">
-                        <i class="fas fa-sitemap mr-1 text-muted"></i>
+                        <i class="fas fa-sitemap mr-1
+                           text-muted"></i>
                         Family Trees
                         (<a href="/list">list</a>)
                     </li>
                     <li>
-                        <i class="fas fa-chart-bar mr-1 text-muted"></i>
-                        Error history and statistics
-                        (<a href="/api/stats">stats</a>)
+                        <i class="fas fa-chart-bar mr-1
+                           text-muted"></i>
+                        Statistics
+                        (<a href="/list">stats</a>)
                     </li>
                 </ul>
             </div>
@@ -49,19 +51,25 @@
             <div class="card-body">
                 <ul class="list-unstyled mb-0">
                     <li class="mb-2">
-                        <i class="fas fa-file-import mr-1 text-muted"></i>
+                        <i class="fas fa-file-import mr-1
+                           text-muted"></i>
                         From a GEDCOM source file
-                        (<a href="/api/bases/import">import</a>)
+                        (<a href="/import-page">
+                            import</a>)
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-file-code mr-1 text-muted"></i>
+                        <i class="fas fa-file-code mr-1
+                           text-muted"></i>
                         From a GeneWeb source file
-                        (<a href="/api/bases/import">import</a>)
+                        (<a href="/import-page">
+                            import</a>)
                     </li>
                     <li>
-                        <i class="fas fa-file mr-1 text-muted"></i>
+                        <i class="fas fa-file mr-1
+                           text-muted"></i>
                         From an empty file
-                        (<a href="/create_base_empty">create</a>)
+                        (<a href="/create_base_empty">
+                            create</a>)
                     </li>
                 </ul>
             </div>
@@ -69,7 +77,7 @@
     </div>
 </div>
 
-<!-- Second row: Save / Export -->
+<!-- Second row: Save / Export & Advanced -->
 <div class="row mb-4">
     <div class="col-md-6 mb-3">
         <div class="card h-100">
@@ -80,14 +88,18 @@
             <div class="card-body">
                 <ul class="list-unstyled mb-0">
                     <li class="mb-2">
-                        <i class="fas fa-file-export mr-1 text-muted"></i>
+                        <i class="fas fa-file-export mr-1
+                           text-muted"></i>
                         A GEDCOM source file
-                        (select a base, then export)
+                        (<a href="/export-page">
+                            export</a>)
                     </li>
                     <li>
-                        <i class="fas fa-file-export mr-1 text-muted"></i>
+                        <i class="fas fa-file-export mr-1
+                           text-muted"></i>
                         A GeneWeb source file
-                        (select a base, then export)
+                        (<a href="/export-page">
+                            export</a>)
                     </li>
                 </ul>
             </div>
@@ -104,91 +116,36 @@
             <div class="card-body">
                 <ul class="list-unstyled mb-0">
                     <li class="mb-2">
-                        <i class="fas fa-broom mr-1 text-muted"></i>
+                        <i class="fas fa-broom mr-1
+                           text-muted"></i>
                         Clean up
                         (<a href="/cleanup">cleanup</a>)
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-pen mr-1 text-muted"></i>
+                        <i class="fas fa-pen mr-1
+                           text-muted"></i>
                         Renaming
                         (<a href="/rename">rename</a>)
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-trash-alt mr-1 text-muted"></i>
+                        <i class="fas fa-trash-alt mr-1
+                           text-muted"></i>
                         Deletion
                         (<a href="/delete">delete</a>)
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-object-group mr-1 text-muted"></i>
+                        <i class="fas fa-object-group
+                           mr-1 text-muted"></i>
                         Merging with other databases
-                        (<a href="/merge-page">merge</a>)
+                        (<a href="/merge-page">
+                            merge</a>)
                     </li>
                     <li>
-                        <i class="fas fa-hdd mr-1 text-muted"></i>
+                        <i class="fas fa-hdd mr-1
+                           text-muted"></i>
                         Saving and restoring
-                        (<a href="/api/bases">backup</a>)
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Third row: Additional operations & Configuration -->
-<div class="row mb-4">
-    <div class="col-md-6 mb-3">
-        <div class="card h-100">
-            <div class="card-header card-header-gw">
-                <i class="fas fa-wrench mr-1"></i>
-                Other Operations
-            </div>
-            <div class="card-body">
-                <ul class="list-unstyled mb-0">
-                    <li class="mb-2">
-                        <i class="fas fa-calculator mr-1 text-muted"></i>
-                        Initialisation of consanguinities
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-link mr-1 text-muted"></i>
-                        Update links page / family chronicle
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-project-diagram mr-1 text-muted"></i>
-                        Compute connected components
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-not-equal mr-1 text-muted"></i>
-                        Compute the difference between two bases
-                    </li>
-                    <li>
-                        <i class="fas fa-band-aid mr-1 text-muted"></i>
-                        Fix problems in a base
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Configuration -->
-    <div class="col-md-6 mb-3">
-        <div class="card h-100">
-            <div class="card-header card-header-gw">
-                <i class="fas fa-cog mr-1"></i>
-                Configuration
-            </div>
-            <div class="card-body">
-                <ul class="list-unstyled mb-0">
-                    <li class="mb-2">
-                        <i class="fas fa-sliders-h mr-1 text-muted"></i>
-                        The parameters of a database (.gwf)
-                    </li>
-                    <li class="mb-2">
-                        <i class="fas fa-server mr-1 text-muted"></i>
-                        The parameters of the gwd service
-                    </li>
-                    <li>
-                        <i class="fas fa-font mr-1 text-muted"></i>
-                        Name and places cache files for auto completion
+                        (<a href="/backup-page">
+                            backup</a>)
                     </li>
                 </ul>
             </div>
@@ -202,12 +159,17 @@
         <div class="card">
             <div class="card-body text-center">
                 <i class="fas fa-book mr-1"></i>
-                You can also consult the complete documentation of
-                <strong style="color:#90c24e;">GeneWeb</strong>.
-                <a href="http://geneweb.tuxfamily.org/wiki/manual"
+                You can also consult the complete
+                documentation of
+                <strong style="color:#90c24e;">
+                    GeneWeb</strong>.
+                <a href=
+                   "http://geneweb.tuxfamily.org/wiki/manual"
                    target="_blank"
-                   class="btn btn-sm btn-outline-secondary ml-2">
-                    <i class="fas fa-external-link-alt mr-1"></i>
+                   class="btn btn-sm
+                          btn-outline-secondary ml-2">
+                    <i class="fas fa-external-link-alt
+                       mr-1"></i>
                     Documentation
                 </a>
             </div>
@@ -217,7 +179,7 @@
 
 <!-- Alert container -->
 <div id="alert-container"
-     style="position:fixed;top:70px;right:20px;z-index:9999;
-            width:350px;">
+     style="position:fixed;top:70px;right:20px;
+            z-index:9999;width:350px;">
 </div>
 {% endblock %}
