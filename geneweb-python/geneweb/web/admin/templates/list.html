@@ -25,13 +25,14 @@
                 </span>
                 <button class="btn btn-sm btn-light"
                         onclick="loadBases()">
-                    <i class="fas fa-sync-alt mr-1"></i>
-                    Refresh
+                    <i class="fas fa-sync-alt mr-1">
+                    </i>Refresh
                 </button>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0"
+                    <table class="table table-hover
+                                  mb-0"
                            id="bases-table">
                         <thead class="thead-light">
                             <tr>
@@ -42,21 +43,21 @@
                             </tr>
                         </thead>
                         <tbody id="bases-tbody">
-                            <!-- Populated via JS -->
                         </tbody>
                     </table>
                 </div>
                 <div id="loading-indicator"
                      class="text-center py-4">
-                    <i class="fas fa-spinner fa-spin fa-2x
-                              text-muted"></i>
+                    <i class="fas fa-spinner fa-spin
+                              fa-2x text-muted"></i>
                     <p class="text-muted mt-2">
                         Loading databases...
                     </p>
                 </div>
                 <div id="empty-indicator"
                      class="text-center py-4 d-none">
-                    <i class="fas fa-inbox fa-2x text-muted"></i>
+                    <i class="fas fa-inbox fa-2x
+                              text-muted"></i>
                     <p class="text-muted mt-2">
                         No databases found.
                     </p>
@@ -71,10 +72,9 @@
     <a href="/welcome">main menu (welcome)</a>.
 </p>
 
-<!-- Alert container -->
 <div id="alert-container"
-     style="position:fixed;top:70px;right:20px;z-index:9999;
-            width:350px;">
+     style="position:fixed;top:70px;right:20px;
+            z-index:9999;width:350px;">
 </div>
 {% endblock %}
 
@@ -89,18 +89,25 @@ function showAlert(message, type) {
         'data-dismiss="alert" aria-label="Close">' +
         '<span aria-hidden="true">&times;</span>' +
         '</button></div>';
-    var container = document.getElementById("alert-container");
-    container.innerHTML = html;
-    setTimeout(function() {
-        container.innerHTML = "";
-    }, 4000);
+    var c = document.getElementById("alert-container");
+    c.innerHTML = html;
+    setTimeout(function() { c.innerHTML = ""; }, 4000);
+}
+
+function escHtml(s) {
+    var d = document.createElement("div");
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
 }
 
 async function loadBases() {
     var tbody = document.getElementById("bases-tbody");
-    var loading = document.getElementById("loading-indicator");
-    var empty = document.getElementById("empty-indicator");
-
+    var loading = document.getElementById(
+        "loading-indicator"
+    );
+    var empty = document.getElementById(
+        "empty-indicator"
+    );
     tbody.innerHTML = "";
     loading.classList.remove("d-none");
     empty.classList.add("d-none");
@@ -108,7 +115,9 @@ async function loadBases() {
     try {
         var res = await fetch("/api/bases");
         if (res.status !== 200) {
-            showAlert("Failed to load databases.", "error");
+            showAlert(
+                "Failed to load databases.", "error"
+            );
             loading.classList.add("d-none");
             return;
         }
@@ -123,50 +132,133 @@ async function loadBases() {
 
         for (var i = 0; i < bases.length; i++) {
             var name = bases[i];
+            var safe = escHtml(name);
             var row = document.createElement("tr");
             row.innerHTML =
                 '<td class="align-middle">' +
-                    '<i class="fas fa-database mr-1 ' +
-                    'text-muted"></i>' +
-                    '<strong>' + name + '</strong>' +
+                '<i class="fas fa-database mr-1 ' +
+                'text-muted"></i>' +
+                '<strong>' + safe + '</strong>' +
                 '</td>' +
                 '<td class="text-center">' +
-                    '<div class="btn-group btn-group-sm">' +
-                        '<a href="/cleanup" ' +
-                            'class="btn btn-outline-secondary"' +
-                            ' title="Cleanup">' +
-                            '<i class="fas fa-broom"></i>' +
-                        '</a>' +
-                        '<a href="/rename" ' +
-                            'class="btn btn-outline-primary"' +
-                            ' title="Rename">' +
-                            '<i class="fas fa-pen"></i>' +
-                        '</a>' +
-                        '<button ' +
-                            'class="btn btn-outline-danger"' +
-                            ' title="Delete"' +
-                            ' onclick="deleteBase(\'' +
-                            name + '\')">' +
-                            '<i class="fas fa-trash-alt"></i>' +
-                        '</button>' +
-                        '<a href="/api/export/' + name +
-                            '" class="btn btn-outline-info"' +
-                            ' title="Export">' +
-                            '<i class="fas fa-file-export">' +
-                            '</i>' +
-                        '</a>' +
-                    '</div>' +
-                '</td>';
+                '<div class="btn-group btn-group-sm">' +
+                '<button class="btn ' +
+                'btn-outline-secondary" ' +
+                'title="Cleanup" ' +
+                'onclick="cleanupBase(\'' +
+                safe + '\')">' +
+                '<i class="fas fa-broom"></i>' +
+                '</button>' +
+                '<button class="btn ' +
+                'btn-outline-primary" ' +
+                'title="Rename" ' +
+                'onclick="renameBase(\'' +
+                safe + '\')">' +
+                '<i class="fas fa-pen"></i>' +
+                '</button>' +
+                '<button class="btn ' +
+                'btn-outline-danger" ' +
+                'title="Delete" ' +
+                'onclick="deleteBase(\'' +
+                safe + '\')">' +
+                '<i class="fas fa-trash-alt"></i>' +
+                '</button>' +
+                '<button class="btn ' +
+                'btn-outline-info" ' +
+                'title="Export" ' +
+                'onclick="exportBase(\'' +
+                safe + '\')">' +
+                '<i class="fas fa-file-export">' +
+                '</i></button>' +
+                '<button class="btn ' +
+                'btn-outline-success" ' +
+                'title="Backup" ' +
+                'onclick="backupBase(\'' +
+                safe + '\')">' +
+                '<i class="fas fa-download">' +
+                '</i></button>' +
+                '</div></td>';
             tbody.appendChild(row);
         }
     } catch (ex) {
         loading.classList.add("d-none");
-        showAlert("Network error loading databases.", "error");
+        showAlert(
+            "Network error loading databases.",
+            "error"
+        );
+    }
+}
+
+async function cleanupBase(name) {
+    if (!confirm(
+        'Cleanup database "' + name + '"?'
+    )) return;
+    try {
+        var res = await fetch(
+            "/api/bases/" + name + "/cleanup",
+            {method: "POST"}
+        );
+        if (res.status === 200) {
+            showAlert(
+                '"' + name + '" cleaned up.',
+                "success"
+            );
+        } else {
+            var e = await res.json().catch(
+                function() { return {}; }
+            );
+            showAlert(
+                "Error: " + (e.detail || res.status),
+                "error"
+            );
+        }
+    } catch (ex) {
+        showAlert("Network error.", "error");
+    }
+}
+
+async function renameBase(name) {
+    var newName = prompt(
+        'New name for "' + name + '":', name
+    );
+    if (!newName || newName === name) return;
+    try {
+        var res = await fetch(
+            "/api/bases/" + name + "/rename",
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(
+                    {new_name: newName}
+                ),
+            }
+        );
+        if (res.status === 200) {
+            showAlert(
+                'Renamed to "' + newName + '".',
+                "success"
+            );
+            setTimeout(loadBases, 500);
+        } else {
+            var e = await res.json().catch(
+                function() { return {}; }
+            );
+            showAlert(
+                "Error: " + (e.detail || res.status),
+                "error"
+            );
+        }
+    } catch (ex) {
+        showAlert("Network error.", "error");
     }
 }
 
 async function deleteBase(name) {
-    if (!confirm('Delete database "' + name + '"?')) return;
+    if (!confirm(
+        'Delete database "' + name + '"?'
+    )) return;
     try {
         var res = await fetch(
             "/api/bases/" + name,
@@ -174,18 +266,85 @@ async function deleteBase(name) {
         );
         if (res.status === 204) {
             showAlert(
-                'Database "' + name + '" deleted.', "success"
+                '"' + name + '" deleted.', "success"
             );
-            setTimeout(function() { loadBases(); }, 500);
+            setTimeout(loadBases, 500);
         } else {
-            showAlert("Error deleting database.", "error");
+            showAlert(
+                "Error deleting database.", "error"
+            );
         }
     } catch (ex) {
         showAlert("Network error.", "error");
     }
 }
 
-/* Load bases on page load */
+async function exportBase(name) {
+    var fmt = prompt(
+        'Export format for "' + name +
+        '"?\n(gedcom, sqlite, zip)',
+        "gedcom"
+    );
+    if (!fmt) return;
+    try {
+        var res = await fetch(
+            "/api/bases/" + name +
+            "/export?format=" + fmt,
+            {method: "POST"}
+        );
+        if (res.ok) {
+            var blob = await res.blob();
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            var ext = {
+                gedcom: ".ged",
+                sqlite: ".db",
+                zip: ".zip",
+            };
+            a.download = name + (ext[fmt] || ".db");
+            a.click();
+            showAlert("Export downloaded!", "success");
+        } else {
+            var e = await res.json().catch(
+                function() { return {}; }
+            );
+            showAlert(
+                "Error: " + (e.detail || res.status),
+                "error"
+            );
+        }
+    } catch (ex) {
+        showAlert("Network error.", "error");
+    }
+}
+
+async function backupBase(name) {
+    try {
+        var res = await fetch(
+            "/api/bases/" + name + "/backup",
+            {method: "POST"}
+        );
+        if (res.ok) {
+            var blob = await res.blob();
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = name + ".zip";
+            a.click();
+            showAlert("Backup downloaded!", "success");
+        } else {
+            var e = await res.json().catch(
+                function() { return {}; }
+            );
+            showAlert(
+                "Error: " + (e.detail || res.status),
+                "error"
+            );
+        }
+    } catch (ex) {
+        showAlert("Network error.", "error");
+    }
+}
+
 document.addEventListener("DOMContentLoaded", loadBases);
 </script>
 {% endblock %}

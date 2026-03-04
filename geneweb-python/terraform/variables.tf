@@ -25,3 +25,9 @@ variable "repo_url" {
   description = "GitHub repository URL for the project"
   type        = string
 }
+
+variable "admin_service_name" {
+  description = "Name of the Render admin web service"
+  type        = string
+  default     = "geneweb-gwsetup"
+}

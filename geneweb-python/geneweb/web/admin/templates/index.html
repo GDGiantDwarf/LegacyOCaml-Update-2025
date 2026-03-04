@@ -71,6 +71,16 @@
                                                 onclick="deleteBase('{{ b }}')">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
+                                        <button class="btn btn-outline-info"
+                                                title="Export"
+                                                onclick="exportBase('{{ b }}')">
+                                            <i class="fas fa-file-export"></i>
+                                        </button>
+                                        <button class="btn btn-outline-success"
+                                                title="Backup"
+                                                onclick="backupBase('{{ b }}')">
+                                            <i class="fas fa-download"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -204,6 +214,72 @@ async function cleanupBase(name) {
             var err = await res.json().catch(function() { return {}; });
             showAlert(
                 "Cleanup error: " + (err.detail || res.status), "error"
+            );
+        }
+    } catch (e) {
+        showAlert("Network error.", "error");
+    }
+}
+
+async function exportBase(name) {
+    var fmt = prompt(
+        'Export format for "' + name +
+        '"?\n(gedcom, sqlite, zip)',
+        "gedcom"
+    );
+    if (!fmt) return;
+    try {
+        var res = await fetch(
+            "/api/bases/" + name +
+            "/export?format=" + fmt,
+            {method: "POST"}
+        );
+        if (res.ok) {
+            var blob = await res.blob();
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            var ext = {
+                gedcom: ".ged",
+                sqlite: ".db",
+                zip: ".zip",
+            };
+            a.download = name + (ext[fmt] || ".db");
+            a.click();
+            showAlert("Export downloaded!", "success");
+        } else {
+            var err = await res.json().catch(
+                function() { return {}; }
+            );
+            showAlert(
+                "Error: " + (err.detail || res.status),
+                "error"
+            );
+        }
+    } catch (e) {
+        showAlert("Network error.", "error");
+    }
+}
+
+async function backupBase(name) {
+    try {
+        var res = await fetch(
+            "/api/bases/" + name + "/backup",
+            {method: "POST"}
+        );
+        if (res.ok) {
+            var blob = await res.blob();
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = name + ".zip";
+            a.click();
+            showAlert("Backup downloaded!", "success");
+        } else {
+            var err = await res.json().catch(
+                function() { return {}; }
+            );
+            showAlert(
+                "Error: " + (err.detail || res.status),
+                "error"
             );
         }
     } catch (e) {

@@ -7,7 +7,7 @@ DOCKER_DIR = geneweb-python/docker
 REQUIREMENTS_PATH = $(PROJECT_DIR)/requirements.txt
 DOCKER_COMPOSE = docker compose -f $(DOCKER_DIR)/docker-compose.yml
 PYTEST = pytest -v --cov=geneweb --cov-report=term-missing --cov-report html --disable-warnings
-PYTHON = python3.10
+PYTHON = python3
 
 all: dependencies audit conventions test build
 
@@ -33,7 +33,7 @@ audit:
 
 conventions:
 	@echo "Running conventions pycodestyle(PEP8)..."
-	@pycodestyle . || (echo "❌ Conventions error found!" && exit 1)
+	@pycodestyle --exclude='.venv,Legacy,geneweb-python/.venv' $(PROJECT_DIR)/geneweb $(PROJECT_DIR)/tests || (echo "❌ Conventions error found!" && exit 1)
 	@echo "✅ No conventions error founds!"
 
 clean:

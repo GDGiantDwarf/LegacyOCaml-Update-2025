@@ -69,3 +69,37 @@ async def list_page(request: Request):
         "list.html",
         {"request": request, "bases": bases},
     )
+
+
+@router.get("/import-page", response_class=HTMLResponse)
+async def import_page(request: Request):
+    """Database import page."""
+    templates = request.app.state.templates
+    return templates.TemplateResponse(
+        "import.html",
+        {"request": request},
+    )
+
+
+@router.get("/export-page", response_class=HTMLResponse)
+async def export_page(request: Request):
+    """Database export page."""
+    templates = request.app.state.templates
+    bases = BaseManager.list_bases()
+    return templates.TemplateResponse(
+        "export.html",
+        {"request": request, "bases": bases},
+    )
+
+
+@router.get(
+    "/backup-page", response_class=HTMLResponse
+)
+async def backup_page(request: Request):
+    """Backup and restore page."""
+    templates = request.app.state.templates
+    bases = BaseManager.list_bases()
+    return templates.TemplateResponse(
+        "backup.html",
+        {"request": request, "bases": bases},
+    )

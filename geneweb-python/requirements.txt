@@ -5,6 +5,8 @@ sqlalchemy
 pydantic
 python-multipart
 httpx
+pytest
+pytest-cov
 pytest-mock
 itsdangerous
 pycodestyle
