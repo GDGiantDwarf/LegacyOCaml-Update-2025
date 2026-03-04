@@ -24,7 +24,7 @@ def test_get_text_known():
 def test_get_text_unknown():
     mgr = _make_manager()
     result = mgr.get_text("nonexistent", "en")
-    assert result == "[nonexistent]"
+    assert result == "nonexistent"
 
 
 def test_get_translations_for_lang():

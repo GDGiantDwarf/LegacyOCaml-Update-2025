@@ -28,12 +28,16 @@ class LanguageManager:
 
     def get_text(self, key: str, lang: str) -> str:
         if key not in self.translations_json:
-            return f"[{key}]"
+            return key
 
         entry = self.translations_json[key]
         if lang in entry:
             return entry[lang]
-        return f"[{entry.get('en', key)}]"
+        if "en" in entry:
+            return entry["en"]
+        if entry:
+            return next(iter(entry.values()))
+        return key
 
     def get_translations_for_lang(
         self, lang: str

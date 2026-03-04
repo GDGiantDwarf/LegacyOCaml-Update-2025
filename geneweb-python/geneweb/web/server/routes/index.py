@@ -1,16 +1,17 @@
 import json
 
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from geneweb.core.database import Database
+from geneweb.core.database import BaseManager
 
 router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    bases = Database.get_existing_bases()
+    base_dir = getattr(request.app.state, "base_dir", None)
+    bases = BaseManager.list_bases(base_dir)
     templates = request.app.state.templates
     lang_manager = request.app.state.lang_manager
     lang = getattr(
@@ -43,8 +44,11 @@ async def index(request: Request):
 async def select_base(
     request: Request, base_name: str
 ):
-    if not Database.is_base_exist(base_name):
-        bases = Database.get_existing_bases()
+    base_dir = getattr(
+        request.app.state, "base_dir", None
+    )
+    existing = BaseManager.list_bases(base_dir)
+    if base_name not in existing:
         templates = request.app.state.templates
         lang_manager = request.app.state.lang_manager
         lang = getattr(
@@ -65,7 +69,7 @@ async def select_base(
         context = templates.get_context(request)
         context.update(
             {
-                "list_bases": bases,
+                "list_bases": existing,
                 "translations_json": translations_json,
                 "lang": lang,
                 "error_message": (
