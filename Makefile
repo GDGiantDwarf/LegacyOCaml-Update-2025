@@ -33,7 +33,7 @@ audit:
 
 conventions:
 	@echo "Running conventions pycodestyle(PEP8)..."
-	@pycodestyle --exclude='.venv,Legacy,geneweb-python/.venv' $(PROJECT_DIR)/geneweb $(PROJECT_DIR)/tests || (echo "❌ Conventions error found!" && exit 1)
+	@pycodestyle --exclude='.venv,geneweb-python/.venv' $(PROJECT_DIR)/geneweb $(PROJECT_DIR)/tests || (echo "❌ Conventions error found!" && exit 1)
 	@echo "✅ No conventions error founds!"
 
 clean:
