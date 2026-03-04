@@ -248,8 +248,9 @@
 </script>
 <script>
 // Filter / search
-document.getElementById('searchFilter')
-  .addEventListener('input', function() {
+var searchEl = document.getElementById('searchFilter');
+if (searchEl) {
+  searchEl.addEventListener('input', function() {
     var filter = this.value.toLowerCase();
     var rows = document.querySelectorAll(
       '#dataTable tbody tr'
@@ -260,6 +261,7 @@ document.getElementById('searchFilter')
         text.indexOf(filter) > -1 ? '' : 'none';
     });
   });
+}
 
 // Edit modal (non-source books)
 document.querySelectorAll('.edit-btn')
